@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-04-06T07:00:00Z",
+  "week_label": "Week of 6 Apr – 12 Apr 2026",
+  "executive_summary": "This is a placeholder briefing generated on first deploy. The first real scan will run automatically next Monday at 07:00 CET via GitHub Actions. You can also trigger a manual scan immediately from the Actions tab in your GitHub repository.",
+  "market": [
+    {
+      "title": "First real briefing arrives Monday",
+      "summary": "GitHub Actions will run the weekly scan every Monday at 07:00 CET. The script calls Claude with web search enabled and writes the results back to this file automatically.",
+      "sowhat": "No action needed — set up is complete. Trigger a manual run from GitHub Actions to get your first real briefing immediately.",
+      "relevance": "fyi",
+      "source": "CMIplus Cockpit",
+      "date": "6 Apr 2026",
+      "url": ""
+    }
+  ],
+  "thought": [
+    {
+      "title": "Add or change sources in sources.json",
+      "summary": "Open sources.json in your GitHub repository to add new sources, change focus topics, or deactivate sources temporarily. Set active to false to pause any source without deleting it.",
+      "sowhat": "No code changes needed — edit the JSON file directly on GitHub and commit. The next scan will pick up your changes automatically.",
+      "relevance": "fyi",
+      "source": "CMIplus Cockpit",
+      "date": "6 Apr 2026",
+      "url": ""
+    }
+  ],
+  "competitors": [
+    {
+      "title": "Trigger your first real scan now",
+      "summary": "Go to your GitHub repository, click Actions, select Weekly Intelligence Scan, and click Run workflow. The scan takes 2-3 minutes and updates this page automatically.",
+      "sowhat": "You will have your first real CMIplus intelligence briefing within minutes of triggering the manual run.",
+      "relevance": "watch",
+      "source": "CMIplus Cockpit",
+      "date": "6 Apr 2026",
+      "url": ""
+    }
+  ]
+}

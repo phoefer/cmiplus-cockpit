@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "description": "CMIplus Weekly Intelligence Cockpit — Source Configuration",
+    "instructions": "Add, remove or edit sources here. No code changes needed. Commit and push to trigger a new scan.",
+    "last_updated": "2026-04-06"
+  },
+  "market_news": [
+    { "name": "Finextra", "url": "https://www.finextra.com", "focus": "payments, banking technology, fintech", "active": true },
+    { "name": "Der Treasurer", "url": "https://www.dertreasurer.de", "focus": "Cash Management, Treasury, deutsche Unternehmen", "active": true },
+    { "name": "Treasury Today", "url": "https://treasurytoday.com", "focus": "corporate treasury, cash management, payments", "active": true },
+    { "name": "The Global Treasurer", "url": "https://www.theglobaltreasurer.com", "focus": "treasury, corporate finance, payments", "active": true },
+    { "name": "GTNews", "url": "https://www.gtnews.com", "focus": "treasury and finance news", "active": true },
+    { "name": "Global Finance", "url": "https://www.gfmag.com", "focus": "banking, cash management, transaction banking", "active": true },
+    { "name": "SWIFT News", "url": "https://www.swift.com/news", "focus": "ISO 20022, payments messaging, correspondent banking", "active": true },
+    { "name": "EBA / ECB", "url": "https://www.eba.europa.eu / https://www.ecb.europa.eu", "focus": "SEPA regulation, instant payments, VoP, PSD3", "active": true }
+  ],
+  "thought_leadership": [
+    { "name": "McKinsey Financial Services", "url": "https://www.mckinsey.com/industries/financial-services", "focus": "transaction banking, payments strategy, treasury transformation", "active": true },
+    { "name": "Oliver Wyman", "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services", "focus": "banking strategy, cash management, digital transformation", "active": true },
+    { "name": "Journey to Treasury / EACT", "url": "https://www.journeytotreasury.com / https://eact.eu", "focus": "CEE treasury, corporate treasury trends, bank connectivity", "active": true },
+    { "name": "BIS Publications", "url": "https://www.bis.org/publications", "focus": "payments innovation, CBDC, financial stability, stablecoins", "active": true }
+  ],
+  "competitors": [
+    { "name": "BNP Paribas", "url": "https://group.bnpparibas/en/all-news", "focus": "cash management, corporate banking, Connexis platform", "active": true },
+    { "name": "HSBC", "url": "https://www.hsbc.com/who-we-are/newsroom", "focus": "transaction banking, cash management, API banking, CEE", "active": true },
+    { "name": "UniCredit", "url": "https://www.unicredit.eu", "focus": "cash management, corporate banking, CEE expansion", "active": true },
+    { "name": "Erste Group", "url": "https://www.erstegroup.com/en/press", "focus": "cash management, corporate banking, CEE", "active": true },
+    { "name": "Intesa Sanpaolo", "url": "https://group.intesasanpaolo.com/en/newsroom", "focus": "cash management, corporate banking, CEE", "active": true },
+    { "name": "ING", "url": "https://www.ing.com/Newsroom.htm", "focus": "wholesale banking, payments, API banking", "active": true },
+    { "name": "Deutsche Bank", "url": "https://flow.db.com", "focus": "cash management, CB Connect API, transaction banking, embedded finance", "active": true }
+  ],
+  "scan_config": {
+    "items_per_section": 5,
+    "language": "English",
+    "context": "CMIplus is RBI's (Raiffeisen Bank International) corporate cash management platform for large international corporates in CEE. Key topics: EBICS, H2H, ISO 20022, SEPA, instant payments, VoP, eBAM, Open Banking APIs, corporate treasury. Product Owner: Philipp Höfer.",
+    "relevance_tags": {
+      "urgent": "Directly impacts CMIplus roadmap or compliance now — needs action",
+      "watch": "Relevant trend to monitor in next 1-3 months",
+      "fyi": "Background context and market awareness"
+    }
+  }
+}

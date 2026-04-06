@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMIplus Intelligence Cockpit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #13161b;
+    --surface2: #1a1e25;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --muted: #7a8090;
+    --accent: #f0c040;
+    --accent2: #c8a030;
+    --urgent: #e05050;
+    --urgent-bg: rgba(224,80,80,0.1);
+    --urgent-border: rgba(224,80,80,0.25);
+    --watch: #e08830;
+    --watch-bg: rgba(224,136,48,0.1);
+    --watch-border: rgba(224,136,48,0.25);
+    --fyi: #40a870;
+    --fyi-bg: rgba(64,168,112,0.1);
+    --fyi-border: rgba(64,168,112,0.25);
+    --rbi-red: #c8102e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .rbi-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--rbi-red);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: white;
+    letter-spacing: 0.02em;
+  }
+
+  .brand-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .week-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+  }
+
+  /* LAYOUT */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+  .count-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* EXEC SUMMARY */
+  .exec-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .exec-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .exec-text {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* FILTER ROW */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Geist', sans-serif;
+  }
+
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); }
+  .filter-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); font-weight: 500; }
+
+  /* NEWS CARDS */
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.15s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-urgent { color: var(--urgent); background: var(--urgent-bg); border-color: var(--urgent-border); }
+  .badge-watch  { color: var(--watch);  background: var(--watch-bg);  border-color: var(--watch-border);  }
+  .badge-fyi    { color: var(--fyi);    background: var(--fyi-bg);    border-color: var(--fyi-border);    }
+
+  .card-summary {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .sowhat-block {
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+
+  .sowhat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .sowhat-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .card-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+
+  .card-link:hover { opacity: 1; }
+
+  /* SOURCES TAB */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .source-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .source-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .source-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .source-item:last-child { border-bottom: none; }
+
+  .source-name {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .source-focus {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .source-lang {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .source-active {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fyi);
+    flex-shrink: 0;
+  }
+
+  .source-inactive { background: var(--muted); }
+
+  .sources-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .sources-footer code {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* LOADING / EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-state p { font-size: 15px; margin-bottom: 8px; color: var(--text); }
+  .empty-state span { font-size: 13px; }
+
+  /* OVERVIEW GRID */
+  .overview-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+
+  .meta-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .main { padding: 1rem; }
+    .header { padding: 0 1rem; }
+    .sources-grid { grid-template-columns: 1fr; }
+    .overview-meta { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .meta-num { font-size: 24px; }
+    .tab { padding: 10px 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <div class="rbi-mark">RBI</div>
+    <div>
+      <div class="brand-text">Intelligence Cockpit</div>
+      <div class="brand-sub">CMIplus · Cash Management</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="week-badge" id="weekBadge">Loading...</div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tabs">
+    <div class="tab active" data-tab="overview">Overview</div>
+    <div class="tab" data-tab="market">Market news <span class="count-pill" id="cnt-market">—</span></div>
+    <div class="tab" data-tab="thought">Thought leadership <span class="count-pill" id="cnt-thought">—</span></div>
+    <div class="tab" data-tab="competitors">Competitors <span class="count-pill" id="cnt-competitors">—</span></div>
+    <div class="tab" data-tab="sources">Sources</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section active" id="tab-overview">
+    <div id="overview-empty" class="empty-state">
+      <p>Loading briefing...</p>
+      <span>Fetching briefing.json</span>
+    </div>
+    <div id="overview-content" style="display:none">
+      <div class="overview-meta">
+        <div class="meta-card">
+          <div class="meta-num" id="meta-urgent">0</div>
+          <div class="meta-label">Urgent</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-num" id="meta-watch">0</div>
+          <div class="meta-label">Watch</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-num" id="meta-fyi">0</div>
+          <div class="meta-label">FYI</div>
+        </div>
+      </div>
+      <div class="exec-card">
+        <div class="exec-label">Executive Summary</div>
+        <div class="exec-text" id="exec-text"></div>
+      </div>
+      <div class="cards" id="overview-cards"></div>
+    </div>
+  </div>
+
+  <!-- MARKET NEWS -->
+  <div class="section" id="tab-market">
+    <div class="filter-row">
+      <button class="filter-btn active" data-section="market" data-level="all">All</button>
+      <button class="filter-btn" data-section="market" data-level="urgent">Urgent</button>
+      <button class="filter-btn" data-section="market" data-level="watch">Watch</button>
+      <button class="filter-btn" data-section="market" data-level="fyi">FYI</button>
+    </div>
+    <div class="cards" id="market-cards"></div>
+    <div id="market-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
+  </div>
+
+  <!-- THOUGHT LEADERSHIP -->
+  <div class="section" id="tab-thought">
+    <div class="filter-row">
+      <button class="filter-btn active" data-section="thought" data-level="all">All</button>
+      <button class="filter-btn" data-section="thought" data-level="urgent">Urgent</button>
+      <button class="filter-btn" data-section="thought" data-level="watch">Watch</button>
+      <button class="filter-btn" data-section="thought" data-level="fyi">FYI</button>
+    </div>
+    <div class="cards" id="thought-cards"></div>
+    <div id="thought-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
+  </div>
+
+  <!-- COMPETITORS -->
+  <div class="section" id="tab-competitors">
+    <div class="filter-row">
+      <button class="filter-btn active" data-section="competitors" data-level="all">All</button>
+      <button class="filter-btn" data-section="competitors" data-level="urgent">Urgent</button>
+      <button class="filter-btn" data-section="competitors" data-level="watch">Watch</button>
+      <button class="filter-btn" data-section="competitors" data-level="fyi">FYI</button>
+    </div>
+    <div class="cards" id="competitors-cards"></div>
+    <div id="competitors-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="section" id="tab-sources">
+    <div class="sources-grid" id="sources-grid"></div>
+    <div class="sources-footer">
+      To add or change sources, edit <code>sources.json</code> in the GitHub repository.<br>
+      Set <code>"active": false</code> to pause a source. Commit to trigger a re-scan.
+    </div>
+  </div>
+</main>
+
+<script>
+const state = {
+  briefing: null,
+  sources: null,
+  filters: { market: 'all', thought: 'all', competitors: 'all' }
+};
+
+// ── TABS ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const name = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  });
+});
+
+// ── FILTER BUTTONS ─────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.section;
+    const level = btn.dataset.level;
+    state.filters[section] = level;
+    btn.closest('.filter-row').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderSection(section);
+  });
+});
+
+// ── CARD HTML ──────────────────────────────────────────────────────────
+function cardHTML(item) {
+  const badgeClass = item.relevance === 'urgent' ? 'badge-urgent' : item.relevance === 'watch' ? 'badge-watch' : 'badge-fyi';
+  const badgeLabel = item.relevance === 'urgent' ? 'URGENT' : item.relevance === 'watch' ? 'WATCH' : 'FYI';
+  const linkHTML = item.url ? `<a href="${escapeAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
+  return `<div class="card">
+    <div class="card-header">
+      <div class="card-title">${escapeHTML(item.title)}</div>
+      <span class="badge ${badgeClass}">${badgeLabel}</span>
+    </div>
+    <div class="card-summary">${escapeHTML(item.summary)}</div>
+    <div class="sowhat-block">
+      <div class="sowhat-label">So what for CMIplus</div>
+      <div class="sowhat-text">${escapeHTML(item.sowhat)}</div>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">${escapeHTML(item.source)} · ${escapeHTML(item.date || '')}</span>
+      ${linkHTML}
+    </div>
+  </div>`;
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escapeAttr(str) {
+  if (!str) return '';
+  return str.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── RENDER SECTION ─────────────────────────────────────────────────────
+function renderSection(section) {
+  if (!state.briefing) return;
+  const items = (state.briefing[section] || []).filter(item =>
+    state.filters[section] === 'all' || item.relevance === state.filters[section]
+  );
+  const container = document.getElementById(section + '-cards');
+  container.innerHTML = items.map(cardHTML).join('');
+}
+
+// ── RENDER OVERVIEW ────────────────────────────────────────────────────
+function renderOverview() {
+  const b = state.briefing;
+  const all = [...(b.market||[]), ...(b.thought||[]), ...(b.competitors||[])];
+  document.getElementById('meta-urgent').textContent = all.filter(i => i.relevance === 'urgent').length;
+  document.getElementById('meta-watch').textContent  = all.filter(i => i.relevance === 'watch').length;
+  document.getElementById('meta-fyi').textContent    = all.filter(i => i.relevance === 'fyi').length;
+  document.getElementById('exec-text').textContent = b.executive_summary || '';
+  const top = all.filter(i => i.relevance === 'urgent' || i.relevance === 'watch').slice(0, 6);
+  document.getElementById('overview-cards').innerHTML = top.map(cardHTML).join('');
+  document.getElementById('overview-empty').style.display = 'none';
+  document.getElementById('overview-content').style.display = 'block';
+}
+
+// ── RENDER SOURCES ─────────────────────────────────────────────────────
+function renderSources(sources) {
+  const groups = [
+    { key: 'market_news', label: 'Market news', lang: s => s.name === 'Der Treasurer' ? 'DE' : 'EN' },
+    { key: 'thought_leadership', label: 'Thought leadership', lang: () => 'EN' },
+    { key: 'competitors', label: 'Competitors', lang: () => 'EN' }
+  ];
+  const grid = document.getElementById('sources-grid');
+  grid.innerHTML = groups.map(g => `
+    <div class="source-group">
+      <div class="source-group-title">${g.label}</div>
+      ${(sources[g.key]||[]).map(s => `
+        <div class="source-item">
+          <div>
+            <div class="source-name">${escapeHTML(s.name)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="source-lang">${g.lang(s)}</span>
+            <span class="source-active ${s.active ? '' : 'source-inactive'}"></span>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ── UPDATE COUNTS ──────────────────────────────────────────────────────
+function updateCounts() {
+  const b = state.briefing;
+  document.getElementById('cnt-market').textContent = (b.market||[]).length;
+  document.getElementById('cnt-thought').textContent = (b.thought||[]).length;
+  document.getElementById('cnt-competitors').textContent = (b.competitors||[]).length;
+  document.getElementById('weekBadge').textContent = b.week_label || '—';
+}
+
+// ── LOAD DATA ──────────────────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const [briefingRes, sourcesRes] = await Promise.all([
+      fetch('briefing.json?v=' + Date.now()),
+      fetch('sources.json?v=' + Date.now())
+    ]);
+
+    if (briefingRes.ok) {
+      state.briefing = await briefingRes.json();
+      updateCounts();
+      renderOverview();
+      renderSection('market');
+      renderSection('thought');
+      renderSection('competitors');
+    } else {
+      document.getElementById('overview-empty').querySelector('p').textContent = 'No briefing yet';
+      document.getElementById('overview-empty').querySelector('span').textContent =
+        'Run the GitHub Action manually to generate the first briefing.';
+    }
+
+    if (sourcesRes.ok) {
+      state.sources = await sourcesRes.json();
+      renderSources(state.sources);
+    }
+  } catch (err) {
+    console.error('Load error:', err);
+    document.getElementById('overview-empty').querySelector('p').textContent = 'Could not load briefing';
+    document.getElementById('overview-empty').querySelector('span').textContent = err.message;
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
