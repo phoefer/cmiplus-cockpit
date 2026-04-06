@@ -1,38 +1,146 @@
 {
-  "generated_at": "2026-04-06T07:00:00Z",
-  "week_label": "Week of 6 Apr – 12 Apr 2026",
-  "executive_summary": "This is a placeholder briefing generated on first deploy. The first real scan will run automatically next Monday at 07:00 CET via GitHub Actions. You can also trigger a manual scan immediately from the Actions tab in your GitHub repository.",
+  "generated_at": "2026-04-06T18:21:13.711698+00:00",
+  "week_label": "Week of 6 Apr - 12 Apr 2026",
+  "executive_summary": "This week's strategic intelligence highlights a continued push towards real-time, API-driven cash management and payments, with significant developments in ISO 20022 adoption and blockchain-based cross-border solutions. Regulatory changes, particularly PSD3 and Verification of Payee, are increasing fraud prevention obligations for PSPs, while open banking frameworks are evolving to support broader innovation. Competitors are focusing on enhancing digital platforms and leveraging programmable payments for improved corporate treasury services, especially in CEE.",
   "market": [
     {
-      "title": "First real briefing arrives Monday",
-      "summary": "GitHub Actions will run the weekly scan every Monday at 07:00 CET. The script calls Claude with web search enabled and writes the results back to this file automatically.",
-      "sowhat": "No action needed — set up is complete. Trigger a manual run from GitHub Actions to get your first real briefing immediately.",
+      "title": "SWIFT Advances Blockchain Ledger to MVP for 24/7 Cross-Border Payments",
+      "summary": "SWIFT has moved its blockchain-based shared ledger from pilot to Minimum Viable Product (MVP) stage, aiming for live transactions by the end of 2026. This initiative seeks to enable 24/7 cross-border payments, reducing reconciliation work and liquidity uncertainty by functioning as a common digital orchestration layer on top of existing bank infrastructure. The ledger is closely linked to ISO 20022 communications and is EVM-compatible, providing control and auditability for central banks.",
+      "sowhat": "CMIplus should monitor the progress of SWIFT's blockchain ledger MVP, especially its integration with ISO 20022. This could represent a future standard for real-time cross-border payments, potentially impacting existing H2H and correspondent banking offerings. Understanding the implications for CEE payment corridors will be crucial.",
+      "relevance": "urgent",
+      "source": "CCN.com / Swift",
+      "date": "April 02, 2026 / March 30, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH-mRqWbhGBgQ-CKdMw9G_084TOw880kv1Dx6Ppze6Wl6U3nQk5taL9UP8wO091meMusjpWdWQyqwwqYuGyTalfxs-SOnob8EvTWwYrIKARIeCfyX4PE0QNqW2t2vS2d9sliL3LQBGGI0-AJ66IBaXualtan-ZoSoj6cbz-pVBY5A52mTtuyuQB2KUeXqlQVZhfrg== / https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEO_rgSxG6140trYOFh_UmBhmBMm52VF5csoWg5Z-7Sd0QtfFj8xc6FY37sfuCtL3SekhvtxH8U4aVWQ1uCKvCEPl9rzUWfoMaPQtI5gTkZlW4uFC2BUmfGOkaUiRZb34zQrzZsLx-4ZY-TEBsMBruitsdAWMsecHROfwFEj5VKK3fi_k6QyC8zL_4Qu1mlxuGJ_AAmwL6AyFwmQulKSvy85bLjj2M=="
+    },
+    {
+      "title": "ISO 20022 Migration Continues with Focus on Structured Addresses and E&I Transformation",
+      "summary": "The migration to CBPR+ ISO 20022 for payment instructions is largely complete, but the journey continues with upcoming requirements. From November 2026, town and country information must be provided in designated fields for all agents and parties in CBPR+ messages, with only fully structured or hybrid postal addresses accepted. Additionally, the mandate to exchange all payment cancellation messages via the Stop and Recall Process (SRP) has been postponed to November 2027, with an interim requirement in November 2026 to receive camt.110 investigation requests.",
+      "sowhat": "CMIplus needs to ensure its platform and corporate clients are fully prepared for the stricter address structuring requirements by November 2026 to avoid payment rejections or delays. The postponement of the full E&I transformation provides a slight reprieve but emphasizes the ongoing need to prepare for ISO 20022-native exception and investigation processes.",
+      "relevance": "urgent",
+      "source": "Swift",
+      "date": "April 01, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEeMTDRntMWYXAPdLykZLr1ADvKnNUa_c7bm2rgJJoyj7R3olOp54pGDhW4sH57sdpK48Q5CHs0dAXA_CjoMLEEwod31hWjQ7bQQBfcwTNDeco992W_GgQ45hPTgxLQ_UbL1-oLNtBvWv3QUrPKX-2YPVOu2kMrre-l4PfHNtIcw8gqInnq9w=="
+    },
+    {
+      "title": "PSD3 and PSR to Mandate Verification of Payee and Increase PSP Fraud Liability",
+      "summary": "The proposed Payment Services Directive 3 (PSD3) and accompanying Payment Services Regulation (PSR) will significantly expand fraud refund liability for Payment Service Providers (PSPs) and mandate proactive anti-fraud measures. Verification of Payee (VoP), requiring PSPs to verify a payee's name matches the account identifier, is becoming mandatory by October 2025 for euro-area Member States. This aims to combat Authorized Push Payment (APP) scams, with instant payments heightening the challenge for real-time fraud detection.",
+      "sowhat": "CMIplus must prioritize the implementation of robust Verification of Payee (VoP) capabilities and enhance real-time fraud detection systems to meet the upcoming PSD3 and Instant Payments Regulation requirements. This directly impacts CMIplus's compliance and risk management for instant payments in CEE, requiring potential adjustments to product features and operational workflows.",
+      "relevance": "urgent",
+      "source": "Flagright / EBA CLEARING",
+      "date": "March 28, 2026 / March 31, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEi38_ZPZShdRiq3WXDbf456o1E7NTK6FwMqL074fnYgjJpZmEBNMLF96--1BcUsGpa8SiPMviIkZsrgMkDM64Y0P1D1PA5r93UzORbKycq5t0_mw8AFZxhGBj6cE9MYvyYgl0ACRpZbxuKPQT4dGNkUxbDNNYAr65c1ZjphabEKn7QeXX1FgRtkSuAN-KxWNW0aMd0TEjFUu5oyhY== / https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEjSDXas5Gza-JqnAYqUCkqqx0znC49C3s5eN9sRzlN3qblJfp_0XLwR_cMNw5HmjVLF2NNKxec3xOxxUqosEJYrPE2tWj2QgOuUe2_9_PkZGlcztgxtVKz5kKHwfmT5iv-qPZCw2rrXK8XiJl3mgQOBzB1rkHeJJ05x3pinffsCO_H244qLYnnExBi6ak=="
+    },
+    {
+      "title": "Open Banking and Embedded Finance Driving Payment Innovation",
+      "summary": "Open banking continues to evolve, enabling consumers to share banking data with third-party providers through standardized APIs, facilitating services like account aggregation and payment initiation. Embedded finance further integrates financial products into non-financial platforms, creating new payment experiences and streamlining checkouts. This API-driven approach is seen as crucial for innovation, faster settlement times, improved cash flow, and enhanced security in payment processing.",
+      "sowhat": "CMIplus should continue to invest in and expand its Open Banking API offerings to support embedded finance use cases for corporate clients. This trend directly aligns with CMIplus's focus on API banking and can unlock new revenue streams and enhanced client experiences, particularly for large international corporates in CEE seeking streamlined financial operations.",
+      "relevance": "watch",
+      "source": "Luqra",
+      "date": "March 26, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkyilkXPhIS3q8XysStbCkbY3VUycRel6gzhzncOPyPgKdUDCala8cn1_2ZH5XZaLf34rEqwIvM0gGiX-NhkosSCstcGL1l64-BU9egPuKewaqyP5vWUu2XlfbIMsfrfKZf_Kpg3Md3EeYR_9z03zbo0vSRZPrOr3zVatu_ACl"
+    },
+    {
+      "title": "SWIFT Launches New Retail Payments Framework with 50+ Banks by Mid-2026",
+      "summary": "SWIFT has announced a significant overhaul of its retail payments infrastructure with a new framework called 'Global Payments for Consumer Payments'. This initiative brings together over 50 banks across more than 25 corridors, with the first wave going live by mid-2026. The framework promises near-instant settlement, predictable fees, and full transparency for consumer transactions, covering five of the world's ten largest remittance markets.",
+      "sowhat": "While focused on retail, this SWIFT initiative signals a broader trend towards faster, more transparent, and cost-effective payments. CMIplus should analyze how the underlying technologies and standards of this new framework might eventually influence corporate payment expectations and infrastructure, especially for instant payments and cross-border transactions in CEE.",
       "relevance": "fyi",
-      "source": "CMIplus Cockpit",
-      "date": "6 Apr 2026",
-      "url": ""
+      "source": "Glenbrook Partners, LLC",
+      "date": "April 03, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHpm-DInd2GNlp-3h58oqJ2vrZWWhUTL97pUoS8BCXh8ZAI9-e2OnVf5Iwq_Ls2bxsj9qltjkILDEKpnXY2vGKt74EAzCFEHnbauL-Uoeb_oDCDRwg-ie2T86aJ4E2d17vLKPSk1jZnE5X3bIyrjgDxXA=="
     }
   ],
   "thought": [
     {
-      "title": "Add or change sources in sources.json",
-      "summary": "Open sources.json in your GitHub repository to add new sources, change focus topics, or deactivate sources temporarily. Set active to false to pause any source without deleting it.",
-      "sowhat": "No code changes needed — edit the JSON file directly on GitHub and commit. The next scan will pick up your changes automatically.",
+      "title": "Core Treasury Systems Evolving with AI, Cloud, and ISO 20022 for Real-Time Operations",
+      "summary": "Core Treasury Systems are becoming the digital backbone of modern treasury operations, moving beyond basic tracking to centralize cash, liquidity, payments, and bank connectivity. In 2026, these systems are leveraging cloud architecture for flexibility, AI for smarter cash forecasting and fraud detection, and ISO 20022 for structured data and deeper automation. The focus is on real-time visibility and reducing manual work.",
+      "sowhat": "CMIplus should emphasize the integration capabilities of its platform with modern core treasury systems, highlighting how CMIplus's real-time data, API connectivity, and ISO 20022 support can enhance corporate clients' treasury transformation efforts. Exploring AI-driven features for cash forecasting and fraud detection within CMIplus's roadmap would be a strategic move.",
+      "relevance": "urgent",
+      "source": "Core Treasury System in 2026: The Digital Backbone of Smarter Treasury Operations",
+      "date": "March 27, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHVthf_c_RuMBx7-NQM1joDiHOCRCnG1Qqit9sGjfTnJS8P3-Ha9kB5bC-U5xYNWiuYR_s1dhSpmbJbQguzxNAbwQv_WjIEQOETaNHNJyD5k-CiQ7JNVxSVIrWvI4IRaHB0wst3vXLpK54="
+    },
+    {
+      "title": "Centralization Redefining Payments and Treasury in CEE",
+      "summary": "Across Central and Eastern Europe, corporates are increasingly adopting centralized, integrated, and real-time models for payments and treasury management. This shift is driven by the need for transparency, control, and scalability in complex regional landscapes, moving away from fragmented setups. Unified payment and treasury services are becoming essential to support growth across diverse markets, currencies, and regulatory environments.",
+      "sowhat": "CMIplus's value proposition for large international corporates in CEE is strongly validated by this trend. Philipp Hoefer should continue to position CMIplus as the ideal platform for achieving centralized cash management, leveraging its capabilities for real-time processing, multi-currency support, and regulatory compliance across the CEE region.",
+      "relevance": "urgent",
+      "source": "Raiffeisen Bank International AG",
+      "date": "March 31, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFy1hfCspCxoIG50F5FaYEDsboOgp0cWDZPajT5CkHQLdYBL1JpPeJh6lvqhhu_r-Cy_7FJi6MpuyR2zql7TIqVjbL4C1b-aDc7UoOd80esyKqtyiyEdM_COG8YyuAJ7p-ktLrkCjOxlKw3Cu1-a7uIoRDfoUV9cvpPW9DQcPQaow=="
+    },
+    {
+      "title": "The Growth of API-Driven Banking Platforms and Embedded Finance",
+      "summary": "API-driven banking is rapidly becoming the standard, replacing monolithic software with modular services. A 2024 McKinsey analysis found API-driven banks deploy new features 4.7 times faster. Oliver Wyman projects embedded finance, enabled by banking APIs, to reach $7 trillion in transaction volume by 2030, highlighting the significant growth opportunity and new revenue streams for banks through API access fees.",
+      "sowhat": "CMIplus should continue to prioritize and expand its API banking capabilities, focusing on developer-friendly APIs that enable seamless integration for corporate clients and potential fintech partners. This aligns with the broader industry shift towards open banking and embedded finance, allowing CMIplus to offer more innovative and integrated cash management solutions.",
+      "relevance": "watch",
+      "source": "MEXC Bülteni",
+      "date": "March 27, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQER06rqfMEC9-8DvrKJtIwqrI5Hq2e6qzCYxRKPhudS3YToUKSbKEkHIdM-dlB0vF49hRtYo3YyWSFpXuZ90BM6OHGCWaMX0AnEHSNdJwLQgXgl_Pm-j4sCz1gUawUMS6oF"
+    },
+    {
+      "title": "Agentic AI to Drive Treasury Transformation and Deliver on CEO Agenda",
+      "summary": "Bank CEOs are increasingly expecting treasury leaders to leverage agentic AI to drive profitable growth, modernize client experiences, manage risk proactively, and operationalize AI for measurable outcomes. Agentic AI can transform legacy treasury products into strategic growth engines by improving operational efficiency, reducing cost-to-serve, and enabling predictive planning.",
+      "sowhat": "CMIplus should explore how agentic AI can be integrated into its platform to offer advanced features like predictive cash flow forecasting, enhanced fraud detection, and automated treasury workflows. This would position CMIplus as a strategic partner for corporate treasuries looking to meet their CEOs' demands for intelligent and efficient financial operations.",
+      "relevance": "watch",
+      "source": "Itemize",
+      "date": "April 01, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE_RPBxJp3leqPCyEu_oKhmJP11BrVb44rEtO-XUPN5OAUmr6BvTHbVopB8xTtvU2hNWwqTakiI43UwtSed-u-U2rFU5sQCs2uhjzPEM8tYOH-kHSOgwNUlMJy0F73S1KrncSDeBGlmzTdwVkukAUFyzESPGKPDI5PqiG9LR55ElzJNANcqgc5_PBvkRFM1GfOgiGeX8JqLa15H8xb7gXjTYviTtDDatEUHf_fNYT5N"
+    },
+    {
+      "title": "Stablecoin Flows and Spillovers to FX Markets Highlight Financial Stability Concerns",
+      "summary": "A new working paper from the Bank for International Settlements (BIS) and the International Monetary Fund (IMF) provides evidence that stablecoin activity is impacting traditional foreign exchange (FX) markets. The research indicates that stablecoin flows can lead to depreciating local currencies and increased dollar funding costs for banks and corporates, with spillover risks potentially increasing as the stablecoin market develops.",
+      "sowhat": "While not directly impacting CMIplus's core offerings, the growing influence of stablecoins on FX markets and financial stability is an important trend to monitor. Philipp Hoefer should be aware of these developments as they could indirectly affect corporate treasury strategies, cross-border payment dynamics, and regulatory landscapes in the long term, particularly in CEE.",
       "relevance": "fyi",
-      "source": "CMIplus Cockpit",
-      "date": "6 Apr 2026",
-      "url": ""
+      "source": "Bank for International Settlements / Glenbrook Partners, LLC",
+      "date": "March 25, 2026 / April 03, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHeDtSnMFyoxEv_meDhSsuKoUYx-XuvSwPGch4Dd8lDcmTbEsO_-hGA9I86_Anpqz6lfE4AhDh4ltApGfZ89mJ4bdyFJBiPxFg29B2bgjUJZjwB9EMGio_0AJPizIqp-48== / https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHpm-DInd2GNlp-3h58oqJ2vrZWWhUTL97pUoS8BCXh8ZAI9-e2OnVf5Iwq_Ls2bxsj9qltjkILDEKpnXY2vGKt74EAzCFEHnbauL-Uoeb_oDCDRwg-ie2T86aJ4E2d17vLKPSk1jZnE5X3bIyrjgXA=="
     }
   ],
   "competitors": [
     {
-      "title": "Trigger your first real scan now",
-      "summary": "Go to your GitHub repository, click Actions, select Weekly Intelligence Scan, and click Run workflow. The scan takes 2-3 minutes and updates this page automatically.",
-      "sowhat": "You will have your first real CMIplus intelligence briefing within minutes of triggering the manual run.",
+      "title": "J.P. Morgan's Kinexys Digital Payments Enables Intragroup Cash Management for Mitsubishi Corporation",
+      "summary": "Mitsubishi Corporation has adopted J.P. Morgan's Kinexys Digital Payments for intragroup USD cash management across its global financial centers. This solution leverages Blockchain Deposit Accounts and Programmable Payments to enable near real-time, automated fund transfers, unconstrained by traditional banking cut-off times. This marks a significant step in global treasury modernization for Japanese corporates, enhancing operational efficiency and resilience.",
+      "sowhat": "This highlights a competitor's move into advanced, blockchain-enabled programmable payments for corporate intragroup cash management. CMIplus should analyze J.P. Morgan's Kinexys offering to identify potential competitive gaps or opportunities, especially in providing similar real-time, automated liquidity management solutions for large international corporates in CEE.",
       "relevance": "watch",
-      "source": "CMIplus Cockpit",
-      "date": "6 Apr 2026",
-      "url": ""
+      "source": "J.P. Morgan",
+      "date": "March 31, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHAWCZlp6nFMmkvVH0zdvGV_wOLfgSuRPeg6PpiS0bv3Vhe90mZSjgNJc80Mk-XGEbcRCwxdt02aLL1nEYM0jzbK3HwPljH5k2eEgRygeJYGS89Y08wU3wC7W-PtWyb8CVbbDAYyS2ElbCOgO8z08icJm60G6neYvqlPx9dXilWyaUEXox7zgqS"
+    },
+    {
+      "title": "BNP Paribas Enhances Securities Services with Global and Local Expertise",
+      "summary": "BNP Paribas continues to position itself as a leading global custodian and securities services provider, offering multi-asset post-trade and asset servicing solutions. The bank emphasizes its globally-connected platform customized for local requirements, high automation with over 99.9% straight-through processing (STP) rates, and extensive experience in client onboarding and migration.",
+      "sowhat": "While focused on securities services, BNP Paribas's emphasis on globally-connected, highly automated platforms with local customization is a key competitive differentiator. CMIplus should ensure its cash management platform offers similar levels of STP, global reach, and local market expertise to remain competitive for international corporates, particularly in the CEE region.",
+      "relevance": "fyi",
+      "source": "BNP Paribas",
+      "date": "April 02, 2026 / March 25, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEVtsVZBKuQXgTQ76lpka2KNwwec26iie4AcFiV9tlHVWFh3bzBAcpnrSqOiBC4HCfxys7H7y87ObLGQXfrpoRjNpUt0pTlhTZsPsrzGtwXApMX_1iGnBxbVFd8tTI2-PGjhe2cY7n2jMhwo_wnSgqdbJ93ItDNWNMszNTdiJ-n / https://vertexaisearch.google.com/grounding-api-redirect/AUZIYQGl7RDb_xEIRwxqYDQDxmniVTl-GdUJEr0W3RIyRoXU2ZMV6SXDpLpQtg7fPkzXJ6D_zfWwKWE7H36QcAAQfowC0OoGl1SHXPU5Z6Gi-hSXavL1NteHr7i-PpFObj4vC0i9uPsfbb6UVnWK"
+    },
+    {
+      "title": "UniCredit Focuses on Pan-European Commercial Banking with CEE Presence",
+      "summary": "UniCredit continues to operate as a pan-European commercial bank with a unique service offering in Italy, Germany, Austria, and Central and Eastern Europe. Recent press releases highlight their financial results and shareholder meetings, underscoring their commitment to empowering communities and unlocking client potential across Europe.",
+      "sowhat": "UniCredit's strong focus on CEE as a core market means they are a direct competitor for CMIplus. Philipp Hoefer should monitor UniCredit's cash management and corporate banking innovations in the CEE region to understand their competitive strategies and identify areas where CMIplus can differentiate its offerings.",
+      "relevance": "fyi",
+      "source": "UniCredit",
+      "date": "April 02, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG27qvovdNK9C8G8JZAzmted1aDAZEv4ObNUE192w75TCRH212kA5Y-ETvMPEbjAtvtktXji6XPTiyFFAYTfxzsr8Hqrg-Z4Dq1-HK9NT0QHk2-Ac3yxN0WezxHNULWrXI="
+    },
+    {
+      "title": "Raiffeisen Bank International (RBI) Strengthens Position in Romanian Banking Market",
+      "summary": "Schoenherr advised Raiffeisen Bank International AG and Raiffeisen Bank SA on the acquisition of 100% of the shares in Garanti BBVA Group Romania. This transaction is expected to strengthen Raiffeisen's position in the Romanian banking market, making Raiffeisen Bank SA the third-largest bank in Romania by total assets based on H1/2025 market shares.",
+      "sowhat": "This internal RBI news is highly relevant as it demonstrates strategic expansion within the CEE region, directly impacting RBI's overall market presence and potentially CMIplus's reach. A stronger RBI in Romania could lead to increased opportunities for CMIplus to serve a larger corporate client base in that market.",
+      "relevance": "urgent",
+      "source": "Schoenherr Attorneys at Law",
+      "date": "April 01, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEpFzvsMQulrhLWdUAQkQaem9BOVe0SoZlBpFGylciXdfXNK4LiwMEBKMRT9Q4Fro8Cayx05yfVs-22BZWDYZGpyFfq8rzjBCUTQSVix3P3lralY3dfrml2QpibH0RQcZ0K58Lh2hKcUg=="
+    },
+    {
+      "title": "SDK.finance Included in 2026 Global Core Banking Software Market Research, Highlighting CEE Experience",
+      "summary": "SDK.finance, a cloud-based core banking SaaS solution provider, is included in the 2026 global core banking software market research. The company highlights its experience in CEE and CIS markets, offering features for local clients. The broader market trend indicates a shift towards cloud-native, modular, and API-first core banking solutions.",
+      "sowhat": "This indicates that specialized core banking software providers with CEE experience are gaining traction. CMIplus should be aware of these agile players and consider potential partnerships or competitive responses to ensure its platform remains at the forefront of innovation, especially concerning API-first and cloud-native capabilities for CEE corporates.",
+      "relevance": "fyi",
+      "source": "SDK.finance",
+      "date": "April 02, 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKliBz2SqzJdYBpoijGimjcsrxNKM5Q5m_BwKULiCrqzz0uZgJSsanR308vzZx3HzXAE7jmZJxo9cFDVWM0XtnpWqulA5M8o_j_d_tchGkbCYZPNmBlVB26mVKQ9VXh3AaWGRlunqWQX6U18cbuBW3au2F"
     }
   ]
 }
