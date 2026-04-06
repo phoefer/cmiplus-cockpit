@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v3
-Robust JSON parsing with multiple fallback strategies.
+CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v4
+Fixed: robust parsing of long responses with markdown fences.
 """
 
 import json
@@ -58,34 +58,24 @@ def build_market_prompt(sources):
     p2 = [s for s in sources["market_news"] if s["active"] and s["priority"] == 2]
     n1 = cfg.get("items_priority_1", 3)
     n2 = cfg.get("items_priority_2", 1)
-    total = len(p1) * n1 + len(p2) * n2
+    total = min(len(p1) * n1 + len(p2) * n2, 10)  # cap at 10
     p1_str = ", ".join([s["name"] for s in p1])
     p2_str = ", ".join([s["name"] for s in p2]) if p2 else "none"
 
-    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
+    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
 Context: {context}
 
-Search for MARKET NEWS from the last 7 days ({week}).
+Search for MARKET NEWS from last 7 days ({week}).
 Priority sources ({n1} items each): {p1_str}
 Secondary sources ({n2} item each): {p2_str}
-Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking, PSD3, open banking
+Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking, PSD3
 
-Available tags: {tags}
+Tags available: {tags}
 
-Respond with a JSON array of exactly {total} objects. Each object must have these exact fields:
-- title: string
-- summary: string (2-3 sentences)
-- sowhat: string (1-2 sentences about CMIplus implications)
-- relevance: one of "urgent", "watch", "fyi"
-- tags: array of 1-3 strings from the available tags list
-- source: string
-- date: string
-- url: string
+Return a JSON array of {total} objects. Each object has EXACTLY these fields:
+title, summary (2-3 sentences), sowhat (1-2 sentences CMIplus implication), relevance (urgent/watch/fyi), tags (array of 1-3 from available tags), source, date, url
 
-Example of one item:
-{{"title": "EBA publishes VoP reporting guidelines", "summary": "The EBA released...", "sowhat": "CMIplus needs to...", "relevance": "urgent", "tags": ["VoP", "Compliance"], "source": "EBA", "date": "Apr 2026", "url": "https://eba.europa.eu/..."}}
-
-Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
+IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
 
 
 def build_thought_prompt(sources):
@@ -94,31 +84,20 @@ def build_thought_prompt(sources):
     tags = ", ".join(sources["tags"])
     active = [s for s in sources["thought_leadership"] if s["active"]]
     names = ", ".join([s["name"] for s in active])
-    n = len(active) * 2
+    n = min(len(active) * 2, 10)  # cap at 10
 
-    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
+    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
 Context: {context}
 
-Search for strategic THOUGHT LEADERSHIP content from the last 12 months from: {names}
-Look for: reports, whitepapers, research papers, annual outlooks, industry surveys, deep analyses.
-Topics: cash management strategy, treasury transformation, open banking, API banking, payments innovation, CEE banking
+Search for THOUGHT LEADERSHIP reports/whitepapers/surveys from last 12 months from: {names}
+Topics: cash management strategy, treasury transformation, open banking, payments, CEE banking
 
-Available tags: {tags}
+Tags available: {tags}
 
-Respond with a JSON array of exactly {n} objects. Each object must have these exact fields:
-- title: string
-- key_insight: string (2-3 sentences: the most important strategic insight)
-- implications: string (2-3 sentences: what this means for CMIplus strategy or roadmap)
-- relevance: one of "urgent", "watch", "fyi"
-- tags: array of 1-3 strings from the available tags list
-- source: string
-- published: string (Month Year)
-- url: string
+Return a JSON array of {n} objects. Each object has EXACTLY these fields:
+title, key_insight (2-3 sentences), implications (2-3 sentences CMIplus strategy implication), relevance (urgent/watch/fyi), tags (array of 1-3), source, published (Month Year), url
 
-Example of one item:
-{{"title": "McKinsey: Transaction Banking in 2026", "key_insight": "Banks that invest in API-first...", "implications": "CMIplus should prioritize...", "relevance": "watch", "tags": ["OpenBanking", "AI"], "source": "McKinsey", "published": "Mar 2026", "url": "https://mckinsey.com/..."}}
-
-Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
+IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
 
 
 def build_competitor_prompt(sources):
@@ -127,31 +106,20 @@ def build_competitor_prompt(sources):
     tags = ", ".join(sources["tags"])
     active = [s for s in sources["competitors"] if s["active"]]
     names = ", ".join([s["name"] for s in active])
-    n = len(active) * 2
+    n = min(len(active) * 2, 14)  # cap at 14
 
-    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
+    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
 Context: {context}
 
-Search for recent news (last 4 weeks) from these competitors in cash management: {names}
-Focus: cash management launches, API banking, corporate banking innovations, CEE expansion, VoP, instant payments.
+Search for recent news (last 4 weeks) from these competitors: {names}
+Focus: cash management, API banking, corporate banking innovations, CEE expansion, VoP, instant payments.
 
-Available tags: {tags}
+Tags available: {tags}
 
-Respond with a JSON array of exactly {n} objects covering as many different competitors as possible. Each object must have these exact fields:
-- title: string
-- competitor: string (exact bank name from the list above)
-- summary: string (2-3 sentences)
-- sowhat: string (1-2 sentences: threat, opportunity or benchmark for CMIplus)
-- relevance: one of "urgent", "watch", "fyi"
-- tags: array of 1-3 strings from the available tags list
-- source: string
-- date: string
-- url: string
+Return a JSON array of {n} objects covering as many different competitors as possible. Each object has EXACTLY these fields:
+title, competitor (exact bank name), summary (2-3 sentences), sowhat (1-2 sentences threat/opportunity for CMIplus), relevance (urgent/watch/fyi), tags (array of 1-3), source, date, url
 
-Example of one item:
-{{"title": "Deutsche Bank launches CB Connect 2.0", "competitor": "Deutsche Bank", "summary": "Deutsche Bank expanded...", "sowhat": "This directly challenges CMIplus's...", "relevance": "urgent", "tags": ["OpenBanking", "CEE"], "source": "Deutsche Bank", "date": "Apr 2026", "url": "https://..."}}
-
-Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
+IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
 
 
 def call_gemini(prompt):
@@ -176,43 +144,64 @@ def extract_text(response):
         raise ValueError(f"Bad response: {e}")
 
 
-def parse_json_robust(text):
-    """Try multiple strategies to extract valid JSON from model output."""
+def parse_json_array(text):
+    """Extract JSON array from text, handling markdown fences and extra content."""
     text = text.strip()
 
-    # Strategy 1: direct parse
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
-
-    # Strategy 2: strip markdown fences
+    # Remove markdown fences first
     if "```" in text:
-        match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
-        if match:
-            try:
-                return json.loads(match.group(1))
-            except json.JSONDecodeError:
-                pass
+        # Extract content between first ``` and last ```
+        text = re.sub(r'^```(?:json)?\s*', '', text)
+        text = re.sub(r'\s*```\s*$', '', text)
+        text = text.strip()
 
-    # Strategy 3: find JSON array
-    match = re.search(r'\[[\s\S]*\]', text)
-    if match:
+    # Now try to find the JSON array
+    # Find the first [ and the matching last ]
+    start = text.find('[')
+    if start == -1:
+        raise ValueError(f"No JSON array found in response. First 200 chars: {text[:200]}")
+
+    # Find matching closing bracket by counting nesting
+    depth = 0
+    end = -1
+    in_string = False
+    escape_next = False
+    for i in range(start, len(text)):
+        c = text[i]
+        if escape_next:
+            escape_next = False
+            continue
+        if c == '\\' and in_string:
+            escape_next = True
+            continue
+        if c == '"' and not escape_next:
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if c == '[':
+            depth += 1
+        elif c == ']':
+            depth -= 1
+            if depth == 0:
+                end = i
+                break
+
+    if end == -1:
+        raise ValueError(f"Could not find closing bracket. Text length: {len(text)}")
+
+    json_str = text[start:end+1]
+
+    try:
+        return json.loads(json_str)
+    except json.JSONDecodeError as e:
+        # Try to fix common issues: trailing commas, control characters
+        json_str_clean = re.sub(r',\s*([}\]])', r'\1', json_str)  # remove trailing commas
+        json_str_clean = re.sub(r'[\x00-\x1f\x7f]', ' ', json_str_clean)  # remove control chars
         try:
-            return json.loads(match.group(0))
+            return json.loads(json_str_clean)
         except json.JSONDecodeError:
-            pass
-
-    # Strategy 4: find JSON object with items array
-    match = re.search(r'\{[\s\S]*"items"[\s\S]*\}', text)
-    if match:
-        try:
-            obj = json.loads(match.group(0))
-            return obj.get("items", obj)
-        except json.JSONDecodeError:
-            pass
-
-    raise ValueError(f"Could not parse JSON from response (length {len(text)}): {text[:300]}")
+            raise ValueError(f"JSON parse failed: {e}. First 300 chars of extracted: {json_str[:300]}")
 
 
 def safe_call(prompt, label):
@@ -220,19 +209,14 @@ def safe_call(prompt, label):
     try:
         response = call_gemini(prompt)
         text = extract_text(response)
-        result = parse_json_robust(text)
-        # Result should be a list directly
-        if isinstance(result, list):
-            items = result
-        elif isinstance(result, dict):
-            items = result.get("items", [])
-        else:
+        print(f"  Response length: {len(text)} chars")
+        items = parse_json_array(text)
+        if not isinstance(items, list):
             items = []
         print(f"  OK {label}: {len(items)} items")
         return items
     except urllib.error.HTTPError as e:
-        body = e.read().decode()[:400]
-        print(f"  FAIL {label} API {e.code}: {body}", file=sys.stderr)
+        print(f"  FAIL {label} API {e.code}: {e.read().decode()[:300]}", file=sys.stderr)
         return []
     except Exception as e:
         print(f"  FAIL {label}: {e}", file=sys.stderr)
@@ -251,8 +235,8 @@ Market news: {m}
 Thought leadership: {t}
 Competitor moves: {c}
 
-The summary must name 2-3 key themes, state the most urgent action for CMIplus, and highlight the most relevant competitor move.
-Return ONLY plain text. No JSON. No markdown. No bullet points."""
+Name 2-3 key themes, state most urgent action for CMIplus, highlight most relevant competitor move.
+Return ONLY plain text. No JSON. No markdown. No bullets."""
 
     try:
         response = call_gemini(prompt)
