@@ -106,7 +106,7 @@
   .tag-chip { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 3px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; }
   .card-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .card-link { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.8; transition: opacity 0.15s; }
+  .card-link { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.8; transition: opacity 0.15s; background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; }
   .card-link:hover { opacity: 1; }
 
   /* COMPETITOR GROUPING */
@@ -309,7 +309,7 @@ function tagsHTML(tags) {
 
 // ── NEWS CARD ──────────────────────────────────────────────────────────
 function newsCardHTML(item, showCompetitor) {
-  const link = item.url ? `<a href="${escAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
+  const link = item.url ? `<button class="card-link" onclick="window.open('${escAttr(item.url)}','_blank')">Read →</button>` : '';
   const compBadge = showCompetitor && item.competitor ? `<span class="competitor-badge">${esc(item.competitor)}</span>` : '';
   return `<div class="card">
     <div class="card-header">
@@ -331,16 +331,13 @@ function newsCardHTML(item, showCompetitor) {
 
 // ── THOUGHT LEADERSHIP CARD ────────────────────────────────────────────
 function thoughtCardHTML(item) {
-  const link = item.url ? `<a href="${escAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
+  const link = item.url ? `<button class="card-link" onclick="window.open('${escAttr(item.url)}','_blank')">Read →</button>` : '';
   return `<div class="card thought-card">
     <div class="card-header">
       <div class="card-title">${esc(item.title)}</div>
       <div class="card-badges">${badgeHTML(item.relevance)}</div>
     </div>
-    <div class="insight-block">
-      <div class="insight-label">Key insight</div>
-      <div class="insight-text">${esc(item.key_insight || item.summary || '')}</div>
-    </div>
+    <div class="card-summary">${esc(item.summary || item.key_insight || '')}</div>
     <div class="implication-block">
       <div class="implication-label">Implications for CMIplus</div>
       <div class="implication-text">${esc(item.implications || item.sowhat || '')}</div>
