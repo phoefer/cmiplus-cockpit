@@ -1,0 +1,38 @@
+name: Weekly Intelligence Scan
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC = 07:00 CET / 08:00 CEST
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    # Manual trigger available in GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run weekly scan
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scan.py
+
+      - name: Commit and push briefing.json
+        run: |
+          git config user.name "CMIplus Cockpit Bot"
+          git config user.email "cockpit-bot@cmiplus.local"
+          git add briefing.json
+          git diff --staged --quiet || git commit -m "Weekly briefing: $(date -u +'%Y-%m-%d')"
+          git push
