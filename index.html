@@ -7,432 +7,150 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f12;
-    --surface: #13161b;
-    --surface2: #1a1e25;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #e8eaf0;
-    --muted: #7a8090;
-    --accent: #f0c040;
-    --accent2: #c8a030;
-    --urgent: #e05050;
-    --urgent-bg: rgba(224,80,80,0.1);
-    --urgent-border: rgba(224,80,80,0.25);
-    --watch: #e08830;
-    --watch-bg: rgba(224,136,48,0.1);
-    --watch-border: rgba(224,136,48,0.25);
-    --fyi: #40a870;
-    --fyi-bg: rgba(64,168,112,0.1);
-    --fyi-border: rgba(64,168,112,0.25);
+    --bg: #0d0f12; --surface: #13161b; --surface2: #1a1e25;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0; --muted: #7a8090;
+    --accent: #f0c040; --accent2: #c8a030;
+    --urgent: #e05050; --urgent-bg: rgba(224,80,80,0.1); --urgent-border: rgba(224,80,80,0.25);
+    --watch: #e08830; --watch-bg: rgba(224,136,48,0.1); --watch-border: rgba(224,136,48,0.25);
+    --fyi: #40a870; --fyi-bg: rgba(64,168,112,0.1); --fyi-border: rgba(64,168,112,0.25);
     --rbi-red: #c8102e;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Geist', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; font-size: 15px; line-height: 1.6; }
 
   /* HEADER */
-  .header {
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 100;
-  }
+  .header { border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .rbi-mark { width: 28px; height: 28px; background: var(--rbi-red); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: white; }
+  .brand-text { font-family: 'DM Serif Display', serif; font-size: 18px; }
+  .brand-sub { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .week-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; }
 
-  .header-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .rbi-mark {
-    width: 28px;
-    height: 28px;
-    background: var(--rbi-red);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    color: white;
-    letter-spacing: 0.02em;
-  }
-
-  .brand-text {
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-
-  .brand-sub {
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .week-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 10px;
-  }
+  /* SEARCH BAR */
+  .search-bar { display: flex; gap: 8px; align-items: center; }
+  .search-input { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--text); font-family: 'Geist', sans-serif; width: 220px; transition: border-color 0.15s; }
+  .search-input:focus { outline: none; border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+  .search-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px; font-size: 12px; color: var(--text); cursor: pointer; font-family: 'Geist', sans-serif; transition: all 0.15s; white-space: nowrap; }
+  .search-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* LAYOUT */
-  .main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
 
   /* TABS */
-  .tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2rem;
-  }
-
-  .tab {
-    padding: 10px 20px;
-    font-size: 13px;
-    color: var(--muted);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.15s;
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    user-select: none;
-  }
-
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; overflow-x: auto; }
+  .tab { padding: 10px 20px; font-size: 13px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 8px; user-select: none; }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
-
-  .count-pill {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 1px 7px;
-    border-radius: 10px;
-  }
+  .count-pill { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; padding: 1px 7px; border-radius: 10px; }
 
   /* SECTIONS */
   .section { display: none; }
   .section.active { display: block; }
 
   /* EXEC SUMMARY */
-  .exec-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
+  .exec-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+  .exec-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .exec-text { font-size: 15px; color: var(--text); line-height: 1.7; }
 
-  .exec-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-
-  .exec-text {
-    font-size: 15px;
-    color: var(--text);
-    line-height: 1.7;
-  }
+  /* OVERVIEW META */
+  .overview-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 2rem; }
+  .meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; text-align: center; }
+  .meta-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+  .meta-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
   /* FILTER ROW */
-  .filter-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 4px;
-    padding: 5px 14px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: 'Geist', sans-serif;
-  }
-
+  .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filter-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; padding: 5px 14px; font-size: 12px; cursor: pointer; transition: all 0.15s; font-family: 'Geist', sans-serif; }
   .filter-btn:hover { border-color: var(--border2); color: var(--text); }
   .filter-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); font-weight: 500; }
 
-  /* NEWS CARDS */
+  /* TAG FILTER ROW */
+  .tag-filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .tag-filter-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
+  .tag-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 3px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: 'DM Mono', monospace; transition: all 0.15s; }
+  .tag-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tag-btn.active { background: rgba(240,192,64,0.1); border-color: var(--accent); color: var(--accent); }
+
+  /* CARDS */
   .cards { display: flex; flex-direction: column; gap: 12px; }
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    transition: border-color 0.15s;
-  }
-
+  /* NEWS CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; transition: border-color 0.15s; }
   .card:hover { border-color: var(--border2); }
-
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 10px;
-  }
-
-  .card-title {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
-    flex: 1;
-  }
-
-  .badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 4px;
-    border: 1px solid;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
+  .card-title { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.4; flex: 1; }
+  .card-badges { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .badge { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; border: 1px solid; white-space: nowrap; }
   .badge-urgent { color: var(--urgent); background: var(--urgent-bg); border-color: var(--urgent-border); }
   .badge-watch  { color: var(--watch);  background: var(--watch-bg);  border-color: var(--watch-border);  }
   .badge-fyi    { color: var(--fyi);    background: var(--fyi-bg);    border-color: var(--fyi-border);    }
+  .competitor-badge { background: rgba(255,255,255,0.05); border: 1px solid var(--border2); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; }
 
-  .card-summary {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 12px;
-  }
+  .card-summary { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .sowhat-block { background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); padding: 10px 14px; margin-bottom: 12px; }
+  .sowhat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .sowhat-text { font-size: 13px; color: var(--text); line-height: 1.55; }
 
-  .sowhat-block {
-    background: var(--surface2);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    padding: 10px 14px;
-    margin-bottom: 12px;
-  }
+  /* THOUGHT LEADERSHIP CARD — different layout */
+  .thought-card .insight-block { background: var(--surface2); border-radius: 6px; border-left: 2px solid var(--accent); padding: 10px 14px; margin-bottom: 10px; }
+  .thought-card .insight-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .thought-card .insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .thought-card .implication-block { background: rgba(240,192,64,0.04); border-radius: 6px; border: 1px solid rgba(240,192,64,0.15); padding: 10px 14px; margin-bottom: 12px; }
+  .thought-card .implication-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent2); margin-bottom: 4px; }
+  .thought-card .implication-text { font-size: 13px; color: var(--text); line-height: 1.55; }
 
-  .sowhat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-
-  .sowhat-text {
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.55;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .card-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .card-link {
-    font-size: 12px;
-    color: var(--accent);
-    text-decoration: none;
-    opacity: 0.8;
-    transition: opacity 0.15s;
-  }
-
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .tag-chip { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 3px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .card-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .card-link { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.8; transition: opacity 0.15s; }
   .card-link:hover { opacity: 1; }
 
+  /* COMPETITOR GROUPING */
+  .competitor-group { margin-bottom: 2rem; }
+  .competitor-group-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .competitor-group-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .competitor-group-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  /* SEARCH RESULTS */
+  .search-results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .search-results-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .search-clear { font-size: 12px; color: var(--muted); cursor: pointer; background: none; border: none; padding: 0; font-family: 'Geist', sans-serif; }
+  .search-clear:hover { color: var(--text); }
+  .search-loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
+
   /* SOURCES TAB */
-  .sources-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  .source-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.25rem;
-  }
-
-  .source-group-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
-
-  .source-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    gap: 8px;
-  }
-
+  .sources-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .source-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+  .source-group-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .source-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); gap: 8px; }
   .source-item:last-child { border-bottom: none; }
-
-  .source-name {
-    font-size: 13px;
-    color: var(--text);
-  }
-
-  .source-focus {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 1px;
-  }
-
-  .source-lang {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  .source-active {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--fyi);
-    flex-shrink: 0;
-  }
-
+  .source-name { font-size: 13px; color: var(--text); }
+  .source-meta { display: flex; align-items: center; gap: 6px; }
+  .source-priority { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; }
+  .source-active { width: 6px; height: 6px; border-radius: 50%; background: var(--fyi); flex-shrink: 0; }
   .source-inactive { background: var(--muted); }
+  .sources-footer { margin-top: 1.5rem; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.8; }
+  .sources-footer code { background: var(--surface); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
 
-  .sources-footer {
-    margin-top: 1.5rem;
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  .sources-footer code {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 3px;
-    color: var(--accent);
-  }
-
-  /* LOADING / EMPTY */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--muted);
-  }
-
+  /* EMPTY STATE */
+  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
   .empty-state p { font-size: 15px; margin-bottom: 8px; color: var(--text); }
   .empty-state span { font-size: 13px; }
 
-  /* OVERVIEW GRID */
-  .overview-meta {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 2rem;
-  }
+  /* COMPETITOR FILTER */
+  .competitor-filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
 
-  .meta-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    text-align: center;
-  }
-
-  .meta-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .meta-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-
-  /* RESPONSIVE */
   @media (max-width: 700px) {
     .main { padding: 1rem; }
-    .header { padding: 0 1rem; }
+    .header { padding: 0 1rem; flex-wrap: wrap; height: auto; gap: 8px; padding: 12px 1rem; }
+    .search-input { width: 140px; }
     .sources-grid { grid-template-columns: 1fr; }
     .overview-meta { grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .meta-num { font-size: 24px; }
-    .tab { padding: 10px 12px; font-size: 12px; }
   }
 </style>
 </head>
@@ -447,6 +165,10 @@
     </div>
   </div>
   <div class="header-right">
+    <div class="search-bar">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search keywords..." />
+      <button class="search-btn" id="searchBtn">Search ↗</button>
+    </div>
     <div class="week-badge" id="weekBadge">Loading...</div>
   </div>
 </header>
@@ -457,34 +179,22 @@
     <div class="tab" data-tab="market">Market news <span class="count-pill" id="cnt-market">—</span></div>
     <div class="tab" data-tab="thought">Thought leadership <span class="count-pill" id="cnt-thought">—</span></div>
     <div class="tab" data-tab="competitors">Competitors <span class="count-pill" id="cnt-competitors">—</span></div>
+    <div class="tab" data-tab="search">Search results <span class="count-pill" id="cnt-search" style="display:none">—</span></div>
     <div class="tab" data-tab="sources">Sources</div>
   </div>
 
   <!-- OVERVIEW -->
   <div class="section active" id="tab-overview">
     <div id="overview-empty" class="empty-state">
-      <p>Loading briefing...</p>
-      <span>Fetching briefing.json</span>
+      <p>Loading briefing...</p><span>Fetching briefing.json</span>
     </div>
     <div id="overview-content" style="display:none">
       <div class="overview-meta">
-        <div class="meta-card">
-          <div class="meta-num" id="meta-urgent">0</div>
-          <div class="meta-label">Urgent</div>
-        </div>
-        <div class="meta-card">
-          <div class="meta-num" id="meta-watch">0</div>
-          <div class="meta-label">Watch</div>
-        </div>
-        <div class="meta-card">
-          <div class="meta-num" id="meta-fyi">0</div>
-          <div class="meta-label">FYI</div>
-        </div>
+        <div class="meta-card"><div class="meta-num" id="meta-urgent">0</div><div class="meta-label">Urgent</div></div>
+        <div class="meta-card"><div class="meta-num" id="meta-watch">0</div><div class="meta-label">Watch</div></div>
+        <div class="meta-card"><div class="meta-num" id="meta-fyi">0</div><div class="meta-label">FYI</div></div>
       </div>
-      <div class="exec-card">
-        <div class="exec-label">Executive Summary</div>
-        <div class="exec-text" id="exec-text"></div>
-      </div>
+      <div class="exec-card"><div class="exec-label">Executive Summary</div><div class="exec-text" id="exec-text"></div></div>
       <div class="cards" id="overview-cards"></div>
     </div>
   </div>
@@ -497,8 +207,8 @@
       <button class="filter-btn" data-section="market" data-level="watch">Watch</button>
       <button class="filter-btn" data-section="market" data-level="fyi">FYI</button>
     </div>
+    <div class="tag-filter-row" id="market-tags"></div>
     <div class="cards" id="market-cards"></div>
-    <div id="market-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
   </div>
 
   <!-- THOUGHT LEADERSHIP -->
@@ -509,8 +219,8 @@
       <button class="filter-btn" data-section="thought" data-level="watch">Watch</button>
       <button class="filter-btn" data-section="thought" data-level="fyi">FYI</button>
     </div>
+    <div class="tag-filter-row" id="thought-tags"></div>
     <div class="cards" id="thought-cards"></div>
-    <div id="thought-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
   </div>
 
   <!-- COMPETITORS -->
@@ -521,16 +231,32 @@
       <button class="filter-btn" data-section="competitors" data-level="watch">Watch</button>
       <button class="filter-btn" data-section="competitors" data-level="fyi">FYI</button>
     </div>
-    <div class="cards" id="competitors-cards"></div>
-    <div id="competitors-empty" class="empty-state" style="display:none"><p>No items yet</p></div>
+    <div class="competitor-filter-row" id="competitor-filter-btns"></div>
+    <div class="tag-filter-row" id="competitors-tags"></div>
+    <div id="competitors-grouped"></div>
+  </div>
+
+  <!-- SEARCH RESULTS -->
+  <div class="section" id="tab-search">
+    <div id="search-empty" class="empty-state">
+      <p>Enter keywords above and click Search</p>
+      <span>Searches across all current briefing items — market, thought leadership and competitors</span>
+    </div>
+    <div id="search-content" style="display:none">
+      <div class="search-results-header">
+        <div class="search-results-title" id="search-results-title"></div>
+        <button class="search-clear" id="searchClear">Clear</button>
+      </div>
+      <div class="cards" id="search-cards"></div>
+    </div>
   </div>
 
   <!-- SOURCES -->
   <div class="section" id="tab-sources">
     <div class="sources-grid" id="sources-grid"></div>
     <div class="sources-footer">
-      To add or change sources, edit <code>sources.json</code> in the GitHub repository.<br>
-      Set <code>"active": false</code> to pause a source. Commit to trigger a re-scan.
+      Edit <code>sources.json</code> on GitHub to add, change or pause sources.<br>
+      Set <code>"priority": 1</code> for more items · <code>"active": false</code> to pause.
     </div>
   </div>
 </main>
@@ -539,7 +265,9 @@
 const state = {
   briefing: null,
   sources: null,
-  filters: { market: 'all', thought: 'all', competitors: 'all' }
+  filters: { market: 'all', thought: 'all', competitors: 'all' },
+  activeTags: { market: null, thought: null, competitors: null },
+  activeCompetitor: null
 };
 
 // ── TABS ──────────────────────────────────────────────────────────────
@@ -553,6 +281,107 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(str) { return String(str||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// ── BADGE ──────────────────────────────────────────────────────────────
+function badgeHTML(relevance) {
+  const cls = relevance === 'urgent' ? 'badge-urgent' : relevance === 'watch' ? 'badge-watch' : 'badge-fyi';
+  const lbl = relevance === 'urgent' ? 'URGENT' : relevance === 'watch' ? 'WATCH' : 'FYI';
+  return `<span class="badge ${cls}">${lbl}</span>`;
+}
+
+// ── TAG CHIPS ──────────────────────────────────────────────────────────
+function tagsHTML(tags) {
+  if (!tags || !tags.length) return '';
+  return `<div class="card-tags">${tags.map(t => `<span class="tag-chip">${esc(t)}</span>`).join('')}</div>`;
+}
+
+// ── NEWS CARD ──────────────────────────────────────────────────────────
+function newsCardHTML(item, showCompetitor) {
+  const link = item.url ? `<a href="${escAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
+  const compBadge = showCompetitor && item.competitor ? `<span class="competitor-badge">${esc(item.competitor)}</span>` : '';
+  return `<div class="card">
+    <div class="card-header">
+      <div class="card-title">${esc(item.title)}</div>
+      <div class="card-badges">${compBadge}${badgeHTML(item.relevance)}</div>
+    </div>
+    <div class="card-summary">${esc(item.summary)}</div>
+    <div class="sowhat-block">
+      <div class="sowhat-label">So what for CMIplus</div>
+      <div class="sowhat-text">${esc(item.sowhat)}</div>
+    </div>
+    ${tagsHTML(item.tags)}
+    <div class="card-footer">
+      <span class="card-meta">${esc(item.source)} · ${esc(item.date||item.published||'')}</span>
+      ${link}
+    </div>
+  </div>`;
+}
+
+// ── THOUGHT LEADERSHIP CARD ────────────────────────────────────────────
+function thoughtCardHTML(item) {
+  const link = item.url ? `<a href="${escAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
+  return `<div class="card thought-card">
+    <div class="card-header">
+      <div class="card-title">${esc(item.title)}</div>
+      <div class="card-badges">${badgeHTML(item.relevance)}</div>
+    </div>
+    <div class="insight-block">
+      <div class="insight-label">Key insight</div>
+      <div class="insight-text">${esc(item.key_insight || item.summary || '')}</div>
+    </div>
+    <div class="implication-block">
+      <div class="implication-label">Implications for CMIplus</div>
+      <div class="implication-text">${esc(item.implications || item.sowhat || '')}</div>
+    </div>
+    ${tagsHTML(item.tags)}
+    <div class="card-footer">
+      <span class="card-meta">${esc(item.source)} · ${esc(item.published||item.date||'')}</span>
+      ${link}
+    </div>
+  </div>`;
+}
+
+// ── TAG FILTER UI ──────────────────────────────────────────────────────
+function buildTagFilters(section, items) {
+  const container = document.getElementById(section + '-tags');
+  if (!container) return;
+  const allTags = new Set();
+  items.forEach(i => (i.tags||[]).forEach(t => allTags.add(t)));
+  if (!allTags.size) { container.innerHTML = ''; return; }
+  const label = `<span class="tag-filter-label">Tags:</span>`;
+  const btns = [...allTags].sort().map(t =>
+    `<button class="tag-btn" data-section="${section}" data-tag="${escAttr(t)}">${esc(t)}</button>`
+  ).join('');
+  container.innerHTML = label + btns;
+  container.querySelectorAll('.tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag;
+      if (state.activeTags[section] === tag) {
+        state.activeTags[section] = null;
+        btn.classList.remove('active');
+      } else {
+        state.activeTags[section] = tag;
+        container.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      if (section === 'competitors') renderCompetitors();
+      else renderSection(section);
+    });
+  });
+}
+
 // ── FILTER BUTTONS ─────────────────────────────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -561,91 +390,164 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     state.filters[section] = level;
     btn.closest('.filter-row').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderSection(section);
+    if (section === 'competitors') renderCompetitors();
+    else renderSection(section);
   });
 });
 
-// ── CARD HTML ──────────────────────────────────────────────────────────
-function cardHTML(item) {
-  const badgeClass = item.relevance === 'urgent' ? 'badge-urgent' : item.relevance === 'watch' ? 'badge-watch' : 'badge-fyi';
-  const badgeLabel = item.relevance === 'urgent' ? 'URGENT' : item.relevance === 'watch' ? 'WATCH' : 'FYI';
-  const linkHTML = item.url ? `<a href="${escapeAttr(item.url)}" target="_blank" rel="noopener" class="card-link">Read →</a>` : '';
-  return `<div class="card">
-    <div class="card-header">
-      <div class="card-title">${escapeHTML(item.title)}</div>
-      <span class="badge ${badgeClass}">${badgeLabel}</span>
-    </div>
-    <div class="card-summary">${escapeHTML(item.summary)}</div>
-    <div class="sowhat-block">
-      <div class="sowhat-label">So what for CMIplus</div>
-      <div class="sowhat-text">${escapeHTML(item.sowhat)}</div>
-    </div>
-    <div class="card-footer">
-      <span class="card-meta">${escapeHTML(item.source)} · ${escapeHTML(item.date || '')}</span>
-      ${linkHTML}
-    </div>
-  </div>`;
-}
-
-function escapeHTML(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function escapeAttr(str) {
-  if (!str) return '';
-  return str.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-// ── RENDER SECTION ─────────────────────────────────────────────────────
+// ── RENDER MARKET / THOUGHT ────────────────────────────────────────────
 function renderSection(section) {
   if (!state.briefing) return;
-  const items = (state.briefing[section] || []).filter(item =>
-    state.filters[section] === 'all' || item.relevance === state.filters[section]
-  );
+  let items = state.briefing[section] || [];
+  if (state.filters[section] !== 'all') items = items.filter(i => i.relevance === state.filters[section]);
+  if (state.activeTags[section]) items = items.filter(i => (i.tags||[]).includes(state.activeTags[section]));
   const container = document.getElementById(section + '-cards');
-  container.innerHTML = items.map(cardHTML).join('');
+  if (!container) return;
+  if (!items.length) { container.innerHTML = '<div class="empty-state"><p>No items match this filter</p></div>'; return; }
+  container.innerHTML = section === 'thought'
+    ? items.map(thoughtCardHTML).join('')
+    : items.map(i => newsCardHTML(i, false)).join('');
 }
 
-// ── RENDER OVERVIEW ────────────────────────────────────────────────────
+// ── RENDER COMPETITORS (grouped) ────────────────────────────────────────
+function renderCompetitors() {
+  if (!state.briefing) return;
+  let items = state.briefing.competitors || [];
+  if (state.filters.competitors !== 'all') items = items.filter(i => i.relevance === state.filters.competitors);
+  if (state.activeTags.competitors) items = items.filter(i => (i.tags||[]).includes(state.activeTags.competitors));
+  if (state.activeCompetitor) items = items.filter(i => i.competitor === state.activeCompetitor);
+
+  const container = document.getElementById('competitors-grouped');
+  if (!items.length) { container.innerHTML = '<div class="empty-state"><p>No items match this filter</p></div>'; return; }
+
+  // Group by competitor
+  const groups = {};
+  items.forEach(item => {
+    const key = item.competitor || 'Other';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+
+  container.innerHTML = Object.entries(groups).map(([name, groupItems]) => `
+    <div class="competitor-group">
+      <div class="competitor-group-header">
+        <div class="competitor-group-name">${esc(name)}</div>
+        <div class="competitor-group-count">${groupItems.length} item${groupItems.length>1?'s':''}</div>
+      </div>
+      <div class="cards">${groupItems.map(i => newsCardHTML(i, false)).join('')}</div>
+    </div>`).join('');
+}
+
+// ── BUILD COMPETITOR FILTER BUTTONS ────────────────────────────────────
+function buildCompetitorFilters(items) {
+  const container = document.getElementById('competitor-filter-btns');
+  const competitors = [...new Set(items.map(i => i.competitor).filter(Boolean))].sort();
+  if (!competitors.length) { container.innerHTML = ''; return; }
+  const allBtn = `<button class="filter-btn active" data-competitor="all">All banks</button>`;
+  const btns = competitors.map(c =>
+    `<button class="filter-btn" data-competitor="${escAttr(c)}">${esc(c)}</button>`
+  ).join('');
+  container.innerHTML = allBtn + btns;
+  container.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.competitor;
+      state.activeCompetitor = val === 'all' ? null : val;
+      container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCompetitors();
+    });
+  });
+}
+
+// ── OVERVIEW ────────────────────────────────────────────────────────────
 function renderOverview() {
   const b = state.briefing;
   const all = [...(b.market||[]), ...(b.thought||[]), ...(b.competitors||[])];
   document.getElementById('meta-urgent').textContent = all.filter(i => i.relevance === 'urgent').length;
   document.getElementById('meta-watch').textContent  = all.filter(i => i.relevance === 'watch').length;
   document.getElementById('meta-fyi').textContent    = all.filter(i => i.relevance === 'fyi').length;
-  document.getElementById('exec-text').textContent = b.executive_summary || '';
+  document.getElementById('exec-text').textContent   = b.executive_summary || '';
   const top = all.filter(i => i.relevance === 'urgent' || i.relevance === 'watch').slice(0, 6);
-  document.getElementById('overview-cards').innerHTML = top.map(cardHTML).join('');
+  document.getElementById('overview-cards').innerHTML = top.map(i =>
+    i.key_insight ? thoughtCardHTML(i) : newsCardHTML(i, true)
+  ).join('');
   document.getElementById('overview-empty').style.display = 'none';
   document.getElementById('overview-content').style.display = 'block';
 }
 
-// ── RENDER SOURCES ─────────────────────────────────────────────────────
+// ── SOURCES ─────────────────────────────────────────────────────────────
 function renderSources(sources) {
   const groups = [
-    { key: 'market_news', label: 'Market news', lang: s => s.name === 'Der Treasurer' ? 'DE' : 'EN' },
-    { key: 'thought_leadership', label: 'Thought leadership', lang: () => 'EN' },
-    { key: 'competitors', label: 'Competitors', lang: () => 'EN' }
+    { key: 'market_news', label: 'Market news' },
+    { key: 'thought_leadership', label: 'Thought leadership' },
+    { key: 'competitors', label: 'Competitors' }
   ];
-  const grid = document.getElementById('sources-grid');
-  grid.innerHTML = groups.map(g => `
+  document.getElementById('sources-grid').innerHTML = groups.map(g => `
     <div class="source-group">
       <div class="source-group-title">${g.label}</div>
       ${(sources[g.key]||[]).map(s => `
         <div class="source-item">
-          <div>
-            <div class="source-name">${escapeHTML(s.name)}</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="source-lang">${g.lang(s)}</span>
+          <div class="source-name">${esc(s.name)}</div>
+          <div class="source-meta">
+            <span class="source-priority">P${s.priority||2}</span>
             <span class="source-active ${s.active ? '' : 'source-inactive'}"></span>
           </div>
         </div>`).join('')}
     </div>`).join('');
 }
 
-// ── UPDATE COUNTS ──────────────────────────────────────────────────────
+// ── SEARCH ──────────────────────────────────────────────────────────────
+function doSearch(query) {
+  if (!query.trim() || !state.briefing) return;
+  const q = query.toLowerCase();
+  const all = [
+    ...(state.briefing.market||[]).map(i => ({...i, _section: 'market'})),
+    ...(state.briefing.thought||[]).map(i => ({...i, _section: 'thought'})),
+    ...(state.briefing.competitors||[]).map(i => ({...i, _section: 'competitors'}))
+  ];
+  const results = all.filter(i => {
+    const text = [i.title, i.summary, i.key_insight, i.sowhat, i.implications,
+                  i.source, i.competitor, ...(i.tags||[])].join(' ').toLowerCase();
+    return text.includes(q);
+  });
+
+  document.getElementById('cnt-search').style.display = '';
+  document.getElementById('cnt-search').textContent = results.length;
+  document.getElementById('search-results-title').textContent =
+    `${results.length} result${results.length!==1?'s':''} for "${query}"`;
+
+  if (!results.length) {
+    document.getElementById('search-content').style.display = 'none';
+    document.getElementById('search-empty').style.display = 'block';
+    document.getElementById('search-empty').querySelector('p').textContent = `No results for "${query}"`;
+    document.getElementById('search-empty').querySelector('span').textContent = 'Try different keywords';
+  } else {
+    document.getElementById('search-empty').style.display = 'none';
+    document.getElementById('search-content').style.display = 'block';
+    document.getElementById('search-cards').innerHTML = results.map(i =>
+      i.key_insight ? thoughtCardHTML(i) : newsCardHTML(i, true)
+    ).join('');
+  }
+  switchTab('search');
+}
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  doSearch(document.getElementById('searchInput').value);
+});
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch(document.getElementById('searchInput').value);
+});
+document.getElementById('searchClear').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('cnt-search').style.display = 'none';
+  document.getElementById('search-empty').style.display = 'block';
+  document.getElementById('search-empty').querySelector('p').textContent = 'Enter keywords above and click Search';
+  document.getElementById('search-empty').querySelector('span').textContent = 'Searches across all current briefing items';
+  document.getElementById('search-content').style.display = 'none';
+  switchTab('overview');
+});
+
+// ── COUNTS ──────────────────────────────────────────────────────────────
 function updateCounts() {
   const b = state.briefing;
   document.getElementById('cnt-market').textContent = (b.market||[]).length;
@@ -654,33 +556,34 @@ function updateCounts() {
   document.getElementById('weekBadge').textContent = b.week_label || '—';
 }
 
-// ── LOAD DATA ──────────────────────────────────────────────────────────
+// ── LOAD ─────────────────────────────────────────────────────────────────
 async function loadAll() {
   try {
-    const [briefingRes, sourcesRes] = await Promise.all([
+    const [br, sr] = await Promise.all([
       fetch('briefing.json?v=' + Date.now()),
       fetch('sources.json?v=' + Date.now())
     ]);
-
-    if (briefingRes.ok) {
-      state.briefing = await briefingRes.json();
+    if (br.ok) {
+      state.briefing = await br.json();
       updateCounts();
       renderOverview();
       renderSection('market');
+      buildTagFilters('market', state.briefing.market||[]);
       renderSection('thought');
-      renderSection('competitors');
+      buildTagFilters('thought', state.briefing.thought||[]);
+      renderCompetitors();
+      buildCompetitorFilters(state.briefing.competitors||[]);
+      buildTagFilters('competitors', state.briefing.competitors||[]);
     } else {
       document.getElementById('overview-empty').querySelector('p').textContent = 'No briefing yet';
-      document.getElementById('overview-empty').querySelector('span').textContent =
-        'Run the GitHub Action manually to generate the first briefing.';
+      document.getElementById('overview-empty').querySelector('span').textContent = 'Trigger a scan via GitHub Actions to generate the first briefing.';
     }
-
-    if (sourcesRes.ok) {
-      state.sources = await sourcesRes.json();
+    if (sr.ok) {
+      state.sources = await sr.json();
       renderSources(state.sources);
     }
-  } catch (err) {
-    console.error('Load error:', err);
+  } catch(err) {
+    console.error(err);
     document.getElementById('overview-empty').querySelector('p').textContent = 'Could not load briefing';
     document.getElementById('overview-empty').querySelector('span').textContent = err.message;
   }
