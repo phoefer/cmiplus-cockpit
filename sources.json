@@ -18,7 +18,8 @@
     { "name": "McKinsey Financial Services", "url": "https://www.mckinsey.com/industries/financial-services", "focus": "transaction banking, payments strategy, treasury transformation, digital banking", "priority": 1, "active": true },
     { "name": "Oliver Wyman", "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services", "focus": "banking strategy, cash management, digital transformation, open banking", "priority": 1, "active": true },
     { "name": "Journey to Treasury / EACT", "url": "https://www.journeytotreasury.com / https://eact.eu", "focus": "CEE treasury, corporate treasury trends, bank connectivity, treasury survey", "priority": 1, "active": true },
-    { "name": "BIS Publications", "url": "https://www.bis.org/publications", "focus": "payments innovation, CBDC, stablecoins, financial stability, settlement", "priority": 2, "active": true }
+    { "name": "BCG Transaction Banking", "url": "https://www.bcg.com/industries/financial-institutions/transaction-banking", "focus": "transaction banking strategy, cash management, payments innovation, corporate banking", "priority": 1, "active": true },
+    { "name": "Oliver Wyman Corporate & Institutional Banking", "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html", "focus": "corporate banking strategy, transaction banking, cash management, institutional banking", "priority": 1, "active": true }
   ],
   "competitors": [
     { "name": "BNP Paribas", "url": "https://group.bnpparibas/en/all-news / https://cib.bnpparibas/cash-management", "focus": "cash management, corporate banking, Connexis platform, CEE", "priority": 1, "active": true },
