@@ -338,9 +338,9 @@ body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', 
 </div>
 
 <script>
-const GEMINI_KEY = ''; // Set via sources.json or leave empty to prompt user
 const DEEP_MODEL = 'gemini-2.5-pro-exp-03-25';
 const DEEP_API = `https://generativelanguage.googleapis.com/v1beta/models/${DEEP_MODEL}:generateContent`;
+let GEMINI_KEY = '';
 
 const state = {
   briefing: null, sources: null,
@@ -426,16 +426,22 @@ function thoughtCardHTML(item) {
 }
 
 // ── DEEP DIVE MODAL ────────────────────────────────────────────────────
-function getGeminiKey() {
-  if(state.geminiKey) return state.geminiKey;
-  const key = prompt('Enter your Gemini API key for Deep Dive analysis:');
-  if(key) state.geminiKey = key.trim();
-  return state.geminiKey;
+async function loadConfig() {
+  try {
+    const r = await fetch('config.js?v=' + Date.now());
+    if(r.ok) {
+      const text = await r.text();
+      const m = text.match(/GEMINI_KEY\s*=\s*['"]([^'"]+)['"]/);
+      if(m) GEMINI_KEY = m[1];
+    }
+  } catch(e) { console.warn('config.js not found'); }
 }
 
 async function openDeepDive(item) {
-  const key = getGeminiKey();
-  if(!key) return;
+  if(!GEMINI_KEY) {
+    alert('Gemini API key not configured. Please check config.js.');
+    return;
+  }
 
   document.getElementById('modalTitle').textContent = item.title;
   document.getElementById('modalBody').innerHTML = `<div class="modal-loading"><div class="spinner"></div><p>Analysing with Gemini 2.5 Pro...</p></div>`;
@@ -467,7 +473,7 @@ Provide a structured analysis in this exact JSON format:
 Return raw JSON only. No markdown.`;
 
   try {
-    const resp = await fetch(`${DEEP_API}?key=${key}`, {
+    const resp = await fetch(`${DEEP_API}?key=${GEMINI_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -545,20 +551,45 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 
 // ── FLAGSHIP REPORTS ───────────────────────────────────────────────────
 const FLAGSHIP_REPORTS = [
-  { source: 'Journey to Treasury / EACT', title: 'Journeys to Treasury — Annual CEE Report', frequency: 'Annual', desc: 'The definitive benchmark for corporate treasury in Central & Eastern Europe. Covers digitisation, bank connectivity, ISO 20022 adoption and treasurer priorities across CEE markets — directly relevant to CMIplus customer base.', url: 'https://www.journeytotreasury.com', tags: ['CEE', 'ERP_TMS'] },
-  { source: 'PwC', title: 'Global Treasury Survey', frequency: 'Annual', desc: 'Survey of 350+ treasurers worldwide on TMS adoption, API banking, AI in treasury, FX risk and cash visibility. Key benchmark for understanding what large corporate clients expect from their bank.', url: 'https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html', tags: ['AI', 'ERP_TMS'] },
-  { source: 'EY', title: 'Voice of the Treasurer / Four Trends Redefining Cash Management', frequency: 'Annual', desc: 'EY\'s flagship treasury research combining 1,800+ treasurer survey responses with deep analysis of four structural trends reshaping cash management. Essential read for product strategy.', url: 'https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks', tags: ['DigitalBanking', 'AI'] },
-  { source: 'EY', title: 'Cash Management Services (CMS) Survey', frequency: 'Annual', desc: '41st edition annual benchmark of bank cash management products — fee revenues, product line growth, API adoption rates, AI integration, FinTech partnerships. Direct competitive intelligence.', url: 'https://www.ey.com/en_us/insights/banking-capital-markets/insights-from-ey-2024-cms-survey-on-cash-management', tags: ['OpenBanking', 'Compliance'] },
-  { source: 'McKinsey', title: 'Global Payments Report', frequency: 'Annual', desc: 'McKinsey\'s annual deep dive into global payments revenues, trends and strategic shifts. Covers transaction banking, corporate payments, instant payments adoption and the competitive landscape across regions.', url: 'https://www.mckinsey.com/industries/financial-services/our-insights/global-payments-report', tags: ['InstantPayments', 'OpenBanking'] },
-  { source: 'BCG', title: 'Transaction Banking Insights', frequency: 'Quarterly', desc: 'BCG\'s transaction banking practice publishes regular analyses on cash management strategy, digital transformation and competitive dynamics in corporate banking — with strong European relevance.', url: 'https://www.bcg.com/industries/financial-institutions/transaction-banking', tags: ['DigitalBanking', 'CEE'] },
-  { source: 'Oliver Wyman', title: 'Corporate & Institutional Banking Research', frequency: 'Quarterly', desc: 'Oliver Wyman\'s corporate banking practice covers cash management, trade finance and digital transformation. Strong focus on European banking and regulatory impact on transaction services.', url: 'https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html', tags: ['Compliance', 'OpenBanking'] },
-  { source: 'BIS', title: 'Payments & Market Infrastructure Reports', frequency: 'Quarterly', desc: 'Bank for International Settlements research on payment system evolution, instant payments infrastructure, CBDCs and stablecoins. Sets the regulatory and technical direction for the next 3-5 years.', url: 'https://www.bis.org/payments.htm', tags: ['InstantPayments', 'Stablecoins'] }
+  {
+    source: 'Journey to Treasury / EACT',
+    title: 'Journeys to Treasury — Annual CEE Report',
+    frequency: 'Annual',
+    desc: 'The definitive benchmark for corporate treasury in Central & Eastern Europe. Covers digitisation, bank connectivity, ISO 20022 adoption and treasurer priorities across CEE markets — directly relevant to the CMIplus customer base and RBI\'s network banks.',
+    url: 'https://www.journeytotreasury.com',
+    tags: ['CEE', 'ERP_TMS']
+  },
+  {
+    source: 'EY',
+    title: 'Voice of the Treasurer — Four Trends Redefining Cash Management',
+    frequency: 'Annual',
+    desc: 'EY\'s flagship treasury research combining 1,800+ treasurer survey responses with deep analysis of four structural trends reshaping cash management: treasury automation, data-driven services, industry-specific solutions and digital assets. Essential input for CMIplus product strategy.',
+    url: 'https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks',
+    tags: ['DigitalBanking', 'AI']
+  },
+  {
+    source: 'McKinsey',
+    title: 'Global Payments Report',
+    frequency: 'Annual',
+    desc: 'McKinsey\'s annual deep dive into global payments revenues, trends and strategic shifts. Covers transaction banking, corporate payments, instant payments adoption and the competitive landscape — the strategic market map against which CMIplus should position itself.',
+    url: 'https://www.mckinsey.com/industries/financial-services/our-insights/global-payments-report',
+    tags: ['InstantPayments', 'OpenBanking']
+  },
+  {
+    source: 'PwC',
+    title: 'Global Treasury Survey',
+    frequency: 'Annual',
+    desc: 'Survey of 350+ treasurers worldwide on TMS adoption, API banking, AI in treasury, FX risk and cash visibility. Key benchmark for understanding what large corporate clients — exactly CMIplus\'s target segment — expect from their cash management platform.',
+    url: 'https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html',
+    tags: ['AI', 'ERP_TMS']
+  }
 ];
 
 function renderFlagship() {
   document.getElementById('flagship-grid').innerHTML = FLAGSHIP_REPORTS.map(r => {
     const itemForDive = { title: r.title, source: r.source, url: r.url, summary: r.desc, published: r.frequency };
     const itemJson = escA(JSON.stringify(itemForDive));
+    const openUrl = r.url ? `window.open('${escA(r.url)}','_blank')` : '';
     return `<div class="flagship-card">
       <div class="flagship-card-header">
         <div>
@@ -568,9 +599,9 @@ function renderFlagship() {
         <span class="flagship-frequency">${esc(r.frequency)}</span>
       </div>
       <div class="flagship-desc">${esc(r.desc)}</div>
-      <div class="card-tags">${(r.tags||[]).map(t=>`<span class="tag-chip">${esc(t)}</span>`).join('')}</div>
-      <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
-        <button class="card-link" onclick="window.open('${escA(r.url)}','_blank')">Open →</button>
+      <div class="card-tags" style="margin-bottom:12px">${(r.tags||[]).map(t=>`<span class="tag-chip">${esc(t)}</span>`).join('')}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        ${r.url ? `<button class="card-link" onclick="${openUrl}">Open report →</button>` : '<span></span>'}
         <button class="flagship-deep-btn" onclick="openDeepDive(${itemJson})">Deep Dive ↗</button>
       </div>
     </div>`;
@@ -731,6 +762,7 @@ document.getElementById('searchClear').addEventListener('click',()=>{
 
 // ── LOAD ─────────────────────────────────────────────────────────────
 async function loadAll() {
+  await loadConfig();
   try {
     const [br,sr]=await Promise.all([
       fetch('briefing.json?v='+Date.now()),
