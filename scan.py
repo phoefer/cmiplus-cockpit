@@ -65,11 +65,14 @@ def build_market_prompt(sources):
     return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Search for MARKET NEWS from last 7 days ({week}).
+Use Google Search to find MARKET NEWS from last 7 days ({week}).
 Sources: {p1_str}, {p2_str}
 Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking
 
 Tags: {tags}
+
+CRITICAL URL RULE: Only include the exact URL that Google Search returned for each article.
+Never construct, guess or hallucinate a URL. If you are not 100% certain of the exact URL, use "" for the url field.
 
 Return a JSON array of exactly {total} items. Keep each field concise (max 2 sentences per field).
 Each item: title, summary, sowhat, relevance (urgent/watch/fyi), tags (array max 2), source, date, url
@@ -88,10 +91,13 @@ def build_thought_prompt(sources):
     return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Search for THOUGHT LEADERSHIP reports from last 12 months from: {names}
+Use Google Search to find THOUGHT LEADERSHIP reports from last 12 months from: {names}
 Topics: cash management, treasury transformation, open banking, payments, CEE
 
 Tags: {tags}
+
+CRITICAL URL RULE: Only include the exact URL that Google Search returned for each article.
+Never construct, guess or hallucinate a URL. If you are not 100% certain of the exact URL, use "" for the url field.
 
 Return a JSON array of exactly {n} items. Keep each field concise (max 2 sentences).
 Each item: title, key_insight, implications, relevance (urgent/watch/fyi), tags (array max 2), source, published, url
@@ -110,10 +116,13 @@ def build_competitor_prompt(sources):
     return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Search for news (last 4 weeks) from: {names}
+Use Google Search to find news (last 4 weeks) from: {names}
 Focus: cash management, API banking, corporate banking, CEE, VoP, instant payments.
 
 Tags: {tags}
+
+CRITICAL URL RULE: Only include the exact URL that Google Search returned for each article.
+Never construct, guess or hallucinate a URL. If you are not 100% certain of the exact URL, use "" for the url field.
 
 Return a JSON array of exactly {n} items covering different competitors. Keep each field concise (max 2 sentences).
 Each item: title, competitor, summary, sowhat, relevance (urgent/watch/fyi), tags (array max 2), source, date, url
