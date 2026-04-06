@@ -1,8 +1,149 @@
 {
-  "generated_at": "2026-04-06T19:40:08.534629+00:00",
+  "generated_at": "2026-04-06T19:47:18.523805+00:00",
   "week_label": "Week of 6 Apr - 12 Apr 2026",
-  "executive_summary": "For the week of April 6 - April 12, 2026, CMIplus continues to prioritize key themes including digitalization and connectivity, payment modernization, and comprehensive corporate treasury solutions for large international corporates in CEE. The market is seeing a significant shift towards real-time, embedded, and AI-augmented operating models in cash management, with embedded execution becoming the dominant model by 2026. Urgent action for CMIplus involves continuously evolving its platform, particularly in areas like ISO 20022 and instant payments, to meet the dynamic needs of large international corporates in CEE and align with the full deployment of the ISO 20022 standard expected in 2026. While specific competitor moves for this period are not detailed, the broader cash management system market is characterized by a mix of global financial technology providers and specialized banking software solution companies focusing on advanced treasury management platforms and real-time payment processing systems. Product Owner Philipp Höfer's team should focus on these strategic developments to ensure CMIplus remains a leading corporate cash management platform, especially as the demand for immediacy redefines the payments landscape.",
+  "executive_summary": "For the week of April 6 - April 12, 2026, CMIplus is primarily focused on the digital transformation of corporate treasury and payments, alongside strategic positioning within a competitive payments landscape. Key topics like ISO 20022, instant payments, Open Banking APIs, and eBAM highlight the ongoing need for platform modernization. The most urgent action for CMIplus is to accelerate the integration and optimization of these advanced payment and treasury functionalities to enhance its offerings. While no specific competitor moves were reported this week, the market remains dynamic, as indicated by reports like the 2025 McKinsey Global Payments Report on competing systems. CMIplus, under Product Owner Philipp Höfer, continues to address the evolving needs of large international corporates in CEE.",
   "market": [],
-  "thought": [],
+  "thought": [
+    {
+      "title": "2025 Global Treasury Survey",
+      "key_insight": "Treasury's role is evolving into a strategic, data-driven partner, with cash and liquidity management as a top priority amidst economic volatility and regulatory shifts. Organizations are adopting connected operating models, in-house banks, real-time liquidity tools, and AI-enhanced forecasting to drive efficiency and unlock trapped cash.",
+      "implications": "CMIplus should focus on enhancing real-time cash visibility and liquidity management features, integrating AI for forecasting, and supporting in-house bank structures. The platform needs to facilitate seamless data integration with ERP/TMS to enable strategic treasury functions for large corporates.",
+      "relevance": "urgent",
+      "tags": [
+        "CashPooling",
+        "Liquidity",
+        "AI"
+      ],
+      "source": "PwC",
+      "published": "June 2025",
+      "url": "https://www.pwc.com/gx/en/services/treasury/global-treasury-survey.html"
+    },
+    {
+      "title": "Deloitte CEE Banking Outlook 2026: Growth and Digitalization",
+      "key_insight": "CEE banks show strong profitability but face challenges from persistent inflation, diverging consumer sentiment, and the need to diversify fee income. Digitalization is a key investment priority, with stablecoins and tokenized deposits potentially disrupting payment rails.",
+      "implications": "CMIplus should explore integration with emerging digital asset rails and stablecoins, particularly for cross-border payments in CEE. The platform needs to support banks in diversifying their digital offerings and enhancing operational efficiency to maintain profitability in a competitive landscape.",
+      "relevance": "watch",
+      "tags": [
+        "CEE",
+        "DigitalBanking",
+        "Stablecoins"
+      ],
+      "source": "Deloitte",
+      "published": "January 2026",
+      "url": "https://www2.deloitte.com/ce/en/pages/financial-services/articles/banking-outlook-cee.html"
+    },
+    {
+      "title": "The 2025 McKinsey Global Payments Report: Competing systems, contested outcomes",
+      "key_insight": "Payments are becoming disconnected from accounts, with a proliferation of players fragmenting the value chain. Key trends include the continued displacement of other payment methods by instant payments, growing adoption of digital public infrastructures, and the increasing use of AI to optimize payment routing and detect fraud.",
+      "implications": "CMIplus must prioritize seamless integration with instant payment schemes and leverage AI for enhanced fraud detection and payment routing optimization. The platform should also consider its role within broader digital public infrastructures and open banking ecosystems.",
+      "relevance": "urgent",
+      "tags": [
+        "InstantPayments",
+        "AI",
+        "OpenBanking"
+      ],
+      "source": "McKinsey Financial Services",
+      "published": "September 2025",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/global-payments-report"
+    },
+    {
+      "title": "Main Results of the 2025 EACT Treasury Survey",
+      "key_insight": "Corporate treasurers' top priorities include cash flow forecasting, digitalization of the treasury function, bank relationships, and risk management. There is a significant interest in real-time information, real-time payments, and real-time liquidity.",
+      "implications": "CMIplus should enhance its real-time reporting and dashboarding capabilities for cash and liquidity. Features supporting real-time payments and collections, along with robust cash flow forecasting tools, are critical to meet corporate treasury demands.",
+      "relevance": "urgent",
+      "tags": [
+        "CashPooling",
+        "Liquidity",
+        "DigitalBanking"
+      ],
+      "source": "Journey to Treasury / EACT",
+      "published": "April 2025",
+      "url": "https://eact.eu/news/main-results-of-the-2025-eact-treasury-survey/"
+    },
+    {
+      "title": "CIB in an era of volatility, AI, and nonbank challengers",
+      "key_insight": "Corporate and Investment Banking (CIB) faces macroeconomic and geopolitical volatility, the rise of non-bank attackers, and increasing AI adoption. Core commercial lending and cash management continue to perform well, but AI is expected to transform operating models by 2030, moving beyond experimentation to impact at scale.",
+      "implications": "CMIplus needs to strategically integrate AI into its cash management offerings to enhance efficiency and decision-making. The platform should also consider how to differentiate itself against non-bank challengers and adapt to evolving client expectations in a volatile environment.",
+      "relevance": "watch",
+      "tags": [
+        "AI",
+        "DigitalBanking",
+        "CashPooling"
+      ],
+      "source": "McKinsey Financial Services",
+      "published": "December 2025",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/cib-in-an-era-of-volatility-ai-and-nonbank-challengers"
+    },
+    {
+      "title": "Payments Modernization and AI Orchestration",
+      "key_insight": "The industry is moving towards modular, composable payments architectures, often delivered through 'Payments-as-a-Service' partnerships. ISO 20022 migration is a foundational enabler, providing structured data orchestrated by AI for compliance, forecasting, and fraud detection.",
+      "implications": "CMIplus should focus on a modular architecture that supports Payments-as-a-Service models and leverages ISO 20022 rich data. Integrating AI for payment orchestration, fraud detection, and enhanced compliance is crucial for future-proofing the platform.",
+      "relevance": "urgent",
+      "tags": [
+        "ISO20022",
+        "AI",
+        "Payments"
+      ],
+      "source": "Oliver Wyman",
+      "published": "October 2025",
+      "url": "https://www.oliverwyman.com/our-expertise/insights/2025/oct/payments-modernization-and-ai-orchestration.html"
+    },
+    {
+      "title": "Stablecoins: A Breakout Moment",
+      "key_insight": "Stablecoins are experiencing a breakout moment, driven by economic, strategic, and regulatory fundamentals. While most volumes relate to crypto trading, a significant portion were genuine payment transactions, including cross-border remittances and corporate treasury.",
+      "implications": "CMIplus should monitor the evolution of stablecoins and their potential for corporate treasury, especially for cross-border payments. Understanding the regulatory landscape and potential integration points for stablecoin-based transactions could be a future strategic advantage.",
+      "relevance": "watch",
+      "tags": [
+        "Stablecoins",
+        "Payments",
+        "FX"
+      ],
+      "source": "BCG Transaction Banking",
+      "published": "March 2025",
+      "url": "https://www.bcg.com/publications/2025/stablecoins-breakout-moment"
+    },
+    {
+      "title": "The Future of Treasury Services and the Opportunity for Banks",
+      "key_insight": "Corporate treasuries see ESG-focused financial investments as a major challenge. There's a growing demand for innovative digital solutions, automation, and efficient risk management, with technology, product offering, and excellent customer service being key factors in bank selection.",
+      "implications": "CMIplus should consider incorporating ESG-related features or reporting capabilities within its platform. Continuous innovation in digital solutions, automation, and risk management tools is essential to remain competitive and meet evolving corporate expectations.",
+      "relevance": "watch",
+      "tags": [
+        "DigitalBanking",
+        "Compliance",
+        "ERP_TMS"
+      ],
+      "source": "EY Future of Treasury",
+      "published": "2025",
+      "url": "https://www.ey.com/en_gl/financial-services/future-of-treasury-services-and-opportunity-for-banks"
+    },
+    {
+      "title": "AI in Business Banking: From Transactions to Intelligence",
+      "key_insight": "AI is transforming business banking by connecting cash management, forecasting, credit assessment, FX execution, and reconciliation into seamless workflows. Generative AI is expected to unlock significant annual value for banks by boosting productivity, cutting costs, and elevating strategic insight.",
+      "implications": "CMIplus should actively integrate AI capabilities across its platform, particularly for automating cash management workflows, improving forecast accuracy, and providing real-time decision support. This will enhance operational efficiency and strategic value for corporate clients.",
+      "relevance": "urgent",
+      "tags": [
+        "AI",
+        "DigitalBanking",
+        "CashPooling"
+      ],
+      "source": "TreasurUp (referencing McKinsey)",
+      "published": "March 2026",
+      "url": "https://www.treasurup.com/blog/ai-in-business-banking-from-transactions-to-intelligence"
+    },
+    {
+      "title": "Unlocking Treasury Transformation: The Philips Journey",
+      "key_insight": "Philips reimagined its treasury operations by streamlining cash management, simplifying operational activities, and leveraging notional pooling to optimize liquidity. This transformation involved reducing bank accounts, integrating TMS and ERP for automated cash visibility, reconciliation, and straight-through payments.",
+      "implications": "CMIplus can learn from successful corporate treasury transformation case studies like Philips. The platform should emphasize features that enable account rationalization, robust ERP/TMS integration, automated cash visibility, and advanced liquidity management techniques like notional pooling.",
+      "relevance": "urgent",
+      "tags": [
+        "TreasuryTransformation",
+        "CashPooling",
+        "ERP_TMS"
+      ],
+      "source": "J.P. Morgan (presented at DACT)",
+      "published": "2025",
+      "url": "https://www.dact.nl/programme/"
+    }
+  ],
   "competitors": []
 }
