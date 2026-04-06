@@ -1,251 +1,172 @@
 {
-  "generated_at": "2026-04-06T19:51:38.915930+00:00",
+  "generated_at": "2026-04-06T20:04:46.584708+00:00",
   "week_label": "Week of 6 Apr - 12 Apr 2026",
-  "executive_summary": "The week's key themes revolve around the critical impact of ISO 20022 on treasury operations and the increasing focus on instant payments, including new EBA reporting requirements. The most urgent action for CMIplus is to ensure full ISO 20022 readiness, especially given the November 2026 deadline and the industry's current lag in adoption. UniCredit's introduction of 24/7 instant interbank transfers via its mobile business app represents the most relevant competitor move, enhancing digital capabilities for corporate clients. This competitive landscape emphasizes the need for CMIplus to continue innovating and adapting its corporate cash management platform.",
-  "market": [
-    {
-      "title": "ISO 20022 Reshaping Treasury Operations in 2026",
-      "summary": "The year 2026 marks a significant shift for corporate treasury teams as ISO 20022 compliance moves beyond interbank payments, with banks enforcing stricter data validation rules and unstructured addresses no longer accepted for many cross-border payments by November 2026. This requires corporates to review data collection and update systems to avoid payment failures.",
-      "sowhat": "CMIplus clients must ensure their systems and processes are ready for the stricter ISO 20022 data validation, especially for addresses, to prevent payment rejections and maintain operational efficiency. This is a direct impact on their payment initiation and reporting.",
-      "relevance": "urgent",
-      "tags": [
-        "ISO20022",
-        "Compliance"
-      ],
-      "source": "TIS Payments, SWIFT News",
-      "date": "April 8, 2026",
-      "url": "https://www.tispayments.com/insights/whitepapers/iso-20022-a-blueprint-for-treasury"
-    },
-    {
-      "title": "EBA Reporting for Instant Payments Commences in 2026, Focusing on Transparency",
-      "summary": "Following the regulatory standardization of instant payments in October 2025, 2026 marks the start of EBA reporting, shifting focus from technical rollout to accountability. The European Commission seeks to understand the impact on pricing, transaction volumes, and compliance, requiring banks to structure and validate data retrospectively.",
-      "sowhat": "This new reporting phase for instant payments means increased scrutiny and data requirements for banks, which will indirectly affect CMIplus and its clients regarding data provision and transparency around instant payment usage.",
-      "relevance": "watch",
-      "tags": [
-        "InstantPayments",
-        "Compliance"
-      ],
-      "source": "Foconis",
-      "date": "April 8, 2026",
-      "url": "https://www.foconis.de/en/instant-payments-are-live-now-eba-reporting-begins/"
-    },
-    {
-      "title": "SWIFT's Blockchain-based Shared Ledger Advances to MVP Implementation",
-      "summary": "SWIFT has successfully completed the design phase of its blockchain-based shared ledger and is now actively building the first iteration. This initiative aims to enable interoperability and 24/7 real-time cross-border payments, facilitating the trusted and scalable on-chain movement of regulated tokenized value.",
-      "sowhat": "This development signals SWIFT's commitment to future payment technologies, potentially impacting how CMIplus clients conduct cross-border transactions and manage liquidity in the long term, especially with tokenized assets.",
-      "relevance": "fyi",
-      "tags": [
-        "DigitalBanking",
-        "AI"
-      ],
-      "source": "SWIFT News",
-      "date": "April 8, 2026",
-      "url": "https://www.swift.com/news-events/news/swifts-blockchain-based-shared-ledger-progresses-mvp-implementation"
-    },
-    {
-      "title": "44% of Banks Behind on ISO 20022 Readiness for November 2026 Deadlines",
-      "summary": "A recent survey reveals that 44% of banks are behind on ISO 20022 readiness for the November 2026 deadlines, particularly concerning structured address migration and changes to exceptions and investigations (E&I) handling. Many banks are pursuing multiple parallel initiatives rather than a consolidated program.",
-      "sowhat": "This indicates potential friction points for CMIplus clients if their banking partners are not fully prepared, leading to operational challenges in payment processing, especially for cross-border transactions with unstructured address data.",
-      "relevance": "urgent",
-      "tags": [
-        "ISO20022",
-        "Compliance"
-      ],
-      "source": "Treasury Today",
-      "date": "April 8, 2026",
-      "url": "https://treasurytoday.com/press-release-44-of-banks-behind-on-iso-20022-readiness-for-november-2026"
-    },
-    {
-      "title": "SWIFT Introduces New Framework to Accelerate Consumer Cross-Border Payments",
-      "summary": "SWIFT is accelerating the transformation of consumer payments by rolling out a new framework designed to enhance the international payments experience. This initiative aims to provide greater certainty on costs, speed, and delivery for retail cross-border transactions, leveraging SWIFT's global network.",
-      "sowhat": "While focused on consumers, improvements in SWIFT's cross-border payment infrastructure will likely benefit corporate clients indirectly through enhanced network efficiency, transparency, and potentially new services that could be extended to business payments.",
-      "relevance": "watch",
-      "tags": [
-        "InstantPayments",
-        "DigitalBanking"
-      ],
-      "source": "SWIFT News",
-      "date": "April 8, 2026",
-      "url": "https://www.swift.com/news-events/news/swift-accelerates-transformation-consumer-payments-banks-roll-out-new-framework-retail-transactions"
-    },
-    {
-      "title": "Corporates Encouraged to Proactively Adopt ISO 20022 for Treasury Transformation",
-      "summary": "Despite not being directly mandated, corporates are strongly encouraged to proactively adopt ISO 20022 to leverage its rich, structured data for enhanced treasury operations, including improved reconciliation, fraud prevention, and cash forecasting. Banks are increasingly pushing for wider corporate migration to create a standardized payment ecosystem.",
-      "sowhat": "CMIplus should continue to educate and support its corporate clients in their ISO 20022 adoption journey, highlighting the strategic benefits beyond mere compliance, such as operational efficiency and better data analytics for treasury management.",
-      "relevance": "urgent",
-      "tags": [
-        "ISO20022",
-        "CorporateTreasury"
-      ],
-      "source": "PNC Insights, CorporateTreasurer, CTMfile, SWIFT",
-      "date": "April 8, 2026",
-      "url": "https://www.swift.com/our-solutions/corporate-treasury/iso-20022-corporates"
-    }
-  ],
+  "executive_summary": "The week highlights the accelerating shift towards real-time transactions and the broader digital transformation within corporate cash management, driven by standards like ISO 20022 and the increasing adoption of instant payments. Further shaping the market are emerging technologies such as Agentic AI and digital currencies, which are poised to redefine global payment landscapes and corporate treasury functions. For CMIplus, the most urgent action remains the continuous enhancement of its real-time payment capabilities and Open Banking API integrations to maintain a competitive edge for large international corporates in CEE. This urgency is underscored by UniCredit's recent strategic move to strengthen its corporate banking and cash management operations specifically within the CEE region, intensifying market competition.",
+  "market": [],
   "thought": [
     {
-      "title": "The future of payments: A new era of competition",
-      "key_insight": "The payments landscape is undergoing rapid transformation driven by new technologies, evolving customer expectations, and increasing competition from non-traditional players.",
-      "implications": "Banks must innovate their payment offerings, embrace open banking, and potentially collaborate with fintechs to remain competitive and capture new revenue streams.",
+      "title": "2026 banking and capital markets outlook",
+      "summary": "The 2026 Deloitte Banking and Capital Markets Outlook anticipates a defining year for US banks, marked by macroeconomic uncertainty, diverging consumer sentiment, and persistent inflation that will challenge revenues and profitability. Despite strong capital positions, banks may face headwinds in net interest income due to lower rates and a slowing economy. The report highlights the significant impact of the new regulatory framework for payment stablecoins, which could disrupt deposits but also create new business opportunities, necessitating bolstered infrastructure and capabilities. Furthermore, it emphasizes the need for banks to move beyond sporadic tactical wins in AI adoption towards true strategic transformation, recommending a clear vision with concrete outcomes and robust governance. Overall, the outlook suggests a complex environment where banks must defend margins, diversify fee income, and prepare for increased competition from nonbank entities.",
+      "implications": "CMIplus should closely monitor the evolving stablecoin landscape and its potential to disrupt traditional payment rails and deposit flows, considering how to integrate or compete with these new alternatives. The emphasis on strategic AI adoption suggests CMIplus should explore AI-driven enhancements for cash management, forecasting, and operational efficiency, moving beyond basic automation. The need for banks to diversify fee income and compete with nonbank entities implies CMIplus should focus on offering value-added services beyond core cash management to strengthen client relationships and competitive positioning.",
       "relevance": "urgent",
       "tags": [
-        "InstantPayments",
-        "OpenBanking"
+        "Stablecoins",
+        "AI"
       ],
-      "source": "McKinsey Financial Services",
+      "source": "Deloitte Banking Outlook",
       "published": "October 2025",
-      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/the-future-of-payments-a-new-era-of-competition"
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGnDD7f4p4cVs3DQUE51hi1QFSau2VL7XfxrRAWKnfvh0MiF29OSSRassQ_pF1zUfxPdHFvkHcPApN8gLAqKXCcEGb2qFQT0CpIRBXA9hZ_tt60bUnNaAoqndOLzqdsfI9dE5jPry6eI9jCXEQLGKS1i8MAdDP5unFF1IgyQzOHNI3pRmqAlet14pREPtnaePMMV8H8lxTjlDkI9mfuTLXrZKciBPwvbftyAjDasoxOQjBwFXWOgtPH-IwGX7t18XIO"
     },
     {
-      "title": "The Future of Wholesale Payments: A New Era of Innovation",
-      "key_insight": "Wholesale payments are being reshaped by real-time capabilities, ISO 20022 adoption, and the demand for enhanced data and transparency.",
-      "implications": "Financial institutions need to modernize their payment infrastructure, leverage data analytics, and develop new value-added services to meet corporate client demands.",
+      "title": "2025 Global Treasury Survey - PwC",
+      "summary": "The PwC 2025 Global Treasury Survey, based on insights from 350 treasurers worldwide, reveals how treasury functions are adapting to an increasingly complex environment marked by economic volatility, interest rate uncertainty, and regulatory shifts. Leading treasury organizations are building more connected operating models to safeguard assets and deliver actionable insights and sustainable financial outcomes. The survey highlights that treasury teams are responding to heightened demands for cash visibility, cost efficiency, and risk management by deepening integration with business units and enabling faster, more informed decisions. The role of treasury is evolving into a more strategic, innovative, and data-driven partner critical for enterprise value creation. Participants also showed an increased focus on cybersecurity enhancements, treating it as a critical treasury risk with potential cash, compliance, and reputational implications.",
+      "implications": "CMIplus should prioritize enhancing cash visibility and real-time liquidity tools within its platform to meet the evolving demands of treasurers. The survey's emphasis on treasury as a strategic, data-driven partner suggests CMIplus should develop more advanced analytics and reporting capabilities to support strategic decision-making for its corporate clients. Furthermore, the focus on cybersecurity and risk management indicates a need for CMIplus to continuously strengthen its security features and compliance offerings, potentially integrating more robust fraud prevention and sanction screening tools.",
       "relevance": "urgent",
-      "tags": [
-        "InstantPayments",
-        "ISO20022"
-      ],
-      "source": "Oliver Wyman",
-      "published": "October 2025",
-      "url": "https://www.oliverwyman.com/our-expertise/insights/2025/oct/the-future-of-wholesale-payments-a-new-era-of-innovation.html"
-    },
-    {
-      "title": "Journey to Treasury 2025: Navigating the Digital Landscape",
-      "key_insight": "Treasuries are increasingly adopting digital tools and automation to enhance efficiency, improve liquidity management, and mitigate risks in a complex global environment.",
-      "implications": "Corporates need to invest in treasury technology, integrate systems (ERP/TMS), and upskill their teams to fully leverage digital transformation.",
-      "relevance": "watch",
-      "tags": [
-        "DigitalBanking",
-        "ERP_TMS"
-      ],
-      "source": "EACT (Journey to Treasury)",
-      "published": "September 2025",
-      "url": "https://www.eact.eu/resources/journey-to-treasury-2025-navigating-the-digital-landscape"
-    },
-    {
-      "title": "Transaction Banking 2025: The Digital Imperative",
-      "key_insight": "Digitalization is paramount for transaction banks to deliver seamless client experiences, optimize operations, and stay competitive amidst evolving market demands.",
-      "implications": "Banks must accelerate their digital transformation efforts, focusing on API-driven connectivity, real-time processing, and data-driven insights for corporate clients.",
-      "relevance": "urgent",
-      "tags": [
-        "DigitalBanking",
-        "Compliance"
-      ],
-      "source": "BCG Transaction Banking",
-      "published": "July 2025",
-      "url": "https://www.bcg.com/publications/2025/transaction-banking-digital-imperative"
-    },
-    {
-      "title": "EY Global Treasury Survey 2025: Reshaping Treasury for a Digital Future",
-      "key_insight": "Treasuries are prioritizing digital transformation, focusing on automation, data analytics, and cloud-based solutions to enhance strategic value and operational resilience.",
-      "implications": "Organizations need to develop a clear digital treasury roadmap, invest in integrated technology platforms, and address talent gaps to realize the full benefits of transformation.",
-      "relevance": "watch",
       "tags": [
         "TreasuryTransformation",
-        "DigitalBanking"
-      ],
-      "source": "EY Future of Treasury",
-      "published": "November 2025",
-      "url": "https://www.ey.com/en_gl/treasury/global-treasury-survey-2025-reshaping-treasury-for-a-digital-future"
-    },
-    {
-      "title": "PwC Global Treasury Survey 2025: Navigating Uncertainty",
-      "key_insight": "Treasuries are grappling with geopolitical instability, inflation, and supply chain disruptions, necessitating robust risk management and agile liquidity strategies.",
-      "implications": "Companies must enhance their forecasting capabilities, optimize cash pooling structures, and leverage technology to gain real-time visibility into global liquidity.",
-      "relevance": "urgent",
-      "tags": [
-        "Liquidity",
-        "CashPooling"
+        "CashManagement"
       ],
       "source": "PwC Global Treasury Survey",
-      "published": "December 2025",
-      "url": "https://www.pwc.com/gx/en/financial-services/treasury/global-treasury-survey-2025.html"
+      "published": "June 2025",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEue_mw_y1JcxyS51VwgBqQfGiU2-DOuUrn8qMluDjNPjMdBdyZFCmU0ROfgzJYBh2D-fV_avSd4POcoQQNZJq-FclDQC1kf0hhhHng28tH52KqDq75Ddn_s81WcJjmxdfvVfIR7TIVvheYye9g4_ItPScQdC3-g9jZ-SlqY-PWkeq-oZM12BUEqLaS0gnmLwAqF7HT48PhRC0s24etRMSMt9VCdPp3hmg="
+    },
+    {
+      "title": "Agentic AI, Digital Currencies and Real-Time Transactions Reshape Global Payments Landscape",
+      "summary": "The BCG 23rd annual Global Payments Report, \"The Future Is (Anything but) Stable,\" projects global payments revenue to reach $2.4 trillion by 2029, despite an expected moderation in growth to 4% annually over the next five years. The report identifies five structural forces reshaping the industry: the rise of agentic AI, digital currencies (like stablecoins), fintech disruption, real-time account-to-account (A2A) systems, and the enduring importance of cost transformation. It highlights that agentic AI, digital currencies, and real-time A2A payments are fundamentally reshaping industry economics. Stablecoins are expected to create new opportunities for both banks and nonbanks, while real-time A2A payment volumes rose 40% globally in 2024, now accounting for a quarter of digital retail payments worldwide. The report emphasizes that leaders must embrace these new fundamentals of growth to succeed in the next decade.",
+      "implications": "CMIplus must strategically integrate real-time A2A payment capabilities and explore the potential of stablecoins as a payment rail, especially for cross-border transactions, to remain competitive. The rise of agentic AI suggests CMIplus should investigate AI-driven solutions for payment orchestration, fraud reduction, and operational cost optimization. Given the emphasis on fintech disruption and new business models, CMIplus should consider partnerships or developing innovative offerings that leverage these trends to enhance its platform and value proposition for corporate treasuries.",
+      "relevance": "urgent",
+      "tags": [
+        "InstantPayments",
+        "Stablecoins"
+      ],
+      "source": "BCG Transaction Banking",
+      "published": "September 2025",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE0NQIh71QI5QoCfqh_YjCHWkq4t3jf-GZwlW4-9KrvYsL7ecc1AVudm6St-rBqT-VlcTEUjNwnyVYtAVs5m5JyIqnfRKsdyNQ-HSoDmXo1mvQoDKUG7EdFyiBWy7jMfpLKQBAsjupYrEg4TDASDDwPMt-b2C0U4n-OFYY2FtcxESrV4aXj"
+    },
+    {
+      "title": "The 2025 McKinsey Global Payments Report: Competing systems, contested outcomes",
+      "summary": "The 2025 McKinsey Global Payments Report highlights that the payments industry, valued at $2.5 trillion in revenue, is at a turning point, moving from universal efficiency to a competition among diverse market systems. The report dissects the rise of varied payment rails, the impact of digital assets, and the transformative power of AI, offering a roadmap for success in a rapidly evolving global ecosystem. Global payments revenue growth slowed to 4% in 2024, down from 12% in 2023, due to peaking interest rates and structural shifts towards lower-yield payment methods. Cash usage continues to decline, now accounting for 46% of worldwide payments, while account-to-account (A2A) payments are gaining popularity, particularly through digital wallets. The report also notes that new technologies, including tokenized money, digital currencies, and AI-based fraud detection, are creating opportunities, though adoption is inconsistent due to regulatory uncertainties and infrastructure gaps.",
+      "implications": "CMIplus should focus on adapting to the divergence in payment systems by ensuring its platform supports a wide array of payment rails, including A2A payments and digital wallets, especially in CEE. The report's emphasis on digital assets and tokenized money suggests CMIplus should explore offering or integrating solutions for these emerging payment methods to cater to future corporate treasury needs. Furthermore, leveraging AI for enhanced fraud detection and liquidity management, as highlighted by McKinsey, presents a critical opportunity for CMIplus to improve security and efficiency for its clients.",
+      "relevance": "urgent",
+      "tags": [
+        "Payments",
+        "DigitalBanking"
+      ],
+      "source": "McKinsey Financial Services",
+      "published": "September 2025",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGxLpoqPtKZftDAKzoSk0NkQTkPTsxf26yDkZB3JKt5oRZKFaz1pXT3cK-QoqKSj8N8v2jD0wNqG0eZCiaIM0_urkGucm3yiQ8u2AjqGR2PCMfnTbX3GELanidXbviYPm5LE7WABPtQ-O4wtYoMj0mrpIxsBINR9SZ3pzPUY3tnEzV_DjWDqfvXtILKAUvpmZk9ColY"
+    },
+    {
+      "title": "New era for corporate treasurers as global volatility spurs need to find fresh growth opportunities",
+      "summary": "The EY 2025 DNA of the Treasurer report, based on a survey of over 1,200 treasurers and senior finance leaders, reveals that 83% of corporate treasurers expect dramatic changes to their roles by 2030, driven by the need to adapt to global volatility and identify new growth opportunities. CFOs overwhelmingly (84%) believe treasurers will increasingly focus on value creation and supporting business growth, moving beyond traditional operational responsibilities. The survey highlights treasurers' proactive adoption of technology, with 70% routinely using AI in areas like financial forecasting and cash management. However, many treasurers face obstacles, including ongoing operational tasks and a lack of time for skill development, hindering their full potential. The report underscores the expanding strategic remit of treasurers to manage risk, optimize liquidity, and support strategic decision-making.",
+      "implications": "CMIplus should develop solutions that automate routine treasury tasks, freeing up treasurers to focus on strategic value creation, aligning with the evolving role highlighted in the report. The high adoption of AI in forecasting and cash management by treasurers indicates a strong demand for advanced AI-powered tools within the CMIplus platform to enhance accuracy and efficiency. CMIplus should also consider offering educational resources or integrated tools that help treasurers overcome skill gaps and operational constraints, enabling them to fully leverage technology for strategic insights and liquidity optimization.",
+      "relevance": "urgent",
+      "tags": [
+        "TreasuryTransformation",
+        "AI"
+      ],
+      "source": "EY Future of Treasury",
+      "published": "September 2025",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGbO4t6fD3rObWUQAtm_VQ4keDISm8PeR87McQwKh61yG3uyU6qe4-rszN6THWM5nas67lppRyOguEi_5KH0tPwtoPnPa6ktUSOkChxW3assLbooC2JT7ekgYukR7rpaFVufKQJsGqPFtOovWlvifuPEjXKcIgY5ntUzmDvZfA1GOcEOAO0ijK14DB1Nt4W-KDLPWDzhq0RchvO48JH_oqiDLTsG09L4SGsqZKxNUBPZIkqNdVJkRsMB-T2xYgGLrULdv07F9P0eQ=="
+    },
+    {
+      "title": "EACT Treasury Survey 2025: Navigating New Horizons in Corporate Treasury",
+      "summary": "The 2025 EACT Treasury Survey, drawing insights from approximately 250 European group treasurers, reveals a profession in transformation, balancing an uncertain present with a digital future. The survey highlights a return to core financial imperatives, with cash flow forecasting remaining the cornerstone of treasury priorities, reflecting the critical need for reliable liquidity management amidst economic volatility. Working capital optimization has also surged as a key focus area, with treasurers adopting a more holistic approach beyond traditional metrics. While digital transformation and banking relationships have historically been high priorities, the 2025 results indicate a more strategic adoption of technology, moving from reactive digitization to proactive modernization of treasury systems, embracing data analytics, RPA, and AI for improved cash management and operational efficiency.",
+      "implications": "CMIplus should reinforce its offerings in cash flow forecasting and liquidity management, integrating advanced analytics and potentially AI-driven insights to meet the top priorities of European treasurers. The shift towards strategic technology adoption means CMIplus should focus on delivering integrated, modern treasury systems that go beyond basic functionalities, incorporating features like RPA and AI to enhance operational efficiency. Given the emphasis on working capital optimization, CMIplus should explore solutions that provide a holistic view and tools for managing working capital more effectively, aligning with treasurers' evolving needs.",
+      "relevance": "urgent",
+      "tags": [
+        "CashManagement",
+        "TreasuryTransformation"
+      ],
+      "source": "Journey to Treasury / EACT",
+      "published": "July 2025",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQExw0Z4Ru6tawvkGGth-j-ltfrSWbgte51GKQ-txBpJLHq5LD_h-_jkBGq5mcLviKw94zz5eXWDnI5M6brZTUMe7GMejqshLqf8PjUILCTsffvgZ7B8jVd79kfYURc6V70Hyux-06AJfXuYhn-9nSlE1D5vn6Okf_cRUo9-mzGZYsp8iNibyOuKolYsp3xW-9MuKnjBEUvp3NyZf__pkQk4Qh6S3V3Ea4nyB8ZFPIeSRbRuB7C62lbNS8l0R01xUhWu"
     }
   ],
   "competitors": [
     {
-      "title": "BNP Paribas Enhances Cash Management and Liquidity Solutions in India",
-      "competitor": "BNP Paribas",
-      "summary": "BNP Paribas in India is streamlining domestic and foreign payments and collections with end-to-end global disbursement and receivables services. They offer eReporting, automated reconciliation, payment aggregator integration, virtual accounts, and comprehensive cash pooling solutions.",
-      "sowhat": "This shows BNP Paribas' focus on digital cash management tools and liquidity solutions in emerging markets. RBI CMIplus should monitor their regional offerings and digital integration capabilities.",
-      "relevance": "watch",
-      "tags": [
-        "DigitalBanking",
-        "CashPooling"
-      ],
-      "source": "BNP Paribas in India",
-      "date": "April 02 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFeQL2RueAzm6xn4_rWdQAC_zwX0zrwZfFuKM4VYdA7JB0bQvnl93r3U1M4pAasQaB17gsgoo92sD1Fn-43IwtcZWxZp1zXfMep5gigW-KsEOOYY9LrUm352nQ9GVW15l1XAFBMvjJCwDcBCyL4yaMoU3zRWHTjr-vCJIq5oEx8X_g3KfioPzuWoPZnaw-zKOHM1n0alG0OHw=="
-    },
-    {
-      "title": "HSBC Reports Strong Global Payments Solutions Revenue and Accelerated Client Onboarding",
-      "competitor": "HSBC",
-      "summary": "HSBC reported $11.9 billion in global payments solutions revenue within commercial banking, an 18% year-on-year increase. Their growth is underpinned by scale and a technology-led operating model, processing 193 payments per second and accelerating client onboarding through Smart Transact in 13 markets.",
-      "sowhat": "HSBC's significant revenue growth in payments and rapid client onboarding via Smart Transact indicates strong digital adoption and competitive pressure in global payments. RBI CMIplus should analyze their technology-led operating model and client acquisition strategies.",
-      "relevance": "urgent",
-      "tags": [
-        "DigitalBanking",
-        "InstantPayments"
-      ],
-      "source": "Euromoney",
-      "date": "April 01 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEKKGDZK-Q2fvnKdCpzJEw7fKNe7hOxEIghl3hRdT3ra4mb0i80sUPnYvcVlDHPSOMV7zNnf3EPVtN9HjFDCITG2--u8_n1PajYFYTBbRV-ubKbNSMB5xqLtEJ_ve6hsmcC2YGfLjLr3OSGOAr3-qA7oWVJx-_FayF3caIMpKM-rgwD5o3_Rv1YSAfyRWzQRISBAMDDKTmUTd8ubtvgKIoO6Y0DODY=="
-    },
-    {
-      "title": "UniCredit Romania Introduces 24/7 Instant Interbank Transfers in Lei via Mobile Business App",
-      "competitor": "UniCredit",
-      "summary": "UniCredit Bank SA in Romania has updated its Business Mobile app to include instant interbank transfers in Lei, available 24/7 on any calendar day. This allows for real-time payments to other Romanian banks participating in the national instant credit transfer system.",
-      "sowhat": "This move by UniCredit in a key CEE market highlights the increasing demand and implementation of instant payment capabilities for corporate clients. RBI CMIplus should assess its own instant payment offerings and mobile business app functionality in CEE.",
+      "title": "Deutsche Bank Appoints US Regional Instant Payments Product Head and Highlights API-Enabled Instant Transfers.",
+      "competitor": "Deutsche Bank",
+      "summary": "Deutsche Bank is actively investing in its instant payments capabilities by appointing a US Regional Instant Payments Product Head to drive strategy and roadmap for the Americas. The bank supports SEPA Instant Credit Transfers, enabling real-time payments 24/7 for corporate and personal customers, leveraging API technology.",
+      "sowhat": "Deutsche Bank's focus on instant payments and API technology indicates a strong competitive push in real-time payment solutions, which could impact market share and client expectations for speed and integration.",
       "relevance": "urgent",
       "tags": [
         "InstantPayments",
-        "CEE"
+        "APIBanking"
       ],
-      "source": "Apple App Store (UniCredit RO - Business Mobile)",
-      "date": "April 01 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHB8s8MYE9n4RRjd630k0Pt7EYKDGjt3J2cjYd9uZNPtCHA7UO2QqYIuNIvxi5fr_M3LTQZqCPD4kqlHW_ZymRqFfVMghy2DVmM5G5Go6sgihbhSrl6Nkz0zLAynhuQ5bq3enQ7RZF8X_o8Z0WgwaCe9R4_68Li0A5McdGGlnKavorqYh0Snyk5WmM=="
+      "source": "getmereferred.com, Discuss",
+      "date": "April 04 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHO8pekY7_GsLI50jA2_yyPnyvbT4MRBIY9WkxCnlvHqOwzuNIExINa-ZFuSsMQNsPO8Dw9IwhSbDaMGsbizDD63IWprRGP7t52KLG7ek6E9bFwaKC1KWNOXFsPZD0WAL4zOoauYh4bEPSOK8qOMbb1qspTMzZWeIlwpdS4ILKdd5BMpXuf9FxDIk45xI1Tm0pkkpS_4ICVtHiSZhTBUYx_LKnkYp2t808DzKqFoDZpJ2dbQVhnDRuPDqOSmd5IsECRggmtR8hiQ6GnN513zM3K_65DT3a5v7b0BE1EBZ8q"
     },
     {
-      "title": "Erste Private Banking in Romania Recognized for Client Service and Digital Ecosystem",
-      "competitor": "Erste Group",
-      "summary": "Erste Private Banking in Romania was recognized by Euromoney for outstanding client service, offering a highly advanced digital ecosystem. This ecosystem enables full online custody management and trading, including OTC bonds, via their George platform.",
-      "sowhat": "While focused on private banking, the advanced digital ecosystem and online custody management in a CEE market like Romania indicate strong digital capabilities that could extend to corporate offerings. RBI CMIplus should observe how these digital innovations are leveraged across segments.",
+      "title": "ING Explores Future of Digital Payments, Instant Payments, and On-Chain Cash Management.",
+      "competitor": "ING",
+      "summary": "ING's Wholesale Banking is actively discussing the future of digital payments, emphasizing a multi-rail approach including instant payments and permissioned blockchains for on-chain cash management. They are also recruiting for Transaction Services traineeships focusing on payments, cash management, and liquidity solutions.",
+      "sowhat": "ING's forward-looking approach to digital payments, including blockchain for cash management, indicates a strategic move towards innovative solutions that could redefine corporate treasury services. This highlights the importance of staying ahead in digital transformation.",
+      "relevance": "watch",
+      "tags": [
+        "InstantPayments",
+        "DigitalBanking"
+      ],
+      "source": "ING Wholesale Banking, ING Careers",
+      "date": "March 25 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG-IxrUQo5SHg9u2RbmtWtMQyQ9oW05D76FdW0k-iZV9cGP1amHkJz6ahYHaAtJHv6jXJBt3-J4HwqlsdcKYNZ8q2jvHI4MMCAgualBfJ3OAViEdq6XofHh1tRm8k5e436itAq_0A2PBoy-nnF_T42oluZi7MWK1rfpGydT44ayY892na2EmEEu6OU08JHQUXQJDvAK9B1TguFRI-Xy9wrXG2ay8zSV"
+    },
+    {
+      "title": "UniCredit Strengthens Corporate Banking and Cash Management in CEE with Streamlined Operations.",
+      "competitor": "UniCredit",
+      "summary": "UniCredit has reorganized its payments, trade finance, and working capital product development, centralizing activities to enhance product delivery. The bank maintains a strong corporate banking and international cash management franchise across Central and Eastern Europe, leveraging its pan-European platform.",
+      "sowhat": "UniCredit's continued focus and strong market share in CEE corporate banking and cash management, coupled with operational streamlining, reinforces its competitive position in RBI's key region.",
+      "relevance": "watch",
+      "tags": [
+        "CEE",
+        "CashManagement"
+      ],
+      "source": "Euromoney, Business Model Canvas Templates, Wikipedia",
+      "date": "April 01 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG8i6pKHFB6useyZ_uyYwUlqORD5u7YX6b87HTNaJLDy3N_AIRi5CO27VuS-T61pYIHKNcdJzxSiiR2s0lJK9HqdNdYMfKSYXZ1uJfBNK0nX6o2d4msq9vNhg1ZSMqGM0DDw0OWOoOOH3N1yCUgeO4zlvi57OfbG4bbVfEd2rQabE1NtbL4Y70-8c6VPbo7KgXmSZUR4VHMtvOyhD_7WuJ5hQU1MBk="
+    },
+    {
+      "title": "BNP Paribas Enhances International Cash Management and Liquidity Advisory Services.",
+      "competitor": "BNP Paribas",
+      "summary": "BNP Paribas's Transaction Banking Americas is focused on optimizing working capital for corporate clients through cash management and liquidity advisory. Globally, they are streamlining domestic and foreign payments and collections with end-to-end services, improving efficiency and cash flow visibility.",
+      "sowhat": "BNP Paribas's continuous efforts in global cash management and liquidity solutions, including advanced reconciliation and account structures, indicate a strong commitment to serving international corporates, directly competing with RBI CMIplus.",
+      "relevance": "watch",
+      "tags": [
+        "CashManagement",
+        "Liquidity"
+      ],
+      "source": "BNP Paribas USA, BNP Paribas in India",
+      "date": "April 04 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGD3rD3R0xOr6RF6PR5b_J9kMrIxcjNLxDJgPSCC-j8LfGB8bxAS5CZF86wmYUo3kLdID0VwiehiXOPyog-YM0zhepj-XpcbSS9M7l3sQcAUDhjRT7DESsOLtruRaUYAU4zh99PzcBb4dBZwFL2cTvtB3MMzNMHCXt5_Bxc3EL2oQxHxb00"
+    },
+    {
+      "title": "HSBC Launches Digital Trade Finance and Receivables Solutions for Businesses.",
+      "competitor": "HSBC",
+      "summary": "HSBC is empowering businesses with digital solutions like 'Receivables Advantage' to unlock immediate cash from receivables and 'HSBC TradePay' for simplified, digital trade finance and just-in-time payments to suppliers.",
+      "sowhat": "HSBC's focus on digital trade finance and receivables management directly addresses corporate working capital needs, offering faster and simpler solutions that could attract clients seeking efficiency in their cash conversion cycle.",
       "relevance": "watch",
       "tags": [
         "DigitalBanking",
-        "CEE"
+        "CashManagement"
       ],
-      "source": "Erste Group",
-      "date": "March 23 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGsA5i2wDIhsRNtQV2aTbLDD5S5TDvq0--0FffOgSW-wtH-zZmWCumdaW-CIBgqQnZe_YSODDALpOPGC90z21Uhk-MrSSKo2HasZ-GTRFaIRW8obzYxGHhlHeCOarmIMOY1JiMwB0DHrFnXuc12stT6irFcjJI52ClmxAdIWWJAuQp26RS0-GmcDm3iuGf9hhvNfQLC-zlK38682C-lhycyOKI7HZSXzzYq7QoGEZgjRbJKWQ=="
+      "source": "HSBC UAE",
+      "date": "April 01 2026",
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEHDaJGSPniDqxVrP7f44uxEoYRFAPlW57EAcrEXXcxHt2fT0BO93MOIs0-DGQTYjNZN1RzqGfr9p4XhLAPHworwvVMK0fHjATPkKZ7G-Pngm70ySCdFCHn"
     },
     {
-      "title": "Intesa Sanpaolo Romania Highlights Cash Management, Online Banking, and Open Banking API Services",
-      "competitor": "Intesa Sanpaolo",
-      "summary": "Intesa Sanpaolo Romania emphasizes its comprehensive corporate services, including efficient Cash Management, robust Online Banking, and Open Banking API capabilities. These offerings aim to help companies manage current accounts and liquidity effectively.",
-      "sowhat": "Intesa Sanpaolo's explicit promotion of Open Banking APIs and integrated cash management in CEE signifies a strong competitive push in digital corporate banking. RBI CMIplus should evaluate its own API strategy and integrated solutions in the region.",
-      "relevance": "urgent",
+      "title": "Erste Group Strengthens CEE Payments Operations and SEPA/International Clearing.",
+      "competitor": "Erste Group",
+      "summary": "Erste Group's Payments Operations & Clearing division manages the bank's payment hub infrastructure, ensuring smooth SEPA and international clearing and settlement. They are actively seeking a Payment Process Owner to improve SEPA & FX A2A payment processes and monitor regulatory changes in CEE.",
+      "sowhat": "Erste Group's continuous investment in its CEE payment infrastructure and focus on process ownership for SEPA and international payments highlights their commitment to efficient payment services in the region, a direct competitive area for RBI CMIplus.",
+      "relevance": "watch",
       "tags": [
-        "OpenBanking",
-        "CEE"
+        "CEE",
+        "SEPA"
       ],
-      "source": "INTESA SANPAOLO ROMANIA",
+      "source": "Sparkasse (Erste Group Bank AG)",
       "date": "April 03 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHG_Do8cYNltfHmEeH4j257-ms5z50LxvZ14nWXDUVnAGNCiq376CjIKeAWGbxTbB8FViZEJmurP1yRWDbGfQsXzf6kyDX47mbBBT4v0NR_n0ZpCtjaj2og4jxB5qloEdiGN3gq_6J6n2E=="
-    },
-    {
-      "title": "ING Explores Future of Digital Payments, Stablecoins, and Programmable Money",
-      "competitor": "ING",
-      "summary": "ING's \"Orange Live\" webinar discussed the future of payments, highlighting multi-rail systems, euro-denominated stablecoins (like Qivalis, co-founded by ING), and programmable money. They emphasize that regulation like MiCA and DORA provides a safe playing field for innovation.",
-      "sowhat": "ING's active involvement in stablecoin initiatives and programmable money indicates a forward-looking strategy in digital payments infrastructure. RBI CMIplus should closely monitor these developments and their potential impact on corporate treasury and instant payments.",
-      "relevance": "urgent",
-      "tags": [
-        "Stablecoins",
-        "InstantPayments"
-      ],
-      "source": "ING Wholesale Banking / ING.com",
-      "date": "March 25 2026",
-      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGU3rOGmUxrXbtc_LkVc-n_KH6MmvdVy_y9OD640FprJiefVLYyZgCVjzkOdmnN0MGeOhI-5yV-h-UsnyV4escfVUs_z6m2x8F2L5d6_XhQaq6QWDQGgpBXDxn6u3bIz-gXywWjq81BGynDCuQlqbB5deTDI_GeEW_tjA-AbAxw9OnrNgHCJ0XJVKek3Y9bV_b0Kw63frBSTL6p9PQD6qPsEYI2zRW4"
+      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFdh4AIR6vfjQBB1FugHQGhuug2Wnwd43UEk1UDGcd4sgXMV3tH3sxgl2B6y30LKCH0UwJgNSaCPEQ8Ww_kw1rjzFnggqhiuGO5NSqsnGLY3Swxp5AbqJnO1E5z8KXKr8Y3mSwAsC8bCc3oJ1YWdLiDwDEAmLY5GuC_eL_9vDfKgZ01nR9SfXX_ysfjedhbtzPn4TR6H10HJ6ATQ3U="
     }
   ]
 }
