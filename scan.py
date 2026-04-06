@@ -91,16 +91,23 @@ def build_thought_prompt(sources):
     return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Use Google Search to find THOUGHT LEADERSHIP reports from last 12 months from: {names}
-Topics: cash management, treasury transformation, open banking, payments, CEE
+Use Google Search to find THOUGHT LEADERSHIP reports, whitepapers, surveys and analyses from last 12 months from: {names}
+Topics: cash management, treasury transformation, open banking, payments, CEE banking
 
 Tags: {tags}
 
 CRITICAL URL RULE: Only include the exact URL that Google Search returned for each article.
 Never construct, guess or hallucinate a URL. If you are not 100% certain of the exact URL, use "" for the url field.
 
-Return a JSON array of exactly {n} items. Keep each field concise (max 2 sentences).
-Each item: title, key_insight, implications, relevance (urgent/watch/fyi), tags (array max 2), source, published, url
+Return a JSON array of exactly {n} items. Each item must have these fields:
+- title: string — full report/article title
+- summary: string — comprehensive 5-7 sentence summary covering: what the report is about, main findings, key data points or statistics mentioned, and the overall strategic conclusion
+- implications: string — 3-4 sentences on what this specifically means for CMIplus product strategy, roadmap priorities, or competitive positioning
+- relevance: one of "urgent", "watch", "fyi"
+- tags: array of max 2 tags from the available list
+- source: string
+- published: string (Month Year)
+- url: string
 
 Start with [ end with ]. No markdown. No explanation. JSON only."""
 
