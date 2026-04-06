@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 """
-CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v2
-Improvements:
-- Thought leadership: 12-month lookback, deeper analysis format
-- Tagging: items tagged with CM taxonomy categories
-- Source priority: priority 1 sources get more items
-- Competitor grouping: each item tagged with competitor name
-- Separate executive summary call
-Uses Google Gemini API with Google Search grounding.
+CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v3
+Robust JSON parsing with multiple fallback strategies.
 """
 
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 import urllib.request
@@ -57,100 +52,113 @@ def get_week_label():
 def build_market_prompt(sources):
     cfg = sources["scan_config"]
     context = cfg["context"]
-    tags = sources["tags"]
+    tags = ", ".join(sources["tags"])
     week = get_week_label()
-    now_iso = datetime.now(timezone.utc).isoformat()
-    p1_sources = [s for s in sources["market_news"] if s["active"] and s["priority"] == 1]
-    p2_sources = [s for s in sources["market_news"] if s["active"] and s["priority"] == 2]
-    p1_items = cfg.get("items_priority_1", 3)
-    p2_items = cfg.get("items_priority_2", 1)
-    total = len(p1_sources) * p1_items + len(p2_sources) * p2_items
-    p1_focus = "; ".join([f"{s['name']} ({s['focus']})" for s in p1_sources])
-    p2_focus = "; ".join([f"{s['name']} ({s['focus']})" for s in p2_sources]) if p2_sources else "none"
-    tags_str = ", ".join(tags)
+    p1 = [s for s in sources["market_news"] if s["active"] and s["priority"] == 1]
+    p2 = [s for s in sources["market_news"] if s["active"] and s["priority"] == 2]
+    n1 = cfg.get("items_priority_1", 3)
+    n2 = cfg.get("items_priority_2", 1)
+    total = len(p1) * n1 + len(p2) * n2
+    p1_str = ", ".join([s["name"] for s in p1])
+    p2_str = ", ".join([s["name"] for s in p2]) if p2 else "none"
 
-    return f"""You are a strategic intelligence analyst for a cash management platform product owner at RBI (Raiffeisen Bank International).
+    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
 Context: {context}
 
-Search for MARKET NEWS published in the LAST 7 DAYS ({week}).
+Search for MARKET NEWS from the last 7 days ({week}).
+Priority sources ({n1} items each): {p1_str}
+Secondary sources ({n2} item each): {p2_str}
+Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking, PSD3, open banking
 
-HIGH PRIORITY sources (find {p1_items} items each): {p1_focus}
-MEDIUM PRIORITY sources (find {p2_items} item each): {p2_focus}
+Available tags: {tags}
 
-Focus: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, H2H, corporate treasury, CEE banking, PSD3, open banking APIs
+Respond with a JSON array of exactly {total} objects. Each object must have these exact fields:
+- title: string
+- summary: string (2-3 sentences)
+- sowhat: string (1-2 sentences about CMIplus implications)
+- relevance: one of "urgent", "watch", "fyi"
+- tags: array of 1-3 strings from the available tags list
+- source: string
+- date: string
+- url: string
 
-For each item assign 1-3 tags from: {tags_str}
+Example of one item:
+{{"title": "EBA publishes VoP reporting guidelines", "summary": "The EBA released...", "sowhat": "CMIplus needs to...", "relevance": "urgent", "tags": ["VoP", "Compliance"], "source": "EBA", "date": "Apr 2026", "url": "https://eba.europa.eu/..."}}
 
-Return ONLY raw JSON, no markdown fences, exactly {total} items:
-
-{{"generated_at":"{now_iso}","week_label":"{week}","items":[{{"title":"headline","summary":"2-3 sentence factual summary","sowhat":"1-2 sentences implication for CMIplus","relevance":"urgent|watch|fyi","tags":["tag1"],"source":"name","date":"date","url":"https://..."}}]}}
-
-RAW JSON ONLY."""
+Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
 
 
 def build_thought_prompt(sources):
     cfg = sources["scan_config"]
     context = cfg["context"]
-    tags = sources["tags"]
-    now_iso = datetime.now(timezone.utc).isoformat()
-    week = get_week_label()
+    tags = ", ".join(sources["tags"])
     active = [s for s in sources["thought_leadership"] if s["active"]]
-    focus = "; ".join([f"{s['name']} ({s['focus']})" for s in active])
-    tags_str = ", ".join(tags)
+    names = ", ".join([s["name"] for s in active])
     n = len(active) * 2
 
-    return f"""You are a strategic intelligence analyst for a cash management platform product owner at RBI (Raiffeisen Bank International).
+    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
 Context: {context}
 
-Search for THOUGHT LEADERSHIP content published in the LAST 12 MONTHS from: {focus}
+Search for strategic THOUGHT LEADERSHIP content from the last 12 months from: {names}
+Look for: reports, whitepapers, research papers, annual outlooks, industry surveys, deep analyses.
+Topics: cash management strategy, treasury transformation, open banking, API banking, payments innovation, CEE banking
 
-Look for: strategic reports, whitepapers, research papers, annual outlooks, industry surveys, deep-dive analyses. NOT daily news.
+Available tags: {tags}
 
-Focus: cash management strategy, treasury transformation, open banking, API banking, payments innovation, digital banking, CEE banking
+Respond with a JSON array of exactly {n} objects. Each object must have these exact fields:
+- title: string
+- key_insight: string (2-3 sentences: the most important strategic insight)
+- implications: string (2-3 sentences: what this means for CMIplus strategy or roadmap)
+- relevance: one of "urgent", "watch", "fyi"
+- tags: array of 1-3 strings from the available tags list
+- source: string
+- published: string (Month Year)
+- url: string
 
-For each item assign 1-3 tags from: {tags_str}
+Example of one item:
+{{"title": "McKinsey: Transaction Banking in 2026", "key_insight": "Banks that invest in API-first...", "implications": "CMIplus should prioritize...", "relevance": "watch", "tags": ["OpenBanking", "AI"], "source": "McKinsey", "published": "Mar 2026", "url": "https://mckinsey.com/..."}}
 
-Return ONLY raw JSON, no markdown fences, exactly {n} items:
-
-{{"generated_at":"{now_iso}","week_label":"{week}","items":[{{"title":"headline","key_insight":"2-3 sentence most important strategic insight","implications":"2-3 sentences what this means for CMIplus strategy or roadmap","relevance":"urgent|watch|fyi","tags":["tag1"],"source":"name","published":"Month Year","url":"https://..."}}]}}
-
-RAW JSON ONLY."""
+Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
 
 
 def build_competitor_prompt(sources):
     cfg = sources["scan_config"]
     context = cfg["context"]
-    tags = sources["tags"]
-    now_iso = datetime.now(timezone.utc).isoformat()
-    week = get_week_label()
+    tags = ", ".join(sources["tags"])
     active = [s for s in sources["competitors"] if s["active"]]
-    tags_str = ", ".join(tags)
+    names = ", ".join([s["name"] for s in active])
     n = len(active) * 2
-    competitor_list = "\n".join([f"- {s['name']}: {s['focus']}" for s in active])
 
-    return f"""You are a strategic intelligence analyst for a cash management platform product owner at RBI (Raiffeisen Bank International).
+    return f"""You are a strategic intelligence analyst for RBI's CMIplus cash management platform.
 Context: {context}
 
-Search for news from these COMPETITORS in cash management (last 4 weeks):
-{competitor_list}
-
+Search for recent news (last 4 weeks) from these competitors in cash management: {names}
 Focus: cash management launches, API banking, corporate banking innovations, CEE expansion, VoP, instant payments.
 
-For each item assign 1-3 tags from: {tags_str}
-Each item MUST have a "competitor" field with the exact bank name.
+Available tags: {tags}
 
-Return ONLY raw JSON, no markdown fences, exactly {n} items covering as many different competitors as possible:
+Respond with a JSON array of exactly {n} objects covering as many different competitors as possible. Each object must have these exact fields:
+- title: string
+- competitor: string (exact bank name from the list above)
+- summary: string (2-3 sentences)
+- sowhat: string (1-2 sentences: threat, opportunity or benchmark for CMIplus)
+- relevance: one of "urgent", "watch", "fyi"
+- tags: array of 1-3 strings from the available tags list
+- source: string
+- date: string
+- url: string
 
-{{"generated_at":"{now_iso}","week_label":"{week}","items":[{{"title":"headline","competitor":"Bank Name","summary":"2-3 sentence factual summary","sowhat":"1-2 sentences implication for CMIplus — threat, opportunity or benchmark","relevance":"urgent|watch|fyi","tags":["tag1"],"source":"name","date":"date","url":"https://..."}}]}}
+Example of one item:
+{{"title": "Deutsche Bank launches CB Connect 2.0", "competitor": "Deutsche Bank", "summary": "Deutsche Bank expanded...", "sowhat": "This directly challenges CMIplus's...", "relevance": "urgent", "tags": ["OpenBanking", "CEE"], "source": "Deutsche Bank", "date": "Apr 2026", "url": "https://..."}}
 
-RAW JSON ONLY."""
+Return ONLY the JSON array, starting with [ and ending with ]. No other text."""
 
 
 def call_gemini(prompt):
     payload = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "tools": [{"google_search": {}}],
-        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 8192}
+        "generationConfig": {"temperature": 0.1, "maxOutputTokens": 8192}
     }
     url = f"{API_URL}?key={GEMINI_API_KEY}"
     data = json.dumps(payload).encode("utf-8")
@@ -165,28 +173,66 @@ def extract_text(response):
         parts = response["candidates"][0]["content"]["parts"]
         return "".join(p.get("text", "") for p in parts).strip()
     except (KeyError, IndexError) as e:
-        raise ValueError(f"Bad response structure: {e}\n{json.dumps(response)[:300]}")
+        raise ValueError(f"Bad response: {e}")
 
 
-def extract_json(response):
-    text = extract_text(response)
-    if text.startswith("```"):
-        lines = text.split("\n")
-        end = len(lines) - 1 if lines[-1].strip() == "```" else len(lines)
-        text = "\n".join(lines[1:end]).strip()
-    return json.loads(text)
+def parse_json_robust(text):
+    """Try multiple strategies to extract valid JSON from model output."""
+    text = text.strip()
+
+    # Strategy 1: direct parse
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Strategy 2: strip markdown fences
+    if "```" in text:
+        match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except json.JSONDecodeError:
+                pass
+
+    # Strategy 3: find JSON array
+    match = re.search(r'\[[\s\S]*\]', text)
+    if match:
+        try:
+            return json.loads(match.group(0))
+        except json.JSONDecodeError:
+            pass
+
+    # Strategy 4: find JSON object with items array
+    match = re.search(r'\{[\s\S]*"items"[\s\S]*\}', text)
+    if match:
+        try:
+            obj = json.loads(match.group(0))
+            return obj.get("items", obj)
+        except json.JSONDecodeError:
+            pass
+
+    raise ValueError(f"Could not parse JSON from response (length {len(text)}): {text[:300]}")
 
 
 def safe_call(prompt, label):
     print(f"  Calling Gemini for {label}...")
     try:
         response = call_gemini(prompt)
-        result = extract_json(response)
-        items = result.get("items", [])
+        text = extract_text(response)
+        result = parse_json_robust(text)
+        # Result should be a list directly
+        if isinstance(result, list):
+            items = result
+        elif isinstance(result, dict):
+            items = result.get("items", [])
+        else:
+            items = []
         print(f"  OK {label}: {len(items)} items")
         return items
     except urllib.error.HTTPError as e:
-        print(f"  FAIL {label} API {e.code}: {e.read().decode()[:300]}", file=sys.stderr)
+        body = e.read().decode()[:400]
+        print(f"  FAIL {label} API {e.code}: {body}", file=sys.stderr)
         return []
     except Exception as e:
         print(f"  FAIL {label}: {e}", file=sys.stderr)
@@ -195,30 +241,28 @@ def safe_call(prompt, label):
 
 def generate_executive_summary(market, thought, competitors, week, sources):
     context = sources["scan_config"]["context"]
-    m_titles = "; ".join([i.get("title","") for i in market[:5]])
-    t_titles = "; ".join([i.get("title","") for i in thought[:3]])
-    c_titles = "; ".join([f"{i.get('competitor','')}: {i.get('title','')}" for i in competitors[:5]])
+    m = "; ".join([i.get("title","") for i in market[:5]])
+    t = "; ".join([i.get("title","") for i in thought[:3]])
+    c = "; ".join([f"{i.get('competitor','')}: {i.get('title','')}" for i in competitors[:5]])
 
-    prompt = f"""You are a strategic intelligence analyst.
+    prompt = f"""Write a 4-5 sentence executive summary for {week}.
 Context: {context}
+Market news: {m}
+Thought leadership: {t}
+Competitor moves: {c}
 
-Write a 4-5 sentence executive summary for {week} based on:
-Market news: {m_titles}
-Thought leadership: {t_titles}
-Competitor moves: {c_titles}
-
-The summary must: name 2-3 key themes, state the most urgent action for CMIplus, highlight the most relevant competitor move.
+The summary must name 2-3 key themes, state the most urgent action for CMIplus, and highlight the most relevant competitor move.
 Return ONLY plain text. No JSON. No markdown. No bullet points."""
 
     try:
         response = call_gemini(prompt)
         text = extract_text(response)
-        if text.startswith("{"):
-            return "Weekly scan complete — see sections below."
+        if text.startswith("[") or text.startswith("{"):
+            return "Weekly scan complete. See sections below for details."
         return text
     except Exception as e:
         print(f"  Executive summary error: {e}", file=sys.stderr)
-        return "Weekly scan complete — see sections below."
+        return "Weekly scan complete. See sections below for details."
 
 
 def main():
@@ -229,7 +273,6 @@ def main():
     print("Loading sources...")
     sources = load_sources()
     week = get_week_label()
-    now_iso = datetime.now(timezone.utc).isoformat()
 
     print("Scanning market news (last 7 days)...")
     market = safe_call(build_market_prompt(sources), "market")
@@ -244,7 +287,7 @@ def main():
     executive_summary = generate_executive_summary(market, thought, competitors, week, sources)
 
     briefing = {
-        "generated_at": now_iso,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "week_label": week,
         "executive_summary": executive_summary,
         "market": market,
