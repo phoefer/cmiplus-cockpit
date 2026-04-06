@@ -4,154 +4,216 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CMIplus Intelligence Cockpit</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0f12; --surface: #13161b; --surface2: #1a1e25;
-    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-    --text: #e8eaf0; --muted: #7a8090;
-    --accent: #f0c040; --accent2: #c8a030;
-    --urgent: #e05050; --urgent-bg: rgba(224,80,80,0.1); --urgent-border: rgba(224,80,80,0.25);
-    --watch: #e08830; --watch-bg: rgba(224,136,48,0.1); --watch-border: rgba(224,136,48,0.25);
-    --fyi: #40a870; --fyi-bg: rgba(64,168,112,0.1); --fyi-border: rgba(64,168,112,0.25);
-    --rbi-red: #c8102e;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; font-size: 15px; line-height: 1.6; }
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --surface3: #e8e4dd;
+  --border: #e0dbd2;
+  --border2: #c8c2b8;
+  --text: #1a1814;
+  --text2: #4a453e;
+  --muted: #8a8278;
+  --accent: #c8102e;
+  --accent-light: #fdf0f2;
+  --accent-border: #f0c0c8;
+  --gold: #9a6f28;
+  --gold-light: #fdf8f0;
+  --urgent: #c8102e;
+  --urgent-bg: #fff0f2;
+  --urgent-border: #f5c0c8;
+  --watch: #b86000;
+  --watch-bg: #fff8f0;
+  --watch-border: #f5d8b0;
+  --fyi: #2a7a48;
+  --fyi-bg: #f0faf4;
+  --fyi-border: #b0dfc0;
+  --deep: #1e3a5f;
+  --deep-light: #f0f4f8;
+  --deep-border: #c0d0e0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.65; }
 
-  /* HEADER */
-  .header { border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
-  .header-brand { display: flex; align-items: center; gap: 12px; }
-  .rbi-mark { width: 28px; height: 28px; background: var(--rbi-red); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: white; }
-  .brand-text { font-family: 'DM Serif Display', serif; font-size: 18px; }
-  .brand-sub { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .week-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; }
+/* HEADER */
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
+.header-brand { display: flex; align-items: center; gap: 14px; }
+.rbi-mark { width: 32px; height: 32px; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; color: white; letter-spacing: 0.02em; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 500; color: var(--text); letter-spacing: -0.01em; }
+.brand-sub { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 1px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.week-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; }
+.search-bar { display: flex; gap: 6px; align-items: center; }
+.search-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; font-size: 13px; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; width: 210px; transition: all 0.15s; }
+.search-input:focus { outline: none; border-color: var(--border2); background: var(--surface); }
+.search-input::placeholder { color: var(--muted); }
+.search-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px; font-size: 12px; color: var(--text2); cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; transition: all 0.15s; white-space: nowrap; font-weight: 500; }
+.search-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
 
-  /* SEARCH BAR */
-  .search-bar { display: flex; gap: 8px; align-items: center; }
-  .search-input { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 13px; color: var(--text); font-family: 'Geist', sans-serif; width: 220px; transition: border-color 0.15s; }
-  .search-input:focus { outline: none; border-color: var(--accent); }
-  .search-input::placeholder { color: var(--muted); }
-  .search-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px; font-size: 12px; color: var(--text); cursor: pointer; font-family: 'Geist', sans-serif; transition: all 0.15s; white-space: nowrap; }
-  .search-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* LAYOUT */
+.main { max-width: 1120px; margin: 0 auto; padding: 2rem 2.5rem; }
 
-  /* LAYOUT */
-  .main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+/* TABS */
+.tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 2rem; overflow-x: auto; gap: 0; }
+.tab { padding: 10px 22px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 8px; user-select: none; letter-spacing: 0.01em; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.count-pill { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 1px 7px; border-radius: 10px; }
+.section { display: none; }
+.section.active { display: block; }
 
-  /* TABS */
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; overflow-x: auto; }
-  .tab { padding: 10px 20px; font-size: 13px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 8px; user-select: none; }
-  .tab:hover { color: var(--text); }
-  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
-  .count-pill { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; padding: 1px 7px; border-radius: 10px; }
+/* OVERVIEW META */
+.overview-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 1.75rem; }
+.meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; text-align: center; }
+.meta-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 400; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.meta-num.urgent { color: var(--urgent); }
+.meta-num.watch { color: var(--watch); }
+.meta-num.fyi { color: var(--fyi); }
+.meta-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
 
-  /* SECTIONS */
-  .section { display: none; }
-  .section.active { display: block; }
+/* EXEC SUMMARY */
+.exec-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 10px; padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; }
+.exec-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.exec-text { font-size: 15px; color: var(--text); line-height: 1.75; }
 
-  /* EXEC SUMMARY */
-  .exec-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
-  .exec-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-  .exec-text { font-size: 15px; color: var(--text); line-height: 1.7; }
+/* FILTER ROW */
+.filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 5px; padding: 5px 14px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: 'IBM Plex Sans', sans-serif; }
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active { background: var(--text); border-color: var(--text); color: white; }
 
-  /* OVERVIEW META */
-  .overview-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 2rem; }
-  .meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; text-align: center; }
-  .meta-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); line-height: 1; margin-bottom: 4px; }
-  .meta-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+/* TAG FILTERS */
+.tag-filter-row { display: flex; align-items: center; gap: 5px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.tag-filter-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
+.tag-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 3px; padding: 3px 9px; font-size: 11px; cursor: pointer; font-family: 'IBM Plex Mono', monospace; transition: all 0.15s; }
+.tag-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tag-btn.active { background: var(--accent-light); border-color: var(--accent-border); color: var(--accent); }
 
-  /* FILTER ROW */
-  .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-  .filter-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; padding: 5px 14px; font-size: 12px; cursor: pointer; transition: all 0.15s; font-family: 'Geist', sans-serif; }
-  .filter-btn:hover { border-color: var(--border2); color: var(--text); }
-  .filter-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); font-weight: 500; }
+/* CARDS */
+.cards { display: flex; flex-direction: column; gap: 10px; }
 
-  /* TAG FILTER ROW */
-  .tag-filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
-  .tag-filter-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
-  .tag-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 3px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: 'DM Mono', monospace; transition: all 0.15s; }
-  .tag-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .tag-btn.active { background: rgba(240,192,64,0.1); border-color: var(--accent); color: var(--accent); }
+/* NEWS CARD */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; transition: all 0.15s; }
+.card:hover { border-color: var(--border2); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; flex: 1; }
+.card-badges { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; border: 1px solid; white-space: nowrap; }
+.badge-urgent { color: var(--urgent); background: var(--urgent-bg); border-color: var(--urgent-border); }
+.badge-watch { color: var(--watch); background: var(--watch-bg); border-color: var(--watch-border); }
+.badge-fyi { color: var(--fyi); background: var(--fyi-bg); border-color: var(--fyi-border); }
+.competitor-badge { background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 3px 9px; border-radius: 4px; white-space: nowrap; }
+.card-summary { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 12px; }
+.sowhat-block { background: var(--gold-light); border-radius: 6px; border: 1px solid #e8d8b0; padding: 10px 14px; margin-bottom: 10px; }
+.sowhat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+.sowhat-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.tag-chip { font-family: 'IBM Plex Mono', monospace; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 3px; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.card-meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+.card-actions { display: flex; align-items: center; gap: 8px; }
+.card-link { font-size: 12px; font-weight: 500; color: var(--accent); background: none; border: none; padding: 0; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+.card-link:hover { text-decoration: underline; }
+.deep-dive-btn { font-size: 11px; font-weight: 500; color: var(--deep); background: var(--deep-light); border: 1px solid var(--deep-border); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
+.deep-dive-btn:hover { background: var(--deep); color: white; border-color: var(--deep); }
+.deep-dive-btn.loading { opacity: 0.6; pointer-events: none; }
 
-  /* CARDS */
-  .cards { display: flex; flex-direction: column; gap: 12px; }
+/* THOUGHT CARD */
+.thought-card .thought-summary { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 12px; }
+.thought-card .implication-block { background: var(--deep-light); border-radius: 6px; border: 1px solid var(--deep-border); padding: 10px 14px; margin-bottom: 10px; }
+.thought-card .implication-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--deep); margin-bottom: 3px; }
+.thought-card .implication-text { font-size: 13px; color: var(--text); line-height: 1.6; }
 
-  /* NEWS CARD */
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; transition: border-color 0.15s; }
-  .card:hover { border-color: var(--border2); }
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
-  .card-title { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.4; flex: 1; }
-  .card-badges { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
-  .badge { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; border: 1px solid; white-space: nowrap; }
-  .badge-urgent { color: var(--urgent); background: var(--urgent-bg); border-color: var(--urgent-border); }
-  .badge-watch  { color: var(--watch);  background: var(--watch-bg);  border-color: var(--watch-border);  }
-  .badge-fyi    { color: var(--fyi);    background: var(--fyi-bg);    border-color: var(--fyi-border);    }
-  .competitor-badge { background: rgba(255,255,255,0.05); border: 1px solid var(--border2); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 4px; white-space: nowrap; }
+/* COMPETITOR GROUP */
+.competitor-group { margin-bottom: 2rem; }
+.competitor-group-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.competitor-group-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.competitor-group-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+.competitor-filter-row { display: flex; align-items: center; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
 
-  .card-summary { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
-  .sowhat-block { background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); padding: 10px 14px; margin-bottom: 12px; }
-  .sowhat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
-  .sowhat-text { font-size: 13px; color: var(--text); line-height: 1.55; }
+/* FLAGSHIP REPORTS */
+.flagship-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.flagship-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; transition: all 0.15s; }
+.flagship-card:hover { border-color: var(--border2); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.flagship-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.flagship-source { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 4px; }
+.flagship-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.35; }
+.flagship-frequency { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.flagship-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.flagship-footer { display: flex; align-items: center; justify-content: space-between; }
+.flagship-meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+.flagship-deep-btn { font-size: 11px; font-weight: 500; color: white; background: var(--deep); border: 1px solid var(--deep); padding: 5px 14px; border-radius: 5px; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; transition: all 0.15s; }
+.flagship-deep-btn:hover { background: #162d4a; }
+.flagship-deep-btn.loading { opacity: 0.6; pointer-events: none; }
 
-  /* THOUGHT LEADERSHIP CARD — different layout */
-  .thought-card .insight-block { background: var(--surface2); border-radius: 6px; border-left: 2px solid var(--accent); padding: 10px 14px; margin-bottom: 10px; }
-  .thought-card .insight-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
-  .thought-card .insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
-  .thought-card .implication-block { background: rgba(240,192,64,0.04); border-radius: 6px; border: 1px solid rgba(240,192,64,0.15); padding: 10px 14px; margin-bottom: 12px; }
-  .thought-card .implication-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent2); margin-bottom: 4px; }
-  .thought-card .implication-text { font-size: 13px; color: var(--text); line-height: 1.55; }
+/* DEEP DIVE MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(20,18,14,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 2rem; backdrop-filter: blur(2px); }
+.modal-overlay.hidden { display: none; }
+.modal { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); width: 100%; max-width: 720px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 1.5rem 1.75rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); border-radius: 14px 14px 0 0; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 500; color: var(--text); line-height: 1.3; flex: 1; }
+.modal-close { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--muted); flex-shrink: 0; transition: all 0.15s; }
+.modal-close:hover { background: var(--border); color: var(--text); }
+.modal-body { padding: 1.5rem 1.75rem; }
+.modal-loading { text-align: center; padding: 3rem; color: var(--muted); }
+.modal-loading p { font-size: 14px; margin-top: 12px; }
+.spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.deep-section { margin-bottom: 1.5rem; }
+.deep-section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.deep-section-label.summary-lbl { color: var(--text2); }
+.deep-section-label.data-lbl { color: var(--gold); }
+.deep-section-label.position-lbl { color: var(--deep); }
+.deep-section-label.action-lbl { color: var(--accent); }
+.deep-section-label.roadmap-lbl { color: var(--fyi); }
+.deep-section-content { font-size: 14px; color: var(--text); line-height: 1.75; }
+.deep-section-box { border-radius: 8px; padding: 12px 16px; }
+.deep-section-box.summary-box { background: var(--surface2); border: 1px solid var(--border); }
+.deep-section-box.data-box { background: var(--gold-light); border: 1px solid #e8d8b0; }
+.deep-section-box.position-box { background: var(--deep-light); border: 1px solid var(--deep-border); }
+.deep-section-box.action-box { background: var(--urgent-bg); border: 1px solid var(--urgent-border); }
+.deep-section-box.roadmap-box { background: var(--fyi-bg); border: 1px solid var(--fyi-border); }
+.position-indicator { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 4px; margin-bottom: 8px; }
+.position-ahead { background: var(--fyi-bg); border: 1px solid var(--fyi-border); color: var(--fyi); }
+.position-inline { background: var(--watch-bg); border: 1px solid var(--watch-border); color: var(--watch); }
+.position-behind { background: var(--urgent-bg); border: 1px solid var(--urgent-border); color: var(--urgent); }
+.modal-source { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 
-  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
-  .tag-chip { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 3px; }
-  .card-footer { display: flex; align-items: center; justify-content: space-between; }
-  .card-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .card-link { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.8; transition: opacity 0.15s; background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; }
-  .card-link:hover { opacity: 1; }
+/* SOURCES */
+.sources-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.source-group { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+.source-group-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; font-weight: 500; }
+.source-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+.source-item:last-child { border-bottom: none; }
+.source-name { font-size: 13px; color: var(--text); }
+.source-meta { display: flex; align-items: center; gap: 6px; }
+.source-priority { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; }
+.source-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fyi); }
+.source-dot.inactive { background: var(--border2); }
+.sources-footer { margin-top: 1.5rem; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.9; }
+.sources-footer code { background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--text2); }
 
-  /* COMPETITOR GROUPING */
-  .competitor-group { margin-bottom: 2rem; }
-  .competitor-group-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  .competitor-group-name { font-size: 14px; font-weight: 500; color: var(--text); }
-  .competitor-group-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+/* SEARCH RESULTS */
+.search-results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.search-results-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.search-clear { font-size: 12px; color: var(--muted); cursor: pointer; background: none; border: none; padding: 0; font-family: 'IBM Plex Sans', sans-serif; }
+.search-clear:hover { color: var(--text); }
 
-  /* SEARCH RESULTS */
-  .search-results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .search-results-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .search-clear { font-size: 12px; color: var(--muted); cursor: pointer; background: none; border: none; padding: 0; font-family: 'Geist', sans-serif; }
-  .search-clear:hover { color: var(--text); }
-  .search-loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+.empty-state p { font-size: 15px; margin-bottom: 8px; color: var(--text2); font-weight: 500; }
+.empty-state span { font-size: 13px; }
 
-  /* SOURCES TAB */
-  .sources-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .source-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
-  .source-group-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  .source-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); gap: 8px; }
-  .source-item:last-child { border-bottom: none; }
-  .source-name { font-size: 13px; color: var(--text); }
-  .source-meta { display: flex; align-items: center; gap: 6px; }
-  .source-priority { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; }
-  .source-active { width: 6px; height: 6px; border-radius: 50%; background: var(--fyi); flex-shrink: 0; }
-  .source-inactive { background: var(--muted); }
-  .sources-footer { margin-top: 1.5rem; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.8; }
-  .sources-footer code { background: var(--surface); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; color: var(--accent); }
-
-  /* EMPTY STATE */
-  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
-  .empty-state p { font-size: 15px; margin-bottom: 8px; color: var(--text); }
-  .empty-state span { font-size: 13px; }
-
-  /* COMPETITOR FILTER */
-  .competitor-filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
-
-  @media (max-width: 700px) {
-    .main { padding: 1rem; }
-    .header { padding: 0 1rem; flex-wrap: wrap; height: auto; gap: 8px; padding: 12px 1rem; }
-    .search-input { width: 140px; }
-    .sources-grid { grid-template-columns: 1fr; }
-    .overview-meta { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .meta-num { font-size: 24px; }
-  }
+@media (max-width: 700px) {
+  .main { padding: 1rem; }
+  .header { padding: 0 1rem; flex-wrap: wrap; height: auto; padding: 12px 1rem; gap: 8px; }
+  .search-input { width: 130px; }
+  .sources-grid, .flagship-grid { grid-template-columns: 1fr; }
+  .overview-meta { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .meta-num { font-size: 26px; }
+}
 </style>
 </head>
 <body>
@@ -160,14 +222,14 @@
   <div class="header-brand">
     <div class="rbi-mark">RBI</div>
     <div>
-      <div class="brand-text">Intelligence Cockpit</div>
+      <div class="brand-name">Intelligence Cockpit</div>
       <div class="brand-sub">CMIplus · Cash Management</div>
     </div>
   </div>
   <div class="header-right">
     <div class="search-bar">
       <input class="search-input" id="searchInput" type="text" placeholder="Search keywords..." />
-      <button class="search-btn" id="searchBtn">Search ↗</button>
+      <button class="search-btn" id="searchBtn">Search</button>
     </div>
     <div class="week-badge" id="weekBadge">Loading...</div>
   </div>
@@ -178,21 +240,20 @@
     <div class="tab active" data-tab="overview">Overview</div>
     <div class="tab" data-tab="market">Market news <span class="count-pill" id="cnt-market">—</span></div>
     <div class="tab" data-tab="thought">Thought leadership <span class="count-pill" id="cnt-thought">—</span></div>
+    <div class="tab" data-tab="flagship">Flagship reports</div>
     <div class="tab" data-tab="competitors">Competitors <span class="count-pill" id="cnt-competitors">—</span></div>
-    <div class="tab" data-tab="search">Search results <span class="count-pill" id="cnt-search" style="display:none">—</span></div>
+    <div class="tab" data-tab="search">Search <span class="count-pill" id="cnt-search" style="display:none">—</span></div>
     <div class="tab" data-tab="sources">Sources</div>
   </div>
 
   <!-- OVERVIEW -->
   <div class="section active" id="tab-overview">
-    <div id="overview-empty" class="empty-state">
-      <p>Loading briefing...</p><span>Fetching briefing.json</span>
-    </div>
+    <div id="overview-empty" class="empty-state"><p>Loading briefing...</p><span>Fetching briefing.json</span></div>
     <div id="overview-content" style="display:none">
       <div class="overview-meta">
-        <div class="meta-card"><div class="meta-num" id="meta-urgent">0</div><div class="meta-label">Urgent</div></div>
-        <div class="meta-card"><div class="meta-num" id="meta-watch">0</div><div class="meta-label">Watch</div></div>
-        <div class="meta-card"><div class="meta-num" id="meta-fyi">0</div><div class="meta-label">FYI</div></div>
+        <div class="meta-card"><div class="meta-num urgent" id="meta-urgent">0</div><div class="meta-label">Urgent</div></div>
+        <div class="meta-card"><div class="meta-num watch" id="meta-watch">0</div><div class="meta-label">Watch</div></div>
+        <div class="meta-card"><div class="meta-num fyi" id="meta-fyi">0</div><div class="meta-label">FYI</div></div>
       </div>
       <div class="exec-card"><div class="exec-label">Executive Summary</div><div class="exec-text" id="exec-text"></div></div>
       <div class="cards" id="overview-cards"></div>
@@ -223,6 +284,11 @@
     <div class="cards" id="thought-cards"></div>
   </div>
 
+  <!-- FLAGSHIP REPORTS -->
+  <div class="section" id="tab-flagship">
+    <div class="flagship-grid" id="flagship-grid"></div>
+  </div>
+
   <!-- COMPETITORS -->
   <div class="section" id="tab-competitors">
     <div class="filter-row">
@@ -236,16 +302,13 @@
     <div id="competitors-grouped"></div>
   </div>
 
-  <!-- SEARCH RESULTS -->
+  <!-- SEARCH -->
   <div class="section" id="tab-search">
-    <div id="search-empty" class="empty-state">
-      <p>Enter keywords above and click Search</p>
-      <span>Searches across all current briefing items — market, thought leadership and competitors</span>
-    </div>
+    <div id="search-empty" class="empty-state"><p>Enter keywords and click Search</p><span>Searches across all sections</span></div>
     <div id="search-content" style="display:none">
       <div class="search-results-header">
         <div class="search-results-title" id="search-results-title"></div>
-        <button class="search-clear" id="searchClear">Clear</button>
+        <button class="search-clear" id="searchClear">Clear ×</button>
       </div>
       <div class="cards" id="search-cards"></div>
     </div>
@@ -255,32 +318,42 @@
   <div class="section" id="tab-sources">
     <div class="sources-grid" id="sources-grid"></div>
     <div class="sources-footer">
-      Edit <code>sources.json</code> on GitHub to add, change or pause sources.<br>
-      Set <code>"priority": 1</code> for more items · <code>"active": false</code> to pause.
+      Edit <code>sources.json</code> on GitHub to add, pause or reprioritise sources.<br>
+      <code>"priority": 1</code> = more items · <code>"active": false</code> = pause
     </div>
   </div>
 </main>
 
+<!-- DEEP DIVE MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="modal-loading"><div class="spinner"></div><p>Analysing with Gemini 2.5 Pro...</p></div>
+    </div>
+  </div>
+</div>
+
 <script>
+const GEMINI_KEY = ''; // Set via sources.json or leave empty to prompt user
+const DEEP_MODEL = 'gemini-2.5-pro-exp-03-25';
+const DEEP_API = `https://generativelanguage.googleapis.com/v1beta/models/${DEEP_MODEL}:generateContent`;
+
 const state = {
-  briefing: null,
-  sources: null,
+  briefing: null, sources: null,
   filters: { market: 'all', thought: 'all', competitors: 'all' },
   activeTags: { market: null, thought: null, competitors: null },
-  activeCompetitor: null
+  activeCompetitor: null,
+  geminiKey: ''
 };
 
 // ── TABS ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const name = tab.dataset.tab;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('tab-' + name).classList.add('active');
-  });
+  tab.addEventListener('click', () => switchTab(tab.dataset.tab));
 });
-
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -288,33 +361,28 @@ function switchTab(name) {
 }
 
 // ── HELPERS ────────────────────────────────────────────────────────────
-function esc(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escAttr(str) { return String(str||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escA(s) { return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-// ── BADGE ──────────────────────────────────────────────────────────────
-function badgeHTML(relevance) {
-  const cls = relevance === 'urgent' ? 'badge-urgent' : relevance === 'watch' ? 'badge-watch' : 'badge-fyi';
-  const lbl = relevance === 'urgent' ? 'URGENT' : relevance === 'watch' ? 'WATCH' : 'FYI';
+function badgeHTML(r) {
+  const cls = r==='urgent'?'badge-urgent':r==='watch'?'badge-watch':'badge-fyi';
+  const lbl = r==='urgent'?'URGENT':r==='watch'?'WATCH':'FYI';
   return `<span class="badge ${cls}">${lbl}</span>`;
 }
-
-// ── TAG CHIPS ──────────────────────────────────────────────────────────
 function tagsHTML(tags) {
-  if (!tags || !tags.length) return '';
-  return `<div class="card-tags">${tags.map(t => `<span class="tag-chip">${esc(t)}</span>`).join('')}</div>`;
+  if(!tags||!tags.length) return '';
+  return `<div class="card-tags">${tags.map(t=>`<span class="tag-chip">${esc(t)}</span>`).join('')}</div>`;
 }
 
 // ── NEWS CARD ──────────────────────────────────────────────────────────
-function newsCardHTML(item, showCompetitor) {
-  const link = item.url ? `<button class="card-link" onclick="window.open('${escAttr(item.url)}','_blank')">Read →</button>` : '';
-  const compBadge = showCompetitor && item.competitor ? `<span class="competitor-badge">${esc(item.competitor)}</span>` : '';
+function newsCardHTML(item, showComp) {
+  const link = item.url ? `<button class="card-link" onclick="window.open('${escA(item.url)}','_blank')">Read →</button>` : '';
+  const comp = showComp && item.competitor ? `<span class="competitor-badge">${esc(item.competitor)}</span>` : '';
+  const itemJson = escA(JSON.stringify(item));
   return `<div class="card">
     <div class="card-header">
       <div class="card-title">${esc(item.title)}</div>
-      <div class="card-badges">${compBadge}${badgeHTML(item.relevance)}</div>
+      <div class="card-badges">${comp}${badgeHTML(item.relevance)}</div>
     </div>
     <div class="card-summary">${esc(item.summary)}</div>
     <div class="sowhat-block">
@@ -324,20 +392,24 @@ function newsCardHTML(item, showCompetitor) {
     ${tagsHTML(item.tags)}
     <div class="card-footer">
       <span class="card-meta">${esc(item.source)} · ${esc(item.date||item.published||'')}</span>
-      ${link}
+      <div class="card-actions">
+        <button class="deep-dive-btn" onclick="openDeepDive(${itemJson})">Deep Dive</button>
+        ${link}
+      </div>
     </div>
   </div>`;
 }
 
-// ── THOUGHT LEADERSHIP CARD ────────────────────────────────────────────
+// ── THOUGHT CARD ───────────────────────────────────────────────────────
 function thoughtCardHTML(item) {
-  const link = item.url ? `<button class="card-link" onclick="window.open('${escAttr(item.url)}','_blank')">Read →</button>` : '';
+  const link = item.url ? `<button class="card-link" onclick="window.open('${escA(item.url)}','_blank')">Read →</button>` : '';
+  const itemJson = escA(JSON.stringify(item));
   return `<div class="card thought-card">
     <div class="card-header">
       <div class="card-title">${esc(item.title)}</div>
       <div class="card-badges">${badgeHTML(item.relevance)}</div>
     </div>
-    <div class="card-summary">${esc(item.summary || item.key_insight || '')}</div>
+    <div class="thought-summary">${esc(item.summary || item.key_insight || '')}</div>
     <div class="implication-block">
       <div class="implication-label">Implications for CMIplus</div>
       <div class="implication-text">${esc(item.implications || item.sowhat || '')}</div>
@@ -345,36 +417,184 @@ function thoughtCardHTML(item) {
     ${tagsHTML(item.tags)}
     <div class="card-footer">
       <span class="card-meta">${esc(item.source)} · ${esc(item.published||item.date||'')}</span>
-      ${link}
+      <div class="card-actions">
+        <button class="deep-dive-btn" onclick="openDeepDive(${itemJson})">Deep Dive</button>
+        ${link}
+      </div>
     </div>
   </div>`;
 }
 
-// ── TAG FILTER UI ──────────────────────────────────────────────────────
+// ── DEEP DIVE MODAL ────────────────────────────────────────────────────
+function getGeminiKey() {
+  if(state.geminiKey) return state.geminiKey;
+  const key = prompt('Enter your Gemini API key for Deep Dive analysis:');
+  if(key) state.geminiKey = key.trim();
+  return state.geminiKey;
+}
+
+async function openDeepDive(item) {
+  const key = getGeminiKey();
+  if(!key) return;
+
+  document.getElementById('modalTitle').textContent = item.title;
+  document.getElementById('modalBody').innerHTML = `<div class="modal-loading"><div class="spinner"></div><p>Analysing with Gemini 2.5 Pro...</p></div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+
+  const context = `CMIplus is RBI's (Raiffeisen Bank International) corporate cash management platform for large international corporates in CEE. Key topics: EBICS, H2H, ISO 20022, SEPA, instant payments, VoP, eBAM, Open Banking APIs. Current roadmap: eBAM Q2-Q3 2026, Open API Q3 2026, AI Cashflow Forecasting Q4 2026.`;
+
+  const prompt = `You are a senior McKinsey consultant specialising in cash management and transaction banking.
+
+Perform a deep strategic analysis of this article/report for the CMIplus product team at RBI.
+
+Article: "${item.title}"
+Source: ${item.source || ''} (${item.published || item.date || ''})
+Summary: ${item.summary || item.key_insight || ''}
+URL: ${item.url || 'not available'}
+
+Context: ${context}
+
+Provide a structured analysis in this exact JSON format:
+{
+  "report_summary": "Comprehensive 6-8 sentence summary: what the report covers, methodology, sample size if survey, key themes and main conclusion",
+  "key_data": "3-5 specific data points, statistics or findings from this report that are most relevant for a cash management platform",
+  "position": "ahead|inline|behind",
+  "position_rationale": "2-3 sentences explaining where CMIplus stands relative to this report's findings — be specific and honest",
+  "recommended_action": "One concrete, specific action that Philipp Höfer (Group Product Owner Cash Management at RBI) should take based on this report — make it actionable within 30-90 days",
+  "roadmap_connection": "Which specific CMIplus initiatives or roadmap items (eBAM, Open API, instant payments, VoP, AI forecasting) are most affected by this report's findings, and how"
+}
+
+Return raw JSON only. No markdown.`;
+
+  try {
+    const resp = await fetch(`${DEEP_API}?key=${key}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.2, maxOutputTokens: 4096 }
+      })
+    });
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const clean = text.replace(/^```(?:json)?\s*/,'').replace(/\s*```\s*$/,'').trim();
+    const analysis = JSON.parse(clean);
+    renderDeepDive(item, analysis);
+  } catch(e) {
+    document.getElementById('modalBody').innerHTML = `<div class="empty-state"><p>Analysis failed</p><span>${esc(e.message)}</span></div>`;
+  }
+}
+
+function renderDeepDive(item, a) {
+  const posCls = a.position==='ahead'?'position-ahead':a.position==='behind'?'position-behind':'position-inline';
+  const posLabel = getPositionLabel(a.position);
+  const link = item.url ? `<button class="card-link" onclick="window.open('${escA(item.url)}','_blank')">Open source →</button>` : '';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="deep-section">
+      <div class="deep-section-label summary-lbl">📋 Report summary</div>
+      <div class="deep-section-box summary-box">
+        <div class="deep-section-content">${esc(a.report_summary)}</div>
+      </div>
+    </div>
+    <div class="deep-section">
+      <div class="deep-section-label data-lbl">📊 Key data points</div>
+      <div class="deep-section-box data-box">
+        <div class="deep-section-content">${esc(a.key_data)}</div>
+      </div>
+    </div>
+    <div class="deep-section">
+      <div class="deep-section-label position-lbl">🎯 CMIplus position check</div>
+      <div class="deep-section-box position-box">
+        <div class="position-indicator ${posCls}">${a.position==='ahead'?'▲ Ahead of market':a.position==='behind'?'▼ Behind market':'→ In line with market'}</div>
+        <div class="deep-section-content">${esc(a.position_rationale)}</div>
+      </div>
+    </div>
+    <div class="deep-section">
+      <div class="deep-section-label action-lbl">⚡ Recommended action</div>
+      <div class="deep-section-box action-box">
+        <div class="deep-section-content">${esc(a.recommended_action)}</div>
+      </div>
+    </div>
+    <div class="deep-section">
+      <div class="deep-section-label roadmap-lbl">🗺 Roadmap connection</div>
+      <div class="deep-section-box roadmap-box">
+        <div class="deep-section-content">${esc(a.roadmap_connection)}</div>
+      </div>
+    </div>
+    <div class="modal-source">
+      <span>${esc(item.source)} · ${esc(item.published||item.date||'')}</span>
+      ${link}
+    </div>`;
+}
+
+// Fix template literal syntax issue
+function getPositionLabel(pos) {
+  if(pos==='ahead') return '▲ Ahead of market';
+  if(pos==='behind') return '▼ Behind market';
+  return '→ In line with market';
+}
+
+document.getElementById('modalClose').addEventListener('click', () => {
+  document.getElementById('modalOverlay').classList.add('hidden');
+});
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if(e.target === document.getElementById('modalOverlay'))
+    document.getElementById('modalOverlay').classList.add('hidden');
+});
+
+// ── FLAGSHIP REPORTS ───────────────────────────────────────────────────
+const FLAGSHIP_REPORTS = [
+  { source: 'Journey to Treasury / EACT', title: 'Journeys to Treasury — Annual CEE Report', frequency: 'Annual', desc: 'The definitive benchmark for corporate treasury in Central & Eastern Europe. Covers digitisation, bank connectivity, ISO 20022 adoption and treasurer priorities across CEE markets — directly relevant to CMIplus customer base.', url: 'https://www.journeytotreasury.com', tags: ['CEE', 'ERP_TMS'] },
+  { source: 'PwC', title: 'Global Treasury Survey', frequency: 'Annual', desc: 'Survey of 350+ treasurers worldwide on TMS adoption, API banking, AI in treasury, FX risk and cash visibility. Key benchmark for understanding what large corporate clients expect from their bank.', url: 'https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html', tags: ['AI', 'ERP_TMS'] },
+  { source: 'EY', title: 'Voice of the Treasurer / Four Trends Redefining Cash Management', frequency: 'Annual', desc: 'EY\'s flagship treasury research combining 1,800+ treasurer survey responses with deep analysis of four structural trends reshaping cash management. Essential read for product strategy.', url: 'https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks', tags: ['DigitalBanking', 'AI'] },
+  { source: 'EY', title: 'Cash Management Services (CMS) Survey', frequency: 'Annual', desc: '41st edition annual benchmark of bank cash management products — fee revenues, product line growth, API adoption rates, AI integration, FinTech partnerships. Direct competitive intelligence.', url: 'https://www.ey.com/en_us/insights/banking-capital-markets/insights-from-ey-2024-cms-survey-on-cash-management', tags: ['OpenBanking', 'Compliance'] },
+  { source: 'McKinsey', title: 'Global Payments Report', frequency: 'Annual', desc: 'McKinsey\'s annual deep dive into global payments revenues, trends and strategic shifts. Covers transaction banking, corporate payments, instant payments adoption and the competitive landscape across regions.', url: 'https://www.mckinsey.com/industries/financial-services/our-insights/global-payments-report', tags: ['InstantPayments', 'OpenBanking'] },
+  { source: 'BCG', title: 'Transaction Banking Insights', frequency: 'Quarterly', desc: 'BCG\'s transaction banking practice publishes regular analyses on cash management strategy, digital transformation and competitive dynamics in corporate banking — with strong European relevance.', url: 'https://www.bcg.com/industries/financial-institutions/transaction-banking', tags: ['DigitalBanking', 'CEE'] },
+  { source: 'Oliver Wyman', title: 'Corporate & Institutional Banking Research', frequency: 'Quarterly', desc: 'Oliver Wyman\'s corporate banking practice covers cash management, trade finance and digital transformation. Strong focus on European banking and regulatory impact on transaction services.', url: 'https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html', tags: ['Compliance', 'OpenBanking'] },
+  { source: 'BIS', title: 'Payments & Market Infrastructure Reports', frequency: 'Quarterly', desc: 'Bank for International Settlements research on payment system evolution, instant payments infrastructure, CBDCs and stablecoins. Sets the regulatory and technical direction for the next 3-5 years.', url: 'https://www.bis.org/payments.htm', tags: ['InstantPayments', 'Stablecoins'] }
+];
+
+function renderFlagship() {
+  document.getElementById('flagship-grid').innerHTML = FLAGSHIP_REPORTS.map(r => {
+    const itemForDive = { title: r.title, source: r.source, url: r.url, summary: r.desc, published: r.frequency };
+    const itemJson = escA(JSON.stringify(itemForDive));
+    return `<div class="flagship-card">
+      <div class="flagship-card-header">
+        <div>
+          <div class="flagship-source">${esc(r.source)}</div>
+          <div class="flagship-title">${esc(r.title)}</div>
+        </div>
+        <span class="flagship-frequency">${esc(r.frequency)}</span>
+      </div>
+      <div class="flagship-desc">${esc(r.desc)}</div>
+      <div class="card-tags">${(r.tags||[]).map(t=>`<span class="tag-chip">${esc(t)}</span>`).join('')}</div>
+      <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
+        <button class="card-link" onclick="window.open('${escA(r.url)}','_blank')">Open →</button>
+        <button class="flagship-deep-btn" onclick="openDeepDive(${itemJson})">Deep Dive ↗</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── TAG FILTERS ────────────────────────────────────────────────────────
 function buildTagFilters(section, items) {
   const container = document.getElementById(section + '-tags');
-  if (!container) return;
+  if(!container) return;
   const allTags = new Set();
   items.forEach(i => (i.tags||[]).forEach(t => allTags.add(t)));
-  if (!allTags.size) { container.innerHTML = ''; return; }
-  const label = `<span class="tag-filter-label">Tags:</span>`;
-  const btns = [...allTags].sort().map(t =>
-    `<button class="tag-btn" data-section="${section}" data-tag="${escAttr(t)}">${esc(t)}</button>`
-  ).join('');
-  container.innerHTML = label + btns;
+  if(!allTags.size) { container.innerHTML=''; return; }
+  container.innerHTML = `<span class="tag-filter-label">Tags:</span>` +
+    [...allTags].sort().map(t =>
+      `<button class="tag-btn" data-section="${section}" data-tag="${escA(t)}">${esc(t)}</button>`
+    ).join('');
   container.querySelectorAll('.tag-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const tag = btn.dataset.tag;
-      if (state.activeTags[section] === tag) {
-        state.activeTags[section] = null;
-        btn.classList.remove('active');
-      } else {
-        state.activeTags[section] = tag;
-        container.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      }
-      if (section === 'competitors') renderCompetitors();
-      else renderSection(section);
+      state.activeTags[section] = state.activeTags[section]===tag ? null : tag;
+      container.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      if(state.activeTags[section]) btn.classList.add('active');
+      section==='competitors' ? renderCompetitors() : renderSection(section);
     });
   });
 }
@@ -382,208 +602,160 @@ function buildTagFilters(section, items) {
 // ── FILTER BUTTONS ─────────────────────────────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const section = btn.dataset.section;
-    const level = btn.dataset.level;
-    state.filters[section] = level;
+    const s = btn.dataset.section, l = btn.dataset.level;
+    state.filters[s] = l;
     btn.closest('.filter-row').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (section === 'competitors') renderCompetitors();
-    else renderSection(section);
+    s==='competitors' ? renderCompetitors() : renderSection(s);
   });
 });
 
-// ── RENDER MARKET / THOUGHT ────────────────────────────────────────────
+// ── RENDER ─────────────────────────────────────────────────────────────
 function renderSection(section) {
-  if (!state.briefing) return;
-  let items = state.briefing[section] || [];
-  if (state.filters[section] !== 'all') items = items.filter(i => i.relevance === state.filters[section]);
-  if (state.activeTags[section]) items = items.filter(i => (i.tags||[]).includes(state.activeTags[section]));
-  const container = document.getElementById(section + '-cards');
-  if (!container) return;
-  if (!items.length) { container.innerHTML = '<div class="empty-state"><p>No items match this filter</p></div>'; return; }
-  container.innerHTML = section === 'thought'
-    ? items.map(thoughtCardHTML).join('')
-    : items.map(i => newsCardHTML(i, false)).join('');
+  if(!state.briefing) return;
+  let items = state.briefing[section]||[];
+  if(state.filters[section]!=='all') items=items.filter(i=>i.relevance===state.filters[section]);
+  if(state.activeTags[section]) items=items.filter(i=>(i.tags||[]).includes(state.activeTags[section]));
+  const c = document.getElementById(section+'-cards');
+  if(!c) return;
+  if(!items.length) { c.innerHTML='<div class="empty-state"><p>No items match</p></div>'; return; }
+  c.innerHTML = section==='thought' ? items.map(thoughtCardHTML).join('') : items.map(i=>newsCardHTML(i,false)).join('');
 }
 
-// ── RENDER COMPETITORS (grouped) ────────────────────────────────────────
 function renderCompetitors() {
-  if (!state.briefing) return;
-  let items = state.briefing.competitors || [];
-  if (state.filters.competitors !== 'all') items = items.filter(i => i.relevance === state.filters.competitors);
-  if (state.activeTags.competitors) items = items.filter(i => (i.tags||[]).includes(state.activeTags.competitors));
-  if (state.activeCompetitor) items = items.filter(i => i.competitor === state.activeCompetitor);
-
-  const container = document.getElementById('competitors-grouped');
-  if (!items.length) { container.innerHTML = '<div class="empty-state"><p>No items match this filter</p></div>'; return; }
-
-  // Group by competitor
-  const groups = {};
-  items.forEach(item => {
-    const key = item.competitor || 'Other';
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(item);
-  });
-
-  container.innerHTML = Object.entries(groups).map(([name, groupItems]) => `
+  if(!state.briefing) return;
+  let items = state.briefing.competitors||[];
+  if(state.filters.competitors!=='all') items=items.filter(i=>i.relevance===state.filters.competitors);
+  if(state.activeTags.competitors) items=items.filter(i=>(i.tags||[]).includes(state.activeTags.competitors));
+  if(state.activeCompetitor) items=items.filter(i=>i.competitor===state.activeCompetitor);
+  const c = document.getElementById('competitors-grouped');
+  if(!items.length) { c.innerHTML='<div class="empty-state"><p>No items match</p></div>'; return; }
+  const groups={};
+  items.forEach(i=>{ const k=i.competitor||'Other'; if(!groups[k]) groups[k]=[]; groups[k].push(i); });
+  c.innerHTML = Object.entries(groups).map(([name,gi])=>`
     <div class="competitor-group">
       <div class="competitor-group-header">
         <div class="competitor-group-name">${esc(name)}</div>
-        <div class="competitor-group-count">${groupItems.length} item${groupItems.length>1?'s':''}</div>
+        <div class="competitor-group-count">${gi.length} item${gi.length>1?'s':''}</div>
       </div>
-      <div class="cards">${groupItems.map(i => newsCardHTML(i, false)).join('')}</div>
+      <div class="cards">${gi.map(i=>newsCardHTML(i,false)).join('')}</div>
     </div>`).join('');
 }
 
-// ── BUILD COMPETITOR FILTER BUTTONS ────────────────────────────────────
 function buildCompetitorFilters(items) {
-  const container = document.getElementById('competitor-filter-btns');
-  const competitors = [...new Set(items.map(i => i.competitor).filter(Boolean))].sort();
-  if (!competitors.length) { container.innerHTML = ''; return; }
-  const allBtn = `<button class="filter-btn active" data-competitor="all">All banks</button>`;
-  const btns = competitors.map(c =>
-    `<button class="filter-btn" data-competitor="${escAttr(c)}">${esc(c)}</button>`
-  ).join('');
-  container.innerHTML = allBtn + btns;
-  container.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const val = btn.dataset.competitor;
-      state.activeCompetitor = val === 'all' ? null : val;
-      container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const c = document.getElementById('competitor-filter-btns');
+  const comps=[...new Set(items.map(i=>i.competitor).filter(Boolean))].sort();
+  if(!comps.length){c.innerHTML='';return;}
+  c.innerHTML=`<button class="filter-btn active" data-competitor="all">All banks</button>`+
+    comps.map(x=>`<button class="filter-btn" data-competitor="${escA(x)}">${esc(x)}</button>`).join('');
+  c.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const v=btn.dataset.competitor;
+      state.activeCompetitor=v==='all'?null:v;
+      c.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       renderCompetitors();
     });
   });
 }
 
-// ── OVERVIEW ────────────────────────────────────────────────────────────
 function renderOverview() {
-  const b = state.briefing;
-  const all = [...(b.market||[]), ...(b.thought||[]), ...(b.competitors||[])];
-  document.getElementById('meta-urgent').textContent = all.filter(i => i.relevance === 'urgent').length;
-  document.getElementById('meta-watch').textContent  = all.filter(i => i.relevance === 'watch').length;
-  document.getElementById('meta-fyi').textContent    = all.filter(i => i.relevance === 'fyi').length;
-  document.getElementById('exec-text').textContent   = b.executive_summary || '';
-  const top = all.filter(i => i.relevance === 'urgent' || i.relevance === 'watch').slice(0, 6);
-  document.getElementById('overview-cards').innerHTML = top.map(i =>
-    i.key_insight ? thoughtCardHTML(i) : newsCardHTML(i, true)
+  const b=state.briefing;
+  const all=[...(b.market||[]),...(b.thought||[]),...(b.competitors||[])];
+  document.getElementById('meta-urgent').textContent=all.filter(i=>i.relevance==='urgent').length;
+  document.getElementById('meta-watch').textContent=all.filter(i=>i.relevance==='watch').length;
+  document.getElementById('meta-fyi').textContent=all.filter(i=>i.relevance==='fyi').length;
+  document.getElementById('exec-text').textContent=b.executive_summary||'';
+  const top=all.filter(i=>i.relevance==='urgent'||i.relevance==='watch').slice(0,6);
+  document.getElementById('overview-cards').innerHTML=top.map(i=>
+    (i.key_insight||i.implications)?thoughtCardHTML(i):newsCardHTML(i,true)
   ).join('');
-  document.getElementById('overview-empty').style.display = 'none';
-  document.getElementById('overview-content').style.display = 'block';
+  document.getElementById('overview-empty').style.display='none';
+  document.getElementById('overview-content').style.display='block';
 }
 
-// ── SOURCES ─────────────────────────────────────────────────────────────
-function renderSources(sources) {
-  const groups = [
-    { key: 'market_news', label: 'Market news' },
-    { key: 'thought_leadership', label: 'Thought leadership' },
-    { key: 'competitors', label: 'Competitors' }
+function renderSources(s) {
+  const groups=[
+    {key:'market_news',label:'Market news'},
+    {key:'thought_leadership',label:'Thought leadership'},
+    {key:'competitors',label:'Competitors'}
   ];
-  document.getElementById('sources-grid').innerHTML = groups.map(g => `
+  document.getElementById('sources-grid').innerHTML=groups.map(g=>`
     <div class="source-group">
       <div class="source-group-title">${g.label}</div>
-      ${(sources[g.key]||[]).map(s => `
+      ${(s[g.key]||[]).map(src=>`
         <div class="source-item">
-          <div class="source-name">${esc(s.name)}</div>
+          <div class="source-name">${esc(src.name)}</div>
           <div class="source-meta">
-            <span class="source-priority">P${s.priority||2}</span>
-            <span class="source-active ${s.active ? '' : 'source-inactive'}"></span>
+            <span class="source-priority">P${src.priority||2}</span>
+            <span class="source-dot ${src.active?'':'inactive'}"></span>
           </div>
         </div>`).join('')}
     </div>`).join('');
 }
 
-// ── SEARCH ──────────────────────────────────────────────────────────────
-function doSearch(query) {
-  if (!query.trim() || !state.briefing) return;
-  const q = query.toLowerCase();
-  const all = [
-    ...(state.briefing.market||[]).map(i => ({...i, _section: 'market'})),
-    ...(state.briefing.thought||[]).map(i => ({...i, _section: 'thought'})),
-    ...(state.briefing.competitors||[]).map(i => ({...i, _section: 'competitors'}))
+// ── SEARCH ─────────────────────────────────────────────────────────────
+function doSearch(q) {
+  if(!q.trim()||!state.briefing) return;
+  const lq=q.toLowerCase();
+  const all=[
+    ...(state.briefing.market||[]).map(i=>({...i,_s:'market'})),
+    ...(state.briefing.thought||[]).map(i=>({...i,_s:'thought'})),
+    ...(state.briefing.competitors||[]).map(i=>({...i,_s:'competitors'}))
   ];
-  const results = all.filter(i => {
-    const text = [i.title, i.summary, i.key_insight, i.sowhat, i.implications,
-                  i.source, i.competitor, ...(i.tags||[])].join(' ').toLowerCase();
-    return text.includes(q);
-  });
-
-  document.getElementById('cnt-search').style.display = '';
-  document.getElementById('cnt-search').textContent = results.length;
-  document.getElementById('search-results-title').textContent =
-    `${results.length} result${results.length!==1?'s':''} for "${query}"`;
-
-  if (!results.length) {
-    document.getElementById('search-content').style.display = 'none';
-    document.getElementById('search-empty').style.display = 'block';
-    document.getElementById('search-empty').querySelector('p').textContent = `No results for "${query}"`;
-    document.getElementById('search-empty').querySelector('span').textContent = 'Try different keywords';
+  const res=all.filter(i=>[i.title,i.summary,i.key_insight,i.sowhat,i.implications,i.source,i.competitor,...(i.tags||[])].join(' ').toLowerCase().includes(lq));
+  document.getElementById('cnt-search').style.display='';
+  document.getElementById('cnt-search').textContent=res.length;
+  document.getElementById('search-results-title').textContent=`${res.length} result${res.length!==1?'s':''} for "${q}"`;
+  if(!res.length){
+    document.getElementById('search-content').style.display='none';
+    document.getElementById('search-empty').style.display='block';
+    document.getElementById('search-empty').querySelector('p').textContent=`No results for "${q}"`;
   } else {
-    document.getElementById('search-empty').style.display = 'none';
-    document.getElementById('search-content').style.display = 'block';
-    document.getElementById('search-cards').innerHTML = results.map(i =>
-      i.key_insight ? thoughtCardHTML(i) : newsCardHTML(i, true)
-    ).join('');
+    document.getElementById('search-empty').style.display='none';
+    document.getElementById('search-content').style.display='block';
+    document.getElementById('search-cards').innerHTML=res.map(i=>i._s==='thought'?thoughtCardHTML(i):newsCardHTML(i,true)).join('');
   }
   switchTab('search');
 }
-
-document.getElementById('searchBtn').addEventListener('click', () => {
-  doSearch(document.getElementById('searchInput').value);
-});
-document.getElementById('searchInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doSearch(document.getElementById('searchInput').value);
-});
-document.getElementById('searchClear').addEventListener('click', () => {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('cnt-search').style.display = 'none';
-  document.getElementById('search-empty').style.display = 'block';
-  document.getElementById('search-empty').querySelector('p').textContent = 'Enter keywords above and click Search';
-  document.getElementById('search-empty').querySelector('span').textContent = 'Searches across all current briefing items';
-  document.getElementById('search-content').style.display = 'none';
+document.getElementById('searchBtn').addEventListener('click',()=>doSearch(document.getElementById('searchInput').value));
+document.getElementById('searchInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doSearch(document.getElementById('searchInput').value); });
+document.getElementById('searchClear').addEventListener('click',()=>{
+  document.getElementById('searchInput').value='';
+  document.getElementById('cnt-search').style.display='none';
+  document.getElementById('search-content').style.display='none';
+  document.getElementById('search-empty').style.display='block';
+  document.getElementById('search-empty').querySelector('p').textContent='Enter keywords and click Search';
   switchTab('overview');
 });
 
-// ── COUNTS ──────────────────────────────────────────────────────────────
-function updateCounts() {
-  const b = state.briefing;
-  document.getElementById('cnt-market').textContent = (b.market||[]).length;
-  document.getElementById('cnt-thought').textContent = (b.thought||[]).length;
-  document.getElementById('cnt-competitors').textContent = (b.competitors||[]).length;
-  document.getElementById('weekBadge').textContent = b.week_label || '—';
-}
-
-// ── LOAD ─────────────────────────────────────────────────────────────────
+// ── LOAD ─────────────────────────────────────────────────────────────
 async function loadAll() {
   try {
-    const [br, sr] = await Promise.all([
-      fetch('briefing.json?v=' + Date.now()),
-      fetch('sources.json?v=' + Date.now())
+    const [br,sr]=await Promise.all([
+      fetch('briefing.json?v='+Date.now()),
+      fetch('sources.json?v='+Date.now())
     ]);
-    if (br.ok) {
-      state.briefing = await br.json();
-      updateCounts();
+    if(br.ok){
+      state.briefing=await br.json();
+      document.getElementById('cnt-market').textContent=(state.briefing.market||[]).length;
+      document.getElementById('cnt-thought').textContent=(state.briefing.thought||[]).length;
+      document.getElementById('cnt-competitors').textContent=(state.briefing.competitors||[]).length;
+      document.getElementById('weekBadge').textContent=state.briefing.week_label||'—';
       renderOverview();
-      renderSection('market');
-      buildTagFilters('market', state.briefing.market||[]);
-      renderSection('thought');
-      buildTagFilters('thought', state.briefing.thought||[]);
-      renderCompetitors();
-      buildCompetitorFilters(state.briefing.competitors||[]);
-      buildTagFilters('competitors', state.briefing.competitors||[]);
+      renderSection('market'); buildTagFilters('market',state.briefing.market||[]);
+      renderSection('thought'); buildTagFilters('thought',state.briefing.thought||[]);
+      renderCompetitors(); buildCompetitorFilters(state.briefing.competitors||[]); buildTagFilters('competitors',state.briefing.competitors||[]);
     } else {
-      document.getElementById('overview-empty').querySelector('p').textContent = 'No briefing yet';
-      document.getElementById('overview-empty').querySelector('span').textContent = 'Trigger a scan via GitHub Actions to generate the first briefing.';
+      document.getElementById('overview-empty').querySelector('p').textContent='No briefing yet';
+      document.getElementById('overview-empty').querySelector('span').textContent='Trigger a scan via GitHub Actions.';
     }
-    if (sr.ok) {
-      state.sources = await sr.json();
-      renderSources(state.sources);
-    }
-  } catch(err) {
-    console.error(err);
-    document.getElementById('overview-empty').querySelector('p').textContent = 'Could not load briefing';
-    document.getElementById('overview-empty').querySelector('span').textContent = err.message;
+    if(sr.ok){ state.sources=await sr.json(); renderSources(state.sources); }
+  } catch(e) {
+    document.getElementById('overview-empty').querySelector('p').textContent='Could not load';
+    document.getElementById('overview-empty').querySelector('span').textContent=e.message;
   }
+  renderFlagship();
 }
 
 loadAll();
