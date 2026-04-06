@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v4
-Fixed: robust parsing of long responses with markdown fences.
+CMIplus Weekly Intelligence Cockpit — Weekly Scan Script v5
+Fixed: increased maxOutputTokens, reduced item counts, better truncation handling.
 """
 
 import json
@@ -15,6 +15,7 @@ import urllib.error
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL = "gemini-2.5-flash"
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
+MAX_TOKENS = 16000  # increased from 8192
 
 
 def load_sources():
@@ -56,26 +57,24 @@ def build_market_prompt(sources):
     week = get_week_label()
     p1 = [s for s in sources["market_news"] if s["active"] and s["priority"] == 1]
     p2 = [s for s in sources["market_news"] if s["active"] and s["priority"] == 2]
-    n1 = cfg.get("items_priority_1", 3)
-    n2 = cfg.get("items_priority_2", 1)
-    total = min(len(p1) * n1 + len(p2) * n2, 10)  # cap at 10
     p1_str = ", ".join([s["name"] for s in p1])
     p2_str = ", ".join([s["name"] for s in p2]) if p2 else "none"
+    # Keep item count small to avoid truncation
+    total = 6
 
-    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
+    return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
 Search for MARKET NEWS from last 7 days ({week}).
-Priority sources ({n1} items each): {p1_str}
-Secondary sources ({n2} item each): {p2_str}
-Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking, PSD3
+Sources: {p1_str}, {p2_str}
+Topics: ISO 20022, SEPA, instant payments, VoP, eBAM, EBICS, corporate treasury, CEE banking
 
-Tags available: {tags}
+Tags: {tags}
 
-Return a JSON array of {total} objects. Each object has EXACTLY these fields:
-title, summary (2-3 sentences), sowhat (1-2 sentences CMIplus implication), relevance (urgent/watch/fyi), tags (array of 1-3 from available tags), source, date, url
+Return a JSON array of exactly {total} items. Keep each field concise (max 2 sentences per field).
+Each item: title, summary, sowhat, relevance (urgent/watch/fyi), tags (array max 2), source, date, url
 
-IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
+Start with [ end with ]. No markdown. No explanation. JSON only."""
 
 
 def build_thought_prompt(sources):
@@ -84,20 +83,20 @@ def build_thought_prompt(sources):
     tags = ", ".join(sources["tags"])
     active = [s for s in sources["thought_leadership"] if s["active"]]
     names = ", ".join([s["name"] for s in active])
-    n = min(len(active) * 2, 10)  # cap at 10
+    n = 6  # fixed small number
 
-    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
+    return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Search for THOUGHT LEADERSHIP reports/whitepapers/surveys from last 12 months from: {names}
-Topics: cash management strategy, treasury transformation, open banking, payments, CEE banking
+Search for THOUGHT LEADERSHIP reports from last 12 months from: {names}
+Topics: cash management, treasury transformation, open banking, payments, CEE
 
-Tags available: {tags}
+Tags: {tags}
 
-Return a JSON array of {n} objects. Each object has EXACTLY these fields:
-title, key_insight (2-3 sentences), implications (2-3 sentences CMIplus strategy implication), relevance (urgent/watch/fyi), tags (array of 1-3), source, published (Month Year), url
+Return a JSON array of exactly {n} items. Keep each field concise (max 2 sentences).
+Each item: title, key_insight, implications, relevance (urgent/watch/fyi), tags (array max 2), source, published, url
 
-IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
+Start with [ end with ]. No markdown. No explanation. JSON only."""
 
 
 def build_competitor_prompt(sources):
@@ -106,33 +105,37 @@ def build_competitor_prompt(sources):
     tags = ", ".join(sources["tags"])
     active = [s for s in sources["competitors"] if s["active"]]
     names = ", ".join([s["name"] for s in active])
-    n = min(len(active) * 2, 14)  # cap at 14
+    n = 6  # fixed small number
 
-    return f"""Strategic intelligence analyst for RBI CMIplus cash management platform.
+    return f"""You are a strategic intelligence analyst for RBI CMIplus.
 Context: {context}
 
-Search for recent news (last 4 weeks) from these competitors: {names}
-Focus: cash management, API banking, corporate banking innovations, CEE expansion, VoP, instant payments.
+Search for news (last 4 weeks) from: {names}
+Focus: cash management, API banking, corporate banking, CEE, VoP, instant payments.
 
-Tags available: {tags}
+Tags: {tags}
 
-Return a JSON array of {n} objects covering as many different competitors as possible. Each object has EXACTLY these fields:
-title, competitor (exact bank name), summary (2-3 sentences), sowhat (1-2 sentences threat/opportunity for CMIplus), relevance (urgent/watch/fyi), tags (array of 1-3), source, date, url
+Return a JSON array of exactly {n} items covering different competitors. Keep each field concise (max 2 sentences).
+Each item: title, competitor, summary, sowhat, relevance (urgent/watch/fyi), tags (array max 2), source, date, url
 
-IMPORTANT: Return ONLY the raw JSON array. Start your response with [ and end with ]. No markdown, no explanation."""
+Start with [ end with ]. No markdown. No explanation. JSON only."""
 
 
 def call_gemini(prompt):
     payload = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "tools": [{"google_search": {}}],
-        "generationConfig": {"temperature": 0.1, "maxOutputTokens": 8192}
+        "generationConfig": {
+            "temperature": 0.1,
+            "maxOutputTokens": MAX_TOKENS,
+            "responseMimeType": "text/plain"
+        }
     }
     url = f"{API_URL}?key={GEMINI_API_KEY}"
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data,
                                  headers={"Content-Type": "application/json"}, method="POST")
-    with urllib.request.urlopen(req, timeout=180) as resp:
+    with urllib.request.urlopen(req, timeout=240) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
@@ -141,31 +144,29 @@ def extract_text(response):
         parts = response["candidates"][0]["content"]["parts"]
         return "".join(p.get("text", "") for p in parts).strip()
     except (KeyError, IndexError) as e:
-        raise ValueError(f"Bad response: {e}")
+        raise ValueError(f"Bad response structure: {e}")
 
 
 def parse_json_array(text):
-    """Extract JSON array from text, handling markdown fences and extra content."""
+    """Extract JSON array robustly from model output."""
     text = text.strip()
 
-    # Remove markdown fences first
-    if "```" in text:
-        # Extract content between first ``` and last ```
-        text = re.sub(r'^```(?:json)?\s*', '', text)
-        text = re.sub(r'\s*```\s*$', '', text)
-        text = text.strip()
+    # Strip markdown fences
+    text = re.sub(r'^```(?:json)?\s*\n?', '', text)
+    text = re.sub(r'\n?\s*```\s*$', '', text)
+    text = text.strip()
 
-    # Now try to find the JSON array
-    # Find the first [ and the matching last ]
+    # Find first [
     start = text.find('[')
     if start == -1:
-        raise ValueError(f"No JSON array found in response. First 200 chars: {text[:200]}")
+        raise ValueError(f"No '[' found. Preview: {text[:300]}")
 
-    # Find matching closing bracket by counting nesting
+    # Find matching ] using bracket counting
     depth = 0
-    end = -1
     in_string = False
     escape_next = False
+    end = -1
+
     for i in range(start, len(text)):
         c = text[i]
         if escape_next:
@@ -174,7 +175,7 @@ def parse_json_array(text):
         if c == '\\' and in_string:
             escape_next = True
             continue
-        if c == '"' and not escape_next:
+        if c == '"':
             in_string = not in_string
             continue
         if in_string:
@@ -188,20 +189,54 @@ def parse_json_array(text):
                 break
 
     if end == -1:
-        raise ValueError(f"Could not find closing bracket. Text length: {len(text)}")
+        # Try to repair truncated JSON by finding last complete object
+        print(f"  Warning: truncated response ({len(text)} chars), attempting repair...", file=sys.stderr)
+        # Find all complete {...} objects
+        objects = []
+        obj_depth = 0
+        obj_start = -1
+        in_str = False
+        esc = False
+        for i in range(start + 1, len(text)):
+            c = text[i]
+            if esc:
+                esc = False
+                continue
+            if c == '\\' and in_str:
+                esc = True
+                continue
+            if c == '"':
+                in_str = not in_str
+                continue
+            if in_str:
+                continue
+            if c == '{':
+                if obj_depth == 0:
+                    obj_start = i
+                obj_depth += 1
+            elif c == '}':
+                obj_depth -= 1
+                if obj_depth == 0 and obj_start != -1:
+                    try:
+                        obj_text = text[obj_start:i+1]
+                        obj = json.loads(obj_text)
+                        objects.append(obj)
+                    except json.JSONDecodeError:
+                        pass
+                    obj_start = -1
+        if objects:
+            print(f"  Repaired: extracted {len(objects)} complete objects", file=sys.stderr)
+            return objects
+        raise ValueError(f"Could not parse JSON. Text length: {len(text)}")
 
     json_str = text[start:end+1]
 
-    try:
-        return json.loads(json_str)
-    except json.JSONDecodeError as e:
-        # Try to fix common issues: trailing commas, control characters
-        json_str_clean = re.sub(r',\s*([}\]])', r'\1', json_str)  # remove trailing commas
-        json_str_clean = re.sub(r'[\x00-\x1f\x7f]', ' ', json_str_clean)  # remove control chars
-        try:
-            return json.loads(json_str_clean)
-        except json.JSONDecodeError:
-            raise ValueError(f"JSON parse failed: {e}. First 300 chars of extracted: {json_str[:300]}")
+    # Clean control characters
+    json_str = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', ' ', json_str)
+    # Remove trailing commas
+    json_str = re.sub(r',\s*([}\]])', r'\1', json_str)
+
+    return json.loads(json_str)
 
 
 def safe_call(prompt, label):
@@ -225,28 +260,28 @@ def safe_call(prompt, label):
 
 def generate_executive_summary(market, thought, competitors, week, sources):
     context = sources["scan_config"]["context"]
-    m = "; ".join([i.get("title","") for i in market[:5]])
-    t = "; ".join([i.get("title","") for i in thought[:3]])
-    c = "; ".join([f"{i.get('competitor','')}: {i.get('title','')}" for i in competitors[:5]])
+    m = "; ".join([i.get("title", "") for i in market[:4]])
+    t = "; ".join([i.get("title", "") for i in thought[:3]])
+    c = "; ".join([f"{i.get('competitor','')}: {i.get('title','')}" for i in competitors[:4]])
 
-    prompt = f"""Write a 4-5 sentence executive summary for {week}.
+    prompt = f"""Write a 4-sentence executive summary for {week}.
 Context: {context}
-Market news: {m}
+Market: {m}
 Thought leadership: {t}
-Competitor moves: {c}
+Competitors: {c}
 
-Name 2-3 key themes, state most urgent action for CMIplus, highlight most relevant competitor move.
-Return ONLY plain text. No JSON. No markdown. No bullets."""
+Cover: 2 key themes, most urgent CMIplus action, most relevant competitor move.
+Plain text only. No JSON. No markdown. No bullets."""
 
     try:
         response = call_gemini(prompt)
         text = extract_text(response)
         if text.startswith("[") or text.startswith("{"):
-            return "Weekly scan complete. See sections below for details."
+            return "Weekly scan complete. See sections below."
         return text
     except Exception as e:
         print(f"  Executive summary error: {e}", file=sys.stderr)
-        return "Weekly scan complete. See sections below for details."
+        return "Weekly scan complete. See sections below."
 
 
 def main():
@@ -268,7 +303,8 @@ def main():
     competitors = safe_call(build_competitor_prompt(sources), "competitors")
 
     print("Generating executive summary...")
-    executive_summary = generate_executive_summary(market, thought, competitors, week, sources)
+    executive_summary = generate_executive_summary(
+        market, thought, competitors, week, sources)
 
     briefing = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
