@@ -1,4 +1,3 @@
-Select all + Ctrl+C
 #!/usr/bin/env python3
 """
 CMIplus Intelligence Cockpit — Weekly Scan
