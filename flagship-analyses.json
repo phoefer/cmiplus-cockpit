@@ -33,59 +33,59 @@
     "report_id": "pwc_treasury_survey",
     "report_title": "PwC Global Treasury Survey",
     "report_year": "2025",
-    "executive_summary": "The PwC 2025 Global Treasury Survey highlights the evolving strategic role of treasury, driven by demands for cash efficiency, robust risk management, and advanced technology adoption like AI and APIs. CMIplus is well-positioned with its strong CEE network, multi-currency support, and API strategy, particularly in cash efficiency and technology ecosystems. However, it needs to accelerate its AI capabilities to meet evolving market expectations and consider deeper integration for advanced risk management.",
+    "executive_summary": "The 2025 PwC Global Treasury Survey highlights treasury's evolution into a strategic, data-driven partner, emphasizing cash efficiency, advanced risk management, AI adoption, and modular technology ecosystems. CMIplus is well-positioned, particularly with its strong API strategy and upcoming AI Cash Flow Forecasting, but should explore deeper strategic risk management offerings. Proactive development and marketing of these advanced capabilities will solidify RBI's competitive edge in CEE.",
     "themes": [
       {
-        "name": "Cash Efficiency & Liquidity Management",
-        "description": "The survey indicates a strong focus on cash visibility, cost efficiency, and unlocking trapped cash, with top organizations leveraging in-house banks, real-time liquidity tools, and centralized payment models.",
-        "cmiplus_positioning": "AHEAD",
-        "positioning_rationale": "CMIplus's extensive CEE network coverage, multi-currency support, ISO 20022 payment capabilities, and live Verification of Payee (VoP) directly enable enhanced cash visibility, efficient payment processing, and support for centralized payment models across a complex region.",
-        "key_stat": "Top-performing organizations are adopting in-house banks, real-time liquidity tools, AI-enhanced forecasting and centralized payment models to drive working capital efficiency and unlock trapped cash."
+        "name": "Cash Efficiency & Real-time Liquidity",
+        "description": "The report notes heightened demands for cash visibility, cost efficiency, and the adoption of real-time liquidity tools, AI-enhanced forecasting, and centralized payment models to drive working capital efficiency and unlock trapped cash.",
+        "cmiplus_positioning": "IN LINE",
+        "positioning_rationale": "CMIplus's multi-currency support, strong CEE network, and ISO 20022 capabilities provide a solid foundation for cash efficiency. The planned AI Cash Flow Forecasting (Q4/2026) directly addresses the 'AI-enhanced forecasting' trend, moving CMIplus towards an 'AHEAD' position in this specific aspect.",
+        "key_stat": "Treasury teams are responding to heightened demands for cash visibility, cost efficiency and risk management by deepening their integration with business units and enabling faster, more informed decisions."
       },
       {
         "name": "Financial Risk Management",
-        "description": "Macroeconomic volatility, including inflation and FX fluctuations, is accelerating the need for sophisticated cash and risk management frameworks, prompting treasurers to invest in scenario modeling and expanded exposure visibility.",
+        "description": "Treasurers are elevating their role by investing in scenario modeling and expanding exposure visibility across global operations, driven by macroeconomic volatility, inflation, FX volatility, and global trade tensions.",
         "cmiplus_positioning": "IN LINE",
-        "positioning_rationale": "CMIplus provides the foundational data through its multi-currency accounts and broad network coverage necessary for identifying FX exposure and managing cash across diverse markets. However, the platform does not explicitly offer advanced risk management tools like scenario modeling or comprehensive exposure analytics.",
+        "positioning_rationale": "CMIplus facilitates multi-currency transactions and offers Verification of Payee (VoP) for payment risk. However, the platform does not explicitly offer advanced strategic risk management tools like scenario modeling or comprehensive enterprise-wide exposure visibility, which the report emphasizes.",
         "key_stat": "The macroeconomic environment — including tariff policy changes, inflationary pressures and foreign exchange (FX) volatility — is accelerating the need for sophisticated cash and risk management frameworks."
       },
       {
-        "name": "AI in Treasury Operations",
-        "description": "The report highlights AI-enhanced forecasting as a key capability for top-performing organizations to drive working capital efficiency and deliver actionable insights.",
-        "cmiplus_positioning": "BEHIND",
-        "positioning_rationale": "While CMIplus has 'AI Cash Flow Forecasting' planned for Q4/2026, the survey indicates that leading organizations are already adopting and benefiting from AI-enhanced forecasting, placing CMIplus behind current market leaders in this specific area.",
-        "key_stat": "Top-performing organizations are adopting... AI-enhanced forecasting..."
+        "name": "AI in Treasury and Finance",
+        "description": "The survey highlights that treasury teams are leveraging AI to enhance cash efficiency, risk management, and agility, driving strategic value through capabilities like AI-enhanced forecasting.",
+        "cmiplus_positioning": "AHEAD",
+        "positioning_rationale": "CMIplus has a clear, stated plan to implement 'AI Cash Flow Forecasting' by Q4/2026, directly aligning with the report's emphasis on AI for enhancing forecasting and strategic value. This demonstrates proactive engagement with a key technological trend.",
+        "key_stat": "Treasury teams around the world are leveraging AI... to help enhance cash efficiency, risk management and agility, and drive strategic value."
       },
       {
         "name": "Treasury Technology Ecosystem & APIs",
-        "description": "The survey emphasizes that while most organizations have a Treasury Management System (TMS), few realize its full potential. Investment in modular ecosystems enabled by Application Programming Interfaces (APIs) is critical for flexibility, scalability, and optimizing value in uncertain times.",
+        "description": "The report indicates that while many organizations have a TMS, few fully realize its potential. Leading organizations are investing in modular ecosystems enabled by Application Programming Interfaces (APIs) and managed services models for flexibility and scalability.",
         "cmiplus_positioning": "AHEAD",
-        "positioning_rationale": "CMIplus is actively scaling its Open API initiative, with the UNIFI format expected in Q3/2026, directly aligning with the report's emphasis on modular, API-enabled ecosystems. Its robust support for various channels (EBICS, H2H, SWIFT) further strengthens its position in providing a flexible technology ecosystem.",
+        "positioning_rationale": "CMIplus is actively scaling its Open API initiative, with the UNIFI format expected by Q3/2026. This directly addresses the report's finding that modular ecosystems and API connectivity are crucial for modern treasury functions, positioning CMIplus as a forward-thinking platform.",
         "key_stat": "Those investing in modular ecosystems enabled by application programming interfaces (APIs) and managed services models are creating the flexibility required to scale, optimize and protect value in uncertain times."
       },
       {
         "name": "Managed Services Adoption",
-        "description": "Managed services models are identified as a key operating model shift, offering flexibility to scale, optimize, and protect value, alongside technology advancements.",
+        "description": "Treasury teams are leveraging managed services to enhance cash efficiency, risk management, and agility, creating flexibility to scale, optimize, and protect value in uncertain times.",
         "cmiplus_positioning": "IN LINE",
-        "positioning_rationale": "As a comprehensive cash management platform, CMIplus provides the infrastructure and standardization (e.g., ISO 20022, CEE network) that enables corporate clients to centralize operations and potentially leverage managed services. While CMIplus itself isn't a managed service provider, it is a strong enabler for clients adopting such models.",
-        "key_stat": "Those investing in modular ecosystems enabled by application programming interfaces (APIs) and managed services models are creating the flexibility required to scale, optimize and protect value in uncertain times."
+        "positioning_rationale": "As a comprehensive corporate cash management platform, CMIplus provides a managed service for banking operations, enabling corporates to streamline their treasury functions. While not offering outsourced treasury staffing, it directly supports the efficiency and agility benefits sought by companies adopting managed services models for their underlying banking infrastructure.",
+        "key_stat": "Treasury teams around the world are leveraging... managed services to help enhance cash efficiency, risk management and agility, and drive strategic value."
       }
     ],
     "key_actions": [
       {
-        "action": "Accelerate AI Cash Flow Forecasting development and deployment.",
+        "action": "Accelerate and expand Open API capabilities, with a strong focus on the UNIFI format and broader integration possibilities.",
         "urgency": "HIGH",
-        "rationale": "The report highlights AI-enhanced forecasting as a critical capability for top-performing treasuries. CMIplus's Q4/2026 timeline for this feature puts it behind current market leaders, necessitating accelerated development to meet evolving client expectations and maintain competitiveness."
+        "rationale": "The report highlights APIs and modular ecosystems as critical for flexibility and scalability. CMIplus's UNIFI format target in Q3/2026 is timely, and accelerating its adoption and promoting its capabilities will solidify RBI's 'AHEAD' positioning in treasury technology."
       },
       {
-        "action": "Explore partnerships or internal development for advanced risk management modules (e.g., scenario modeling, comprehensive exposure analytics).",
+        "action": "Develop and actively market the upcoming AI Cash Flow Forecasting solution as a key differentiator for cash efficiency and strategic insights.",
+        "urgency": "HIGH",
+        "rationale": "AI-enhanced forecasting is explicitly called out as a key driver for cash efficiency and strategic value. CMIplus's planned Q4/2026 launch is perfectly aligned, and strong marketing will highlight RBI's innovation and competitive advantage."
+      },
+      {
+        "action": "Explore partnerships or integrations to offer more advanced financial risk management tools, such as scenario modeling or comprehensive exposure visibility.",
         "urgency": "MEDIUM",
-        "rationale": "The survey emphasizes the growing need for sophisticated risk management frameworks. While CMIplus provides foundational data, integrating or partnering for advanced tools would elevate its offering beyond basic cash management to a more strategic treasury partner."
-      },
-      {
-        "action": "Proactively communicate and deliver on the Open API initiative, especially the UNIFI format, by Q3/2026.",
-        "urgency": "HIGH",
-        "rationale": "The report underscores modular ecosystems and APIs as crucial for flexibility and scalability. CMIplus's planned UNIFI format is a key differentiator; ensuring its timely and effective delivery and promotion will reinforce CMIplus's leadership in treasury technology."
+        "rationale": "While CMIplus supports transactional risk, the report points to a broader need for strategic risk management capabilities. Expanding beyond core banking services through partnerships could enhance CMIplus's value proposition as a holistic strategic partner to treasurers."
       }
     ],
     "scan_date": "2026-04-07"

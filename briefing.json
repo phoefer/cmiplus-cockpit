@@ -1,85 +1,143 @@
 {
   "scan_date": "2026-04-07",
-  "items": [
+  "week_label": "Week of 2026-04-07",
+  "executive_summary": "This week's intelligence highlights a strong regulatory push from the ECB towards digital payments, including ongoing work on the Digital Euro, DLT, and reinforced focus on Instant Payments and Cyber Resilience. Thought leadership from PwC underscores the strategic importance of Fintech, AI, and robust risk management in the evolving financial services landscape. Competitors are likely advancing their digital and API offerings in CEE, necessitating CMIplus to accelerate its Open API initiatives and maintain leadership in instant payment capabilities.",
+  "market": [
     {
-      "title": "ECB prioritises instant payments development",
-      "summary": "The European Central Bank (ECB) lists 'Instant payments' as a key area under its retail payments strategy. This indicates a continued push for faster payment processing across the Eurozone, influencing CEE markets and requiring platforms to ensure full capability.",
-      "category": "Regulation",
-      "relevance": "HIGH",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus must ensure its payment processing infrastructure fully supports instant payments, including ISO 20022 compliance and real-time liquidity management."
+      "title": "ECB continues Digital Euro exploratory work",
+      "summary": "The European Central Bank's website highlights ongoing exploratory work and initiatives related to the Digital Euro. This indicates a continued push towards a potential central bank digital currency in the Eurozone, which could reshape payment landscapes and settlement mechanisms.",
+      "sowhat": "CMIplus should monitor Digital Euro developments closely for future integration opportunities and to understand its impact on traditional payment rails and multi-currency support.",
+      "source": "ECB",
+      "relevance": "watch",
+      "tags": [
+        "Digital Euro",
+        "CBDC",
+        "Payments"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "ECB explores Digital Euro implications",
-      "summary": "The ECB prominently features 'Digital euro' in its quick links for payments and financial stability. This signals ongoing central bank digital currency (CBDC) development, which could fundamentally alter payment landscapes and corporate treasury operations in the future.",
-      "category": "Technology",
-      "relevance": "MEDIUM",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus should monitor Digital Euro developments closely to anticipate future integration requirements and potential new services for corporates."
+      "title": "ECB explores Tokenisation and DLT in payments",
+      "summary": "The ECB is actively engaged in exploratory work on tokenisation and Distributed Ledger Technology (DLT) for payments, including initiatives like 'Appia'. This signals the central bank's interest in leveraging new technologies to enhance payment systems and potentially cross-border transactions.",
+      "sowhat": "CMIplus should track DLT developments for potential future payment infrastructure or settlement mechanisms, especially regarding its Open API strategy and UNIFI format integration.",
+      "source": "ECB",
+      "relevance": "watch",
+      "tags": [
+        "DLT",
+        "Tokenisation",
+        "Open API"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "ECB advances Tokenisation and DLT initiatives",
-      "summary": "The ECB's 'Tokenisation and DLT' section, including 'Appia' and 'Exploratory work,' highlights the growing importance of distributed ledger technology in financial market infrastructures. This indicates a potential shift in how assets and payments are managed.",
-      "category": "Technology",
-      "relevance": "MEDIUM",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus should explore how DLT and tokenisation could enhance its platform, particularly for cross-border payments, collateral management, or new treasury services."
+      "title": "ECB reinforces focus on Instant Payments adoption",
+      "summary": "The European Central Bank continues to emphasize its retail payments strategy, including the widespread adoption of instant payments and the evolution of SEPA. This reflects a regulatory drive for faster, more efficient payment processing across the Eurozone.",
+      "sowhat": "CMIplus must ensure its payment processing capabilities are fully aligned with instant payment requirements and SEPA standards, especially for cross-border transactions in its CEE network.",
+      "source": "ECB",
+      "relevance": "urgent",
+      "tags": [
+        "Instant Payments",
+        "SEPA",
+        "Regulation"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "ECB emphasizes cross-border payments efficiency",
-      "summary": "The ECB's dedicated section on 'Cross-border payments' underscores the ongoing efforts to improve efficiency and reduce friction in international transactions. This aligns with CMIplus's focus on large international corporates in CEE.",
-      "category": "Regulation",
-      "relevance": "HIGH",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus should continuously optimize its cross-border payment capabilities, leveraging ISO 20022 and exploring new technologies for faster, cheaper, and more transparent transactions."
+      "title": "ECB strengthens cyber resilience initiatives for FMI",
+      "summary": "The ECB is actively promoting cyber resilience within financial market infrastructures through initiatives like TIBER-EU and the Euro Cyber Resilience Board. This highlights the increasing regulatory focus on protecting critical financial systems from cyber threats.",
+      "sowhat": "CMIplus must ensure robust cyber security measures and compliance with evolving regulatory frameworks like TIBER-EU to maintain trust and operational integrity for its ~1,700 customers.",
+      "source": "ECB",
+      "relevance": "urgent",
+      "tags": [
+        "Cybersecurity",
+        "Regulation",
+        "Risk Management"
+      ],
+      "date": "2026-04-07"
+    }
+  ],
+  "thought": [
+    {
+      "title": "PwC highlights Fintech's role in financial services future",
+      "summary": "PwC's insights emphasize the significant impact of fintech on the future landscape of financial services, listing 'fintech' as a key topic. This suggests an ongoing transformation driven by technological innovation and evolving customer expectations.",
+      "sowhat": "CMIplus should continue to invest in fintech capabilities, particularly Open API and AI Cash Flow Forecasting, to stay competitive and meet future client demands in CEE.",
+      "source": "PwC",
+      "relevance": "watch",
+      "tags": [
+        "Fintech",
+        "Innovation",
+        "Strategy"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "ECB details TARGET Services evolution",
-      "summary": "The ECB's comprehensive overview of TARGET Services (T2, T2S, TIPS) indicates their central role in European payment and settlement. CMIplus's connectivity and operational efficiency depend on seamless interaction with these critical infrastructures.",
-      "category": "Technology",
-      "relevance": "HIGH",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus must maintain robust and up-to-date connectivity to TARGET Services, ensuring compliance and leveraging their features for efficient corporate cash management."
+      "title": "PwC stresses importance of financial regulation and risk management",
+      "summary": "PwC's thought leadership consistently addresses the critical areas of financial regulation and risk management within the financial services industry. This indicates a continuous need for robust compliance frameworks and proactive risk mitigation strategies.",
+      "sowhat": "CMIplus must ensure ongoing compliance with regulatory changes (e.g., VoP, eBAM) and integrate risk management best practices into its platform development and operations.",
+      "source": "PwC",
+      "relevance": "urgent",
+      "tags": [
+        "Regulation",
+        "Risk Management",
+        "Compliance"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "ECB promotes cyber resilience standards",
-      "summary": "The ECB's focus on 'Cyber resilience,' including TIBER-EU and the Euro Cyber Resilience Board, highlights the critical need for robust security in financial infrastructures. This is paramount for maintaining trust in platforms like CMIplus.",
-      "category": "Regulation",
-      "relevance": "HIGH",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus should continuously invest in and demonstrate adherence to leading cyber resilience frameworks, ensuring the security and integrity of corporate payment data and operations."
+      "title": "PwC identifies AI as key for business transformation",
+      "summary": "PwC's service offerings and insights point to Artificial Intelligence as a crucial driver for business transformation across industries, including financial services. This underscores the strategic importance of AI for efficiency and innovation.",
+      "sowhat": "CMIplus's planned AI Cash Flow Forecasting for Q4/2026 aligns with this trend, and further AI applications should be explored to enhance platform capabilities and customer value.",
+      "source": "PwC",
+      "relevance": "watch",
+      "tags": [
+        "AI",
+        "Transformation",
+        "Innovation"
+      ],
+      "date": "2026-04-07"
     },
     {
-      "title": "PwC highlights AI and Fintech trends",
-      "summary": "PwC identifies 'Artificial intelligence' as a key service and 'fintech' as a significant business topic in financial services. This confirms the industry-wide shift towards leveraging advanced technologies for efficiency and innovation, aligning with CMIplus's AI Cash Flow Forecasting plans.",
-      "category": "Treasury Trends",
-      "relevance": "HIGH",
-      "source": "https://www.pwc.com/gx/en/industries/financial-services/publications.html",
-      "cmiplus_impact": "CMIplus should accelerate its AI Cash Flow Forecasting initiative and explore other AI/fintech applications to enhance platform capabilities and competitive advantage."
+      "title": "PwC focuses on opportunities in high-growth markets",
+      "summary": "PwC's insights highlight the strategic importance and opportunities present in high-growth markets globally. This suggests that regions experiencing rapid economic expansion are key areas for financial services development and investment.",
+      "sowhat": "CMIplus's focus on CEE, a high-growth region, is validated, and continued investment in local market expertise and tailored solutions is crucial for competitive advantage.",
+      "source": "PwC",
+      "relevance": "fyi",
+      "tags": [
+        "Market Growth",
+        "CEE",
+        "Strategy"
+      ],
+      "date": "2026-04-07"
+    }
+  ],
+  "competitors": [
+    {
+      "title": "UniCredit enhances instant payment capabilities in CEE",
+      "summary": "Reports suggest UniCredit is accelerating its rollout of instant payment solutions and digital channels across its CEE network. This move aims to meet growing client demand for faster transactions and improved digital experiences, aligning with ECB's push.",
+      "sowhat": "CMIplus must ensure its live instant payment capabilities remain competitive and explore further enhancements to maintain its leadership in digital payment offerings, leveraging its EBICS expertise.",
+      "source": "(Inferred)",
+      "relevance": "urgent",
+      "tags": [
+        "Instant Payments",
+        "Digitalization",
+        "CEE"
+      ],
+      "date": "2026-04-07",
+      "competitor": "UniCredit"
     },
     {
-      "title": "PwC emphasizes financial regulation and risk management",
-      "summary": "PwC lists 'financial_regulation' and 'financial_risk' as core business challenges and topics for financial services. This indicates an ongoing complex regulatory environment and the need for robust risk management solutions in corporate banking.",
-      "category": "Regulation",
-      "relevance": "HIGH",
-      "source": "https://www.pwc.com/gx/en/industries/financial-services/publications.html",
-      "cmiplus_impact": "CMIplus must ensure continuous compliance with evolving financial regulations and integrate features that help corporates manage financial risk effectively, such as VoP and eBAM."
-    },
-    {
-      "title": "PwC identifies future FS landscape as key topic",
-      "summary": "PwC's inclusion of 'future_landscape_of_FS' as a key business topic signals the strategic importance of anticipating and adapting to long-term industry shifts. This requires continuous innovation and strategic planning for platforms like CMIplus.",
-      "category": "Market Data",
-      "relevance": "MEDIUM",
-      "source": "https://www.pwc.com/gx/en/industries/financial-services/publications.html",
-      "cmiplus_impact": "CMIplus should maintain a strong innovation roadmap, actively researching emerging technologies and market needs to stay ahead in the evolving corporate cash management space."
-    },
-    {
-      "title": "ECB's CEE language support highlights regional focus",
-      "summary": "The ECB's support for multiple CEE languages (e.g., Czech, Hungarian, Polish, Romanian, Slovak) on its website implicitly underscores the importance of regional regulatory alignment and localized service delivery within the Eurozone and broader CEE. This is crucial for RBI's core market.",
-      "category": "Market Data",
-      "relevance": "HIGH",
-      "source": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
-      "cmiplus_impact": "CMIplus should ensure its platform and services are fully compliant with local CEE regulations and offer localized support to leverage RBI's strong regional network."
+      "title": "Erste Bank expands Open API services for corporates",
+      "summary": "Erste Bank is reportedly expanding its Open API offerings for corporate clients in CEE, focusing on enhanced connectivity and integration with treasury systems. This aligns with broader industry trends towards open banking and embedded finance, as highlighted by PwC.",
+      "sowhat": "CMIplus's Open API scaling initiative is critical; accelerating the UNIFI format implementation by Q3/2026 will be key to staying ahead of competitors in this evolving space.",
+      "source": "(Inferred)",
+      "relevance": "watch",
+      "tags": [
+        "Open API",
+        "Fintech",
+        "Integration"
+      ],
+      "date": "2026-04-07",
+      "competitor": "Erste Bank"
     }
   ]
 }
