@@ -478,17 +478,63 @@ Return raw JSON only. No markdown.`;
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.2, maxOutputTokens: 4096 }
+        generationConfig: { temperature: 0.2, maxOutputTokens: 16000 }
       })
     });
     const data = await resp.json();
+    if(data.error) throw new Error(data.error.message || 'API error');
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const clean = text.replace(/^```(?:json)?\s*/,'').replace(/\s*```\s*$/,'').trim();
-    const analysis = JSON.parse(clean);
+    if(!text) throw new Error('Empty response from Gemini');
+    const analysis = parseDeepDiveJSON(text);
     renderDeepDive(item, analysis);
   } catch(e) {
     document.getElementById('modalBody').innerHTML = `<div class="empty-state"><p>Analysis failed</p><span>${esc(e.message)}</span></div>`;
   }
+}
+
+function parseDeepDiveJSON(text) {
+  // Strip markdown fences
+  let t = text.trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```\s*$/, '')
+    .trim();
+
+  // Try direct parse first
+  try { return JSON.parse(t); } catch(e) {}
+
+  // Find first { and matching }
+  const start = t.indexOf('{');
+  if(start === -1) throw new Error('No JSON object found');
+
+  let depth = 0, inStr = false, esc2 = false, end = -1;
+  for(let i = start; i < t.length; i++) {
+    const c = t[i];
+    if(esc2) { esc2 = false; continue; }
+    if(c === '\\' && inStr) { esc2 = true; continue; }
+    if(c === '"') { inStr = !inStr; continue; }
+    if(inStr) continue;
+    if(c === '{') depth++;
+    else if(c === '}') { depth--; if(depth === 0) { end = i; break; } }
+  }
+
+  if(end === -1) {
+    // Truncated — build partial object from what we have
+    const partial = {};
+    const fields = ['report_summary','key_data','position','position_rationale','recommended_action','roadmap_connection'];
+    fields.forEach(f => {
+      const rx = new RegExp('"' + f + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"');
+      const m = t.match(rx);
+      if(m) partial[f] = m[1].replace(/\\n/g,'\n').replace(/\\"/g,'"');
+    });
+    if(!partial.position) partial.position = 'inline';
+    if(Object.keys(partial).length === 0) throw new Error('Could not extract any fields from response');
+    return partial;
+  }
+
+  const jsonStr = t.slice(start, end + 1)
+    .replace(/,(\s*[}\]])/g, '$1')
+    .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, ' ');
+  return JSON.parse(jsonStr);
 }
 
 function renderDeepDive(item, a) {
