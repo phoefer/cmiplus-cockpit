@@ -20,11 +20,11 @@ jobs:
 
       - name: Write Gemini API key to config.js
         run: |
-          echo "window.GEMINI_KEY = '${{ secrets.GEMINI_KEY }}';" > config.js
+          echo "window.GEMINI_KEY = '${{ secrets.GEMINI_API_KEY }}';" > config.js
 
       - name: Run scan
         env:
-          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scan.py
 
       - name: Commit results
