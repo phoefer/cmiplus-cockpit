@@ -21,10 +21,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Write Gemini API key to config.js
-        run: |
-          echo "window.GEMINI_KEY = '${{ secrets.GEMINI_API_KEY }}';" > config.js
-
       - name: Run scan
         env:
           GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -34,6 +30,6 @@ jobs:
         run: |
           git config user.name  "CMIplus Bot"
           git config user.email "bot@cmiplus-cockpit"
-          git add briefing.json flagship-analyses.json config.js
+          git add briefing.json flagship-analyses.json
           git diff --cached --quiet || git commit -m "Weekly scan $(date -u '+%Y-%m-%d')"
           git push
