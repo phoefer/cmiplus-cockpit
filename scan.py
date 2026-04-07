@@ -1,10 +1,11 @@
+Select all + Ctrl+C
 #!/usr/bin/env python3
 """
 CMIplus Intelligence Cockpit — Weekly Scan
 Runs every Monday 06:00 UTC via GitHub Actions.
 
 Produces:
-  - briefing.json         : structured weekly briefing (market/thought/competitors)
+  - briefing.json         : structured weekly briefing with deep analyses per item
   - flagship-analyses.json: CMIplus positioning vs. 4 flagship reports
 """
 
@@ -22,7 +23,6 @@ import re
 
 GEMINI_API_KEY = os.environ.get("GEMINI_KEY", "")
 FLASH_MODEL    = "gemini-2.5-flash"
-PRO_MODEL      = "gemini-2.5-pro"
 GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
 
 REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
@@ -34,6 +34,7 @@ FLAGSHIP_REPORTS = [
         "year":   "2025",
         "source": "pdf",
         "file":   "ey-gl-four-trends-redefining-cash-management-08-2025.pdf",
+        "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf",
     },
     {
         "id":     "mckinsey_payments",
@@ -41,6 +42,7 @@ FLAGSHIP_REPORTS = [
         "year":   "2025",
         "source": "pdf",
         "file":   "the-2025-mckinsey-global-payments-report.pdf",
+        "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf",
     },
     {
         "id":     "journeys_to_treasury",
@@ -48,6 +50,7 @@ FLAGSHIP_REPORTS = [
         "year":   "2025/26",
         "source": "pdf",
         "file":   "Journeys to Treasury 2025-26.pdf",
+        "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf",
     },
     {
         "id":     "pwc_treasury_survey",
@@ -55,19 +58,20 @@ FLAGSHIP_REPORTS = [
         "year":   "2025",
         "source": "web",
         "url":    "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html",
+        "report_url": "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html",
     },
 ]
 
 WEEKLY_SOURCES = [
-    {"url": "https://www.mckinsey.com/industries/financial-services/our-insights", "weight": 2},
-    {"url": "https://www.bcg.com/industries/financial-institutions/insights",       "weight": 2},
-    {"url": "https://www.ey.com/en_gl/insights/financial-services",                 "weight": 1},
-    {"url": "https://www.pwc.com/gx/en/industries/financial-services/publications.html", "weight": 1},
-    {"url": "https://www.swift.com/news-events/news",                               "weight": 1},
-    {"url": "https://www.treasurytoday.com/news",                                   "weight": 1},
-    {"url": "https://www.finextra.com/newshub/fintech",                             "weight": 1},
-    {"url": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",           "weight": 1},
-    {"url": "https://www.eba.europa.eu/newsroom/news",                              "weight": 1},
+    {"url": "https://www.mckinsey.com/industries/financial-services/our-insights", "weight": 2, "type": "thought"},
+    {"url": "https://www.bcg.com/industries/financial-institutions/insights",       "weight": 2, "type": "thought"},
+    {"url": "https://www.ey.com/en_gl/insights/financial-services",                 "weight": 1, "type": "thought"},
+    {"url": "https://www.pwc.com/gx/en/industries/financial-services/publications.html", "weight": 1, "type": "thought"},
+    {"url": "https://www.swift.com/news-events/news",                               "weight": 1, "type": "market"},
+    {"url": "https://www.treasurytoday.com/news",                                   "weight": 1, "type": "market"},
+    {"url": "https://www.finextra.com/newshub/fintech",                             "weight": 1, "type": "market"},
+    {"url": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",           "weight": 1, "type": "market"},
+    {"url": "https://www.eba.europa.eu/newsroom/news",                              "weight": 1, "type": "market"},
 ]
 
 CMIPLUS_CONTEXT = """
@@ -90,8 +94,8 @@ Key facts:
 # Gemini API helpers
 # ---------------------------------------------------------------------------
 
-def gemini_call(model: str, parts: list, max_tokens: int = 16000) -> str:
-    url = GEMINI_URL.format(model=model, key=GEMINI_API_KEY)
+def gemini_call(parts: list, max_tokens: int = 16000) -> str:
+    url = GEMINI_URL.format(model=FLASH_MODEL, key=GEMINI_API_KEY)
     payload = {
         "contents": [{"parts": parts}],
         "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.3},
@@ -99,7 +103,7 @@ def gemini_call(model: str, parts: list, max_tokens: int = 16000) -> str:
     data = json.dumps(payload).encode("utf-8")
     req  = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
+        with urllib.request.urlopen(req, timeout=180) as resp:
             result = json.loads(resp.read().decode("utf-8"))
             return result["candidates"][0]["content"]["parts"][0]["text"]
     except urllib.error.HTTPError as e:
@@ -126,7 +130,6 @@ def load_pdf_base64(filename: str) -> str:
 
 
 def parse_json_loose(raw: str) -> dict:
-    """Strip markdown fences and parse JSON with bracket-counting fallback."""
     clean = re.sub(r"^```[a-z]*\n?", "", raw.strip(), flags=re.MULTILINE)
     clean = re.sub(r"\n?```$", "", clean.strip(), flags=re.MULTILINE)
     clean = clean.strip()
@@ -150,13 +153,20 @@ def parse_json_loose(raw: str) -> dict:
     return json.loads(clean[start : end + 1])
 
 
+def normalize_relevance(r: str) -> str:
+    r = str(r).lower()
+    if r in ("high", "urgent"):   return "urgent"
+    if r in ("medium", "watch"):  return "watch"
+    return "fyi"
+
+
 # ---------------------------------------------------------------------------
-# Weekly briefing — correct output format for index.html
+# Weekly briefing
 # ---------------------------------------------------------------------------
 
 BRIEFING_PROMPT = """
-You are an intelligence analyst for RBI's CMIplus corporate cash management platform.
-Scan the web content below and produce a structured weekly intelligence briefing.
+You are a senior intelligence analyst for RBI's CMIplus corporate cash management platform.
+Scan the web content below and produce a structured weekly intelligence briefing with DEEP analyses.
 
 Context about CMIplus:
 {context}
@@ -167,24 +177,28 @@ Web content from sources:
 Today's date: {scan_date}
 
 Produce items across THREE sections:
-1. market (4 items): Breaking news, regulatory updates, market moves directly affecting payments/cash management
-2. thought (4 items): Strategic insights, research findings, industry trends from McKinsey, BCG, EY, PwC — prioritise these heavily
-3. competitors (2 items): Moves by UniCredit, Erste, Citi, Deutsche Bank, ING or other banks competing in CEE corporate banking
+1. market (5 items): Breaking news, regulatory updates, market moves directly affecting payments/cash management in Europe/CEE
+2. thought (5 items): Strategic insights, research findings, industry trends — heavily from McKinsey, BCG, EY, PwC
+3. competitors (5 items): Moves by UniCredit, Erste Bank, Citi, Deutsche Bank, ING, Rabobank or other banks competing in CEE/European corporate banking. If specific news is not available, infer likely strategic moves based on industry trends.
 
-For EACH item use this EXACT field structure:
-- title: Short headline max 10 words
-- summary: 2-3 sentences on what happened and why it matters
-- sowhat: One sentence — direct implication for CMIplus product or strategy
-- source: Source name (e.g. "McKinsey", "ECB", "Finextra")
+For EACH item produce a RICH, DETAILED analysis with these EXACT fields:
+- title: Compelling headline max 12 words
+- summary: 4-6 sentences — what happened, context, why it matters for the industry
+- key_insights: Array of 3-4 specific bullet-point insights from this topic
+- sowhat: 2-3 sentences — direct strategic implication for CMIplus product and roadmap
+- cmiplus_positioning: "AHEAD" | "IN LINE" | "BEHIND" — where CMIplus stands on this topic
+- positioning_rationale: 2 sentences explaining the positioning
+- recommended_action: One concrete action Philipp Höfer (CMIplus GPO) should take in next 30-90 days
+- source: Source name (e.g. "McKinsey", "ECB", "Finextra", "EBA")
 - relevance: MUST be exactly one of: urgent / watch / fyi
-- tags: Array of 1-3 short topic tags e.g. ["ISO20022", "AI", "EBICS"]
-- date: Today's date {scan_date}
+- tags: Array of 2-4 short topic tags e.g. ["ISO20022", "AI", "EBICS", "CEE"]
+- date: "{scan_date}"
 
 For competitor items also add:
-- competitor: Name of the competitor bank (e.g. "UniCredit", "Erste Bank")
+- competitor: Name of the competitor bank
 
 Also produce:
-- executive_summary: 3-4 sentence overview of the week's most important developments for CMIplus
+- executive_summary: 4-5 sentence strategic overview of the week for CMIplus — what matters most and why
 - week_label: "Week of {scan_date}"
 
 Respond ONLY with valid JSON, no markdown, no preamble:
@@ -192,9 +206,9 @@ Respond ONLY with valid JSON, no markdown, no preamble:
   "scan_date": "{scan_date}",
   "week_label": "Week of {scan_date}",
   "executive_summary": "...",
-  "market": [ /* 4 items */ ],
-  "thought": [ /* 4 items */ ],
-  "competitors": [ /* 2 items */ ]
+  "market": [ /* 5 items */ ],
+  "thought": [ /* 5 items */ ],
+  "competitors": [ /* 5 items */ ]
 }}
 """
 
@@ -208,7 +222,7 @@ def run_weekly_briefing(scan_date: str) -> dict:
         print(f"  Fetching: {url}")
         text = fetch_url_text(url, max_bytes=100_000)
         for _ in range(weight):
-            content_parts.append(f"=== SOURCE: {url} ===\n{text[:8_000]}\n")
+            content_parts.append(f"=== SOURCE ({src['type']}): {url} ===\n{text[:8_000]}\n")
 
     combined = "\n".join(content_parts)[:120_000]
     prompt = BRIEFING_PROMPT.format(
@@ -219,19 +233,15 @@ def run_weekly_briefing(scan_date: str) -> dict:
 
     print("Calling Gemini Flash for weekly briefing...")
     try:
-        raw    = gemini_call(FLASH_MODEL, [{"text": prompt}], max_tokens=16000)
+        raw    = gemini_call([{"text": prompt}], max_tokens=16000)
         result = parse_json_loose(raw)
-        # Normalize relevance values to lowercase
         for section in ["market", "thought", "competitors"]:
             for item in result.get(section, []):
-                r = str(item.get("relevance", "fyi")).lower()
-                if r in ("high", "urgent"):
-                    item["relevance"] = "urgent"
-                elif r in ("medium", "watch"):
-                    item["relevance"] = "watch"
-                else:
-                    item["relevance"] = "fyi"
-        print(f"  briefing.json: {len(result.get('market',[]))} market, {len(result.get('thought',[]))} thought, {len(result.get('competitors',[]))} competitors")
+                item["relevance"] = normalize_relevance(item.get("relevance", "fyi"))
+        m = len(result.get("market", []))
+        t = len(result.get("thought", []))
+        c = len(result.get("competitors", []))
+        print(f"  briefing.json: {m} market, {t} thought, {c} competitors")
         return result
     except Exception as e:
         print(f"ERROR in weekly briefing: {e}")
@@ -250,43 +260,42 @@ def run_weekly_briefing(scan_date: str) -> dict:
 # Flagship analyses
 # ---------------------------------------------------------------------------
 
-FLAGSHIP_PROMPT_TEMPLATE = """
-You are an expert analyst for RBI's CMIplus platform. Analyse the provided report and produce a structured JSON analysis.
+FLAGSHIP_PROMPT = """
+You are a senior McKinsey-level analyst for RBI's CMIplus platform.
+Produce a comprehensive strategic analysis of this report for the CMIplus product team.
 
 Context about CMIplus:
 {context}
 
 Report: "{title}" ({year})
 
-Instructions:
-1. Identify the 4-6 most important themes or trends from the report.
-2. For each theme, assess CMIplus positioning: AHEAD / IN LINE / BEHIND.
-3. Extract the most relevant key statistics or data points.
-4. Identify 2-3 concrete action items for CMIplus based on the report findings.
-5. Write a 2-3 sentence executive summary.
+Produce a DETAILED analysis with these exact fields:
+1. executive_summary: 4-5 sentences — what the report covers, methodology, main conclusions
+2. key_stats: Array of 5-7 most important statistics or data points from the report
+3. themes: Array of 5-6 themes, each with:
+   - name: Theme name
+   - description: 3-4 sentences about this theme
+   - cmiplus_positioning: "AHEAD" | "IN LINE" | "BEHIND"
+   - positioning_rationale: 2-3 sentences why
+   - key_stat: Most relevant number or finding
+4. key_actions: Array of 3-4 actions, each with:
+   - action: Concrete action for CMIplus
+   - urgency: "HIGH" | "MEDIUM" | "LOW"
+   - rationale: 2 sentences why this matters
+   - timeline: Suggested timeline e.g. "Q2 2026" or "30 days"
+5. competitive_implications: 2-3 sentences on how this report affects RBI vs competitors
 
-Respond ONLY with valid JSON, no markdown, no preamble. Use this exact structure:
+Respond ONLY with valid JSON, no markdown, no preamble:
 {{
   "report_id": "{report_id}",
   "report_title": "{title}",
   "report_year": "{year}",
+  "report_url": "{report_url}",
   "executive_summary": "...",
-  "themes": [
-    {{
-      "name": "Theme name",
-      "description": "2-3 sentences about this theme from the report",
-      "cmiplus_positioning": "AHEAD|IN LINE|BEHIND",
-      "positioning_rationale": "Why CMIplus is positioned this way",
-      "key_stat": "Most relevant number or quote from report (optional)"
-    }}
-  ],
-  "key_actions": [
-    {{
-      "action": "Concrete action for CMIplus",
-      "urgency": "HIGH|MEDIUM|LOW",
-      "rationale": "Why this action matters based on report findings"
-    }}
-  ],
+  "key_stats": ["stat1", "stat2"],
+  "themes": [...],
+  "key_actions": [...],
+  "competitive_implications": "...",
   "scan_date": "{scan_date}"
 }}
 """
@@ -300,11 +309,12 @@ def analyse_flagship_pdf(report: dict, scan_date: str) -> dict:
         print(f"  WARNING: PDF not found: {report['file']}")
         return _error_entry(report, scan_date, "PDF file not found in reports/")
 
-    prompt = FLAGSHIP_PROMPT_TEMPLATE.format(
+    prompt = FLAGSHIP_PROMPT.format(
         context=CMIPLUS_CONTEXT,
         title=report["title"],
         year=report["year"],
         report_id=report["id"],
+        report_url=report.get("report_url", ""),
         scan_date=scan_date,
     )
     parts = [
@@ -312,8 +322,10 @@ def analyse_flagship_pdf(report: dict, scan_date: str) -> dict:
         {"text": prompt},
     ]
     try:
-        raw = gemini_call(PRO_MODEL, parts, max_tokens=16000)
-        return parse_json_loose(raw)
+        raw = gemini_call(parts, max_tokens=16000)
+        result = parse_json_loose(raw)
+        result["report_url"] = report.get("report_url", "")
+        return result
     except Exception as e:
         print(f"  ERROR analysing {report['id']}: {e}")
         return _error_entry(report, scan_date, str(e))
@@ -322,17 +334,20 @@ def analyse_flagship_pdf(report: dict, scan_date: str) -> dict:
 def analyse_flagship_web(report: dict, scan_date: str) -> dict:
     print(f"  Analysing web: {report['url']} ...")
     page_text = fetch_url_text(report["url"])
-    prompt = FLAGSHIP_PROMPT_TEMPLATE.format(
+    prompt = FLAGSHIP_PROMPT.format(
         context=CMIPLUS_CONTEXT,
         title=report["title"],
         year=report["year"],
         report_id=report["id"],
+        report_url=report.get("report_url", ""),
         scan_date=scan_date,
     ) + f"\n\nWebpage content:\n{page_text}"
 
     try:
-        raw = gemini_call(FLASH_MODEL, [{"text": prompt}], max_tokens=16000)
-        return parse_json_loose(raw)
+        raw = gemini_call([{"text": prompt}], max_tokens=16000)
+        result = parse_json_loose(raw)
+        result["report_url"] = report.get("report_url", "")
+        return result
     except Exception as e:
         print(f"  ERROR analysing {report['id']}: {e}")
         return _error_entry(report, scan_date, str(e))
@@ -340,14 +355,17 @@ def analyse_flagship_web(report: dict, scan_date: str) -> dict:
 
 def _error_entry(report: dict, scan_date: str, error: str) -> dict:
     return {
-        "report_id":         report["id"],
-        "report_title":      report["title"],
-        "report_year":       report["year"],
-        "executive_summary": f"Analysis unavailable: {error}",
-        "themes":            [],
-        "key_actions":       [],
-        "scan_date":         scan_date,
-        "error":             error,
+        "report_id":              report["id"],
+        "report_title":           report["title"],
+        "report_year":            report["year"],
+        "report_url":             report.get("report_url", ""),
+        "executive_summary":      f"Analysis unavailable: {error}",
+        "key_stats":              [],
+        "themes":                 [],
+        "key_actions":            [],
+        "competitive_implications": "",
+        "scan_date":              scan_date,
+        "error":                  error,
     }
 
 
@@ -375,14 +393,12 @@ def main():
     print(f"CMIplus Intelligence Cockpit — Scan {scan_date}")
     print(f"{'='*60}\n")
 
-    # 1. Weekly briefing
     print("=== WEEKLY BRIEFING ===")
     briefing = run_weekly_briefing(scan_date)
     with open("briefing.json", "w", encoding="utf-8") as f:
         json.dump(briefing, f, ensure_ascii=False, indent=2)
     print(f"  briefing.json written")
 
-    # 2. Flagship analyses
     print("\n=== FLAGSHIP ANALYSES ===")
     analyses = run_flagship_analyses(scan_date)
     with open("flagship-analyses.json", "w", encoding="utf-8") as f:
