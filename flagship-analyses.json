@@ -3,40 +3,91 @@
     "report_id": "ey_four_trends",
     "report_title": "EY Four Trends Redefining Cash Management",
     "report_year": "2025",
-    "executive_summary": "Analysis unavailable: Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+    "executive_summary": "Analysis unavailable: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
     "themes": [],
     "key_actions": [],
     "scan_date": "2026-04-07",
-    "error": "Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"
+    "error": "Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
   },
   {
     "report_id": "mckinsey_payments",
     "report_title": "McKinsey Global Payments Report",
     "report_year": "2025",
-    "executive_summary": "Analysis unavailable: Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+    "executive_summary": "Analysis unavailable: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
     "themes": [],
     "key_actions": [],
     "scan_date": "2026-04-07",
-    "error": "Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"
+    "error": "Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
   },
   {
     "report_id": "journeys_to_treasury",
     "report_title": "Journeys to Treasury",
     "report_year": "2025/26",
-    "executive_summary": "Analysis unavailable: Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+    "executive_summary": "Analysis unavailable: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
     "themes": [],
     "key_actions": [],
     "scan_date": "2026-04-07",
-    "error": "Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"
+    "error": "Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
   },
   {
     "report_id": "pwc_treasury_survey",
     "report_title": "PwC Global Treasury Survey",
     "report_year": "2025",
-    "executive_summary": "Analysis unavailable: Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
-    "themes": [],
-    "key_actions": [],
-    "scan_date": "2026-04-07",
-    "error": "Gemini HTTP 403: {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n"
+    "executive_summary": "The PwC 2025 Global Treasury Survey highlights the evolving strategic role of treasury, driven by demands for cash efficiency, robust risk management, and advanced technology adoption like AI and APIs. CMIplus is well-positioned with its strong CEE network, multi-currency support, and API strategy, particularly in cash efficiency and technology ecosystems. However, it needs to accelerate its AI capabilities to meet evolving market expectations and consider deeper integration for advanced risk management.",
+    "themes": [
+      {
+        "name": "Cash Efficiency & Liquidity Management",
+        "description": "The survey indicates a strong focus on cash visibility, cost efficiency, and unlocking trapped cash, with top organizations leveraging in-house banks, real-time liquidity tools, and centralized payment models.",
+        "cmiplus_positioning": "AHEAD",
+        "positioning_rationale": "CMIplus's extensive CEE network coverage, multi-currency support, ISO 20022 payment capabilities, and live Verification of Payee (VoP) directly enable enhanced cash visibility, efficient payment processing, and support for centralized payment models across a complex region.",
+        "key_stat": "Top-performing organizations are adopting in-house banks, real-time liquidity tools, AI-enhanced forecasting and centralized payment models to drive working capital efficiency and unlock trapped cash."
+      },
+      {
+        "name": "Financial Risk Management",
+        "description": "Macroeconomic volatility, including inflation and FX fluctuations, is accelerating the need for sophisticated cash and risk management frameworks, prompting treasurers to invest in scenario modeling and expanded exposure visibility.",
+        "cmiplus_positioning": "IN LINE",
+        "positioning_rationale": "CMIplus provides the foundational data through its multi-currency accounts and broad network coverage necessary for identifying FX exposure and managing cash across diverse markets. However, the platform does not explicitly offer advanced risk management tools like scenario modeling or comprehensive exposure analytics.",
+        "key_stat": "The macroeconomic environment — including tariff policy changes, inflationary pressures and foreign exchange (FX) volatility — is accelerating the need for sophisticated cash and risk management frameworks."
+      },
+      {
+        "name": "AI in Treasury Operations",
+        "description": "The report highlights AI-enhanced forecasting as a key capability for top-performing organizations to drive working capital efficiency and deliver actionable insights.",
+        "cmiplus_positioning": "BEHIND",
+        "positioning_rationale": "While CMIplus has 'AI Cash Flow Forecasting' planned for Q4/2026, the survey indicates that leading organizations are already adopting and benefiting from AI-enhanced forecasting, placing CMIplus behind current market leaders in this specific area.",
+        "key_stat": "Top-performing organizations are adopting... AI-enhanced forecasting..."
+      },
+      {
+        "name": "Treasury Technology Ecosystem & APIs",
+        "description": "The survey emphasizes that while most organizations have a Treasury Management System (TMS), few realize its full potential. Investment in modular ecosystems enabled by Application Programming Interfaces (APIs) is critical for flexibility, scalability, and optimizing value in uncertain times.",
+        "cmiplus_positioning": "AHEAD",
+        "positioning_rationale": "CMIplus is actively scaling its Open API initiative, with the UNIFI format expected in Q3/2026, directly aligning with the report's emphasis on modular, API-enabled ecosystems. Its robust support for various channels (EBICS, H2H, SWIFT) further strengthens its position in providing a flexible technology ecosystem.",
+        "key_stat": "Those investing in modular ecosystems enabled by application programming interfaces (APIs) and managed services models are creating the flexibility required to scale, optimize and protect value in uncertain times."
+      },
+      {
+        "name": "Managed Services Adoption",
+        "description": "Managed services models are identified as a key operating model shift, offering flexibility to scale, optimize, and protect value, alongside technology advancements.",
+        "cmiplus_positioning": "IN LINE",
+        "positioning_rationale": "As a comprehensive cash management platform, CMIplus provides the infrastructure and standardization (e.g., ISO 20022, CEE network) that enables corporate clients to centralize operations and potentially leverage managed services. While CMIplus itself isn't a managed service provider, it is a strong enabler for clients adopting such models.",
+        "key_stat": "Those investing in modular ecosystems enabled by application programming interfaces (APIs) and managed services models are creating the flexibility required to scale, optimize and protect value in uncertain times."
+      }
+    ],
+    "key_actions": [
+      {
+        "action": "Accelerate AI Cash Flow Forecasting development and deployment.",
+        "urgency": "HIGH",
+        "rationale": "The report highlights AI-enhanced forecasting as a critical capability for top-performing treasuries. CMIplus's Q4/2026 timeline for this feature puts it behind current market leaders, necessitating accelerated development to meet evolving client expectations and maintain competitiveness."
+      },
+      {
+        "action": "Explore partnerships or internal development for advanced risk management modules (e.g., scenario modeling, comprehensive exposure analytics).",
+        "urgency": "MEDIUM",
+        "rationale": "The survey emphasizes the growing need for sophisticated risk management frameworks. While CMIplus provides foundational data, integrating or partnering for advanced tools would elevate its offering beyond basic cash management to a more strategic treasury partner."
+      },
+      {
+        "action": "Proactively communicate and deliver on the Open API initiative, especially the UNIFI format, by Q3/2026.",
+        "urgency": "HIGH",
+        "rationale": "The report underscores modular ecosystems and APIs as crucial for flexibility and scalability. CMIplus's planned UNIFI format is a key differentiator; ensuring its timely and effective delivery and promotion will reinforce CMIplus's leadership in treasury technology."
+      }
+    ],
+    "scan_date": "2026-04-07"
   }
 ]

@@ -1,1 +1,1 @@
-window.GEMINI_KEY = 'AIzaSyAxjfOhZjbpQk4F3GibZ06I5PU9VMq_gls';
+window.GEMINI_KEY = 'AIzaSyCZrXnD-MIw4G4x7w_qoi93gzpVcUfsJZ4';
