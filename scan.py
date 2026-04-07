@@ -4,7 +4,7 @@ CMIplus Intelligence Cockpit — Weekly Scan
 Runs every Monday 06:00 UTC via GitHub Actions.
 
 Produces:
-  - briefing.json         : 10 weekly intelligence items
+  - briefing.json         : structured weekly briefing (market/thought/competitors)
   - flagship-analyses.json: CMIplus positioning vs. 4 flagship reports
 """
 
@@ -59,16 +59,13 @@ FLAGSHIP_REPORTS = [
 ]
 
 WEEKLY_SOURCES = [
-    # Thought Leadership — higher weight for BCG & McKinsey
     {"url": "https://www.mckinsey.com/industries/financial-services/our-insights", "weight": 2},
     {"url": "https://www.bcg.com/industries/financial-institutions/insights",       "weight": 2},
     {"url": "https://www.ey.com/en_gl/insights/financial-services",                 "weight": 1},
     {"url": "https://www.pwc.com/gx/en/industries/financial-services/publications.html", "weight": 1},
-    # Payments & Treasury news
     {"url": "https://www.swift.com/news-events/news",                               "weight": 1},
     {"url": "https://www.treasurytoday.com/news",                                   "weight": 1},
     {"url": "https://www.finextra.com/newshub/fintech",                             "weight": 1},
-    # Regulatory
     {"url": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",           "weight": 1},
     {"url": "https://www.eba.europa.eu/newsroom/news",                              "weight": 1},
 ]
@@ -85,17 +82,15 @@ Key facts:
 - Open API: scaling initiative, UNIFI format expected Q3/2026
 - Payment formats: XCT/CGI, ISO 20022 pain.001, native formats per country
 - AI Cash Flow Forecasting: planned Q4/2026
+- Key competitors in CEE corporate banking: UniCredit, Erste Bank, Citi, Deutsche Bank, ING
 - Key strength: CEE network coverage, EBICS expertise, multi-currency support
 """
-
-POSITIONING_CATEGORIES = ["AHEAD", "IN LINE", "BEHIND"]
 
 # ---------------------------------------------------------------------------
 # Gemini API helpers
 # ---------------------------------------------------------------------------
 
 def gemini_call(model: str, parts: list, max_tokens: int = 16000) -> str:
-    """Call Gemini API. parts is a list of content part dicts."""
     url = GEMINI_URL.format(model=model, key=GEMINI_API_KEY)
     payload = {
         "contents": [{"parts": parts}],
@@ -113,12 +108,10 @@ def gemini_call(model: str, parts: list, max_tokens: int = 16000) -> str:
 
 
 def fetch_url_text(url: str, max_bytes: int = 200_000) -> str:
-    """Fetch a URL and return plain text (strip HTML tags, truncate)."""
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 CMIplus-Cockpit/1.0"})
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             raw = resp.read(max_bytes).decode("utf-8", errors="replace")
-        # Very basic HTML strip
         text = re.sub(r"<[^>]+>", " ", raw)
         text = re.sub(r"\s{3,}", "\n\n", text)
         return text[:60_000]
@@ -127,14 +120,134 @@ def fetch_url_text(url: str, max_bytes: int = 200_000) -> str:
 
 
 def load_pdf_base64(filename: str) -> str:
-    """Load a PDF from the reports/ folder and return base64-encoded bytes."""
     path = os.path.join(REPORTS_DIR, filename)
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
 
 
+def parse_json_loose(raw: str) -> dict:
+    """Strip markdown fences and parse JSON with bracket-counting fallback."""
+    clean = re.sub(r"^```[a-z]*\n?", "", raw.strip(), flags=re.MULTILINE)
+    clean = re.sub(r"\n?```$", "", clean.strip(), flags=re.MULTILINE)
+    clean = clean.strip()
+    try:
+        return json.loads(clean)
+    except json.JSONDecodeError:
+        pass
+    start = clean.find("{")
+    if start == -1:
+        raise ValueError("No JSON object found in response")
+    depth = 0
+    end = start
+    for i, ch in enumerate(clean[start:], start):
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                end = i
+                break
+    return json.loads(clean[start : end + 1])
+
+
 # ---------------------------------------------------------------------------
-# Flagship analysis
+# Weekly briefing — correct output format for index.html
+# ---------------------------------------------------------------------------
+
+BRIEFING_PROMPT = """
+You are an intelligence analyst for RBI's CMIplus corporate cash management platform.
+Scan the web content below and produce a structured weekly intelligence briefing.
+
+Context about CMIplus:
+{context}
+
+Web content from sources:
+{content}
+
+Today's date: {scan_date}
+
+Produce items across THREE sections:
+1. market (4 items): Breaking news, regulatory updates, market moves directly affecting payments/cash management
+2. thought (4 items): Strategic insights, research findings, industry trends from McKinsey, BCG, EY, PwC — prioritise these heavily
+3. competitors (2 items): Moves by UniCredit, Erste, Citi, Deutsche Bank, ING or other banks competing in CEE corporate banking
+
+For EACH item use this EXACT field structure:
+- title: Short headline max 10 words
+- summary: 2-3 sentences on what happened and why it matters
+- sowhat: One sentence — direct implication for CMIplus product or strategy
+- source: Source name (e.g. "McKinsey", "ECB", "Finextra")
+- relevance: MUST be exactly one of: urgent / watch / fyi
+- tags: Array of 1-3 short topic tags e.g. ["ISO20022", "AI", "EBICS"]
+- date: Today's date {scan_date}
+
+For competitor items also add:
+- competitor: Name of the competitor bank (e.g. "UniCredit", "Erste Bank")
+
+Also produce:
+- executive_summary: 3-4 sentence overview of the week's most important developments for CMIplus
+- week_label: "Week of {scan_date}"
+
+Respond ONLY with valid JSON, no markdown, no preamble:
+{{
+  "scan_date": "{scan_date}",
+  "week_label": "Week of {scan_date}",
+  "executive_summary": "...",
+  "market": [ /* 4 items */ ],
+  "thought": [ /* 4 items */ ],
+  "competitors": [ /* 2 items */ ]
+}}
+"""
+
+
+def run_weekly_briefing(scan_date: str) -> dict:
+    print("Fetching weekly sources...")
+    content_parts = []
+    for src in WEEKLY_SOURCES:
+        url    = src["url"]
+        weight = src["weight"]
+        print(f"  Fetching: {url}")
+        text = fetch_url_text(url, max_bytes=100_000)
+        for _ in range(weight):
+            content_parts.append(f"=== SOURCE: {url} ===\n{text[:8_000]}\n")
+
+    combined = "\n".join(content_parts)[:120_000]
+    prompt = BRIEFING_PROMPT.format(
+        context=CMIPLUS_CONTEXT,
+        content=combined,
+        scan_date=scan_date,
+    )
+
+    print("Calling Gemini Flash for weekly briefing...")
+    try:
+        raw    = gemini_call(FLASH_MODEL, [{"text": prompt}], max_tokens=16000)
+        result = parse_json_loose(raw)
+        # Normalize relevance values to lowercase
+        for section in ["market", "thought", "competitors"]:
+            for item in result.get(section, []):
+                r = str(item.get("relevance", "fyi")).lower()
+                if r in ("high", "urgent"):
+                    item["relevance"] = "urgent"
+                elif r in ("medium", "watch"):
+                    item["relevance"] = "watch"
+                else:
+                    item["relevance"] = "fyi"
+        print(f"  briefing.json: {len(result.get('market',[]))} market, {len(result.get('thought',[]))} thought, {len(result.get('competitors',[]))} competitors")
+        return result
+    except Exception as e:
+        print(f"ERROR in weekly briefing: {e}")
+        return {
+            "scan_date":         scan_date,
+            "week_label":        f"Week of {scan_date}",
+            "executive_summary": f"Scan error: {e}",
+            "market":            [],
+            "thought":           [],
+            "competitors":       [],
+            "error":             str(e),
+        }
+
+
+# ---------------------------------------------------------------------------
+# Flagship analyses
 # ---------------------------------------------------------------------------
 
 FLAGSHIP_PROMPT_TEMPLATE = """
@@ -180,7 +293,6 @@ Respond ONLY with valid JSON, no markdown, no preamble. Use this exact structure
 
 
 def analyse_flagship_pdf(report: dict, scan_date: str) -> dict:
-    """Analyse a PDF flagship report using Gemini Pro."""
     print(f"  Analysing PDF: {report['file']} ...")
     try:
         pdf_b64 = load_pdf_base64(report["file"])
@@ -195,30 +307,21 @@ def analyse_flagship_pdf(report: dict, scan_date: str) -> dict:
         report_id=report["id"],
         scan_date=scan_date,
     )
-
     parts = [
-        {
-            "inline_data": {
-                "mime_type": "application/pdf",
-                "data": pdf_b64,
-            }
-        },
+        {"inline_data": {"mime_type": "application/pdf", "data": pdf_b64}},
         {"text": prompt},
     ]
-
     try:
         raw = gemini_call(PRO_MODEL, parts, max_tokens=16000)
-        return _parse_json_response(raw, report, scan_date)
+        return parse_json_loose(raw)
     except Exception as e:
         print(f"  ERROR analysing {report['id']}: {e}")
         return _error_entry(report, scan_date, str(e))
 
 
 def analyse_flagship_web(report: dict, scan_date: str) -> dict:
-    """Analyse a web-based flagship report using Gemini Flash."""
     print(f"  Analysing web: {report['url']} ...")
     page_text = fetch_url_text(report["url"])
-
     prompt = FLAGSHIP_PROMPT_TEMPLATE.format(
         context=CMIPLUS_CONTEXT,
         title=report["title"],
@@ -227,64 +330,28 @@ def analyse_flagship_web(report: dict, scan_date: str) -> dict:
         scan_date=scan_date,
     ) + f"\n\nWebpage content:\n{page_text}"
 
-    parts = [{"text": prompt}]
-
     try:
-        raw = gemini_call(FLASH_MODEL, parts, max_tokens=16000)
-        return _parse_json_response(raw, report, scan_date)
+        raw = gemini_call(FLASH_MODEL, [{"text": prompt}], max_tokens=16000)
+        return parse_json_loose(raw)
     except Exception as e:
         print(f"  ERROR analysing {report['id']}: {e}")
         return _error_entry(report, scan_date, str(e))
 
 
-def _parse_json_response(raw: str, report: dict, scan_date: str) -> dict:
-    """Strip markdown fences and parse JSON. Fallback to partial if needed."""
-    # Strip markdown code fences
-    clean = re.sub(r"^```[a-z]*\n?", "", raw.strip(), flags=re.MULTILINE)
-    clean = re.sub(r"\n?```$", "", clean.strip(), flags=re.MULTILINE)
-    clean = clean.strip()
-
-    # Try direct parse
-    try:
-        return json.loads(clean)
-    except json.JSONDecodeError:
-        pass
-
-    # Bracket-counting fallback: find outermost { }
-    start = clean.find("{")
-    if start == -1:
-        return _error_entry(report, scan_date, "No JSON found in response")
-    depth = 0
-    end = start
-    for i, ch in enumerate(clean[start:], start):
-        if ch == "{":
-            depth += 1
-        elif ch == "}":
-            depth -= 1
-            if depth == 0:
-                end = i
-                break
-    try:
-        return json.loads(clean[start : end + 1])
-    except json.JSONDecodeError as e:
-        return _error_entry(report, scan_date, f"JSON parse failed: {e}")
-
-
 def _error_entry(report: dict, scan_date: str, error: str) -> dict:
     return {
-        "report_id":      report["id"],
-        "report_title":   report["title"],
-        "report_year":    report["year"],
+        "report_id":         report["id"],
+        "report_title":      report["title"],
+        "report_year":       report["year"],
         "executive_summary": f"Analysis unavailable: {error}",
-        "themes":         [],
-        "key_actions":    [],
-        "scan_date":      scan_date,
-        "error":          error,
+        "themes":            [],
+        "key_actions":       [],
+        "scan_date":         scan_date,
+        "error":             error,
     }
 
 
 def run_flagship_analyses(scan_date: str) -> list:
-    """Run all flagship analyses and return list of results."""
     results = []
     for report in FLAGSHIP_REPORTS:
         if report["source"] == "pdf":
@@ -293,98 +360,6 @@ def run_flagship_analyses(scan_date: str) -> list:
             result = analyse_flagship_web(report, scan_date)
         results.append(result)
     return results
-
-
-# ---------------------------------------------------------------------------
-# Weekly briefing
-# ---------------------------------------------------------------------------
-
-BRIEFING_PROMPT = """
-You are an intelligence analyst for RBI's CMIplus corporate cash management platform.
-Scan the following web content from industry sources and produce exactly 10 intelligence items
-relevant to CMIplus and RBI's corporate banking strategy.
-
-Context about CMIplus:
-{context}
-
-Web content from sources:
-{content}
-
-Today's date: {scan_date}
-
-Focus areas (in priority order):
-1. Payment regulations (EU, CEE, ISO 20022, instant payments, VoP)
-2. Corporate treasury trends (cash management, forecasting, AI in finance)
-3. EBICS and H2H connectivity developments
-4. Open Banking / Open API / PSD3 developments
-5. Competitor moves in CEE corporate banking
-6. AI and automation in treasury/payments
-7. Cross-border payment infrastructure changes
-
-Instructions:
-- Each item must be actionable or directly relevant to CMIplus product decisions
-- Prioritise recent developments (last 7-14 days if possible)
-- BCG and McKinsey insights should be prominently featured if available
-- Include source attribution for each item
-
-Respond ONLY with valid JSON, no markdown, no preamble:
-{{
-  "scan_date": "{scan_date}",
-  "items": [
-    {{
-      "title": "Short headline (max 10 words)",
-      "summary": "2-3 sentences explaining what happened and why it matters for CMIplus",
-      "category": "Regulation|Treasury Trends|Technology|Competitor|Market Data",
-      "relevance": "HIGH|MEDIUM|LOW",
-      "source": "Source name or URL",
-      "cmiplus_impact": "One sentence on direct impact or opportunity for CMIplus"
-    }}
-  ]
-}}
-"""
-
-
-def run_weekly_briefing(scan_date: str) -> dict:
-    """Fetch all weekly sources and produce briefing.json."""
-    print("Fetching weekly sources...")
-    content_parts = []
-
-    for src in WEEKLY_SOURCES:
-        url    = src["url"]
-        weight = src["weight"]
-        print(f"  Fetching: {url}")
-        text = fetch_url_text(url, max_bytes=100_000)
-        # Repeat higher-weight sources to give Gemini more context
-        for _ in range(weight):
-            content_parts.append(f"=== SOURCE: {url} ===\n{text[:8_000]}\n")
-
-    combined = "\n".join(content_parts)[:120_000]
-
-    prompt = BRIEFING_PROMPT.format(
-        context=CMIPLUS_CONTEXT,
-        content=combined,
-        scan_date=scan_date,
-    )
-
-    parts = [{"text": prompt}]
-    print("Calling Gemini Flash for weekly briefing...")
-    try:
-        raw = gemini_call(FLASH_MODEL, parts, max_tokens=16000)
-        # Parse JSON
-        clean = re.sub(r"^```[a-z]*\n?", "", raw.strip(), flags=re.MULTILINE)
-        clean = re.sub(r"\n?```$", "", clean.strip(), flags=re.MULTILINE)
-        result = json.loads(clean.strip())
-        # Ensure exactly 10 items
-        items = result.get("items", [])[:10]
-        result["items"] = items
-        return result
-    except Exception as e:
-        print(f"ERROR in weekly briefing: {e}")
-        return {
-            "scan_date": scan_date,
-            "items":     [],
-            "error":     str(e),
-        }
 
 
 # ---------------------------------------------------------------------------
@@ -405,7 +380,7 @@ def main():
     briefing = run_weekly_briefing(scan_date)
     with open("briefing.json", "w", encoding="utf-8") as f:
         json.dump(briefing, f, ensure_ascii=False, indent=2)
-    print(f"  briefing.json written ({len(briefing.get('items', []))} items)")
+    print(f"  briefing.json written")
 
     # 2. Flagship analyses
     print("\n=== FLAGSHIP ANALYSES ===")
