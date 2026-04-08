@@ -1,51 +1,97 @@
 {
   "meta": {
-    "description": "CMIplus Weekly Intelligence Cockpit — Source Configuration v2",
-    "instructions": "Edit sources here. priority: 1=high (more items), 2=medium, 3=low. Set active: false to pause.",
-    "last_updated": "2026-04-06"
+    "description": "CMIplus Weekly Intelligence Cockpit — Source Configuration v3",
+    "instructions": "Edit sources here. priority: 1=high (more items), 2=medium, 3=low. Set active: false to pause. flagship_reports are analysed separately via PDF/web — not part of the weekly scan.",
+    "last_updated": "2026-04-08"
   },
   "market_news": [
-    { "name": "Finextra", "url": "https://www.finextra.com", "focus": "payments, banking technology, fintech, ISO 20022, instant payments", "priority": 1, "active": true },
-    { "name": "Der Treasurer", "url": "https://www.dertreasurer.de", "focus": "Cash Management, Treasury, SEPA, Zahlungsverkehr, deutsche Unternehmen", "priority": 1, "active": true },
-    { "name": "Treasury Today", "url": "https://treasurytoday.com", "focus": "corporate treasury, cash management, payments, bank connectivity", "priority": 1, "active": true },
-    { "name": "The Global Treasurer", "url": "https://www.theglobaltreasurer.com", "focus": "treasury, corporate finance, payments, liquidity", "priority": 1, "active": true },
-    { "name": "GTNews", "url": "https://www.gtnews.com", "focus": "treasury and finance news, cash management", "priority": 2, "active": true },
-    { "name": "Global Finance", "url": "https://www.gfmag.com", "focus": "banking, cash management, transaction banking, CEE", "priority": 2, "active": true },
-    { "name": "SWIFT News", "url": "https://www.swift.com/news", "focus": "ISO 20022, payments messaging, correspondent banking, MX migration", "priority": 1, "active": true },
-    { "name": "EBA / ECB", "url": "https://www.eba.europa.eu / https://www.ecb.europa.eu", "focus": "SEPA regulation, instant payments, VoP, PSD3, DORA, AML", "priority": 1, "active": true }
+    { "name": "Der Treasurer",        "url": "https://www.dertreasurer.de/news/",          "focus": "Cash Management, Treasury, SEPA, Zahlungsverkehr, deutsche Unternehmen, Instant Payments", "priority": 1, "active": true },
+    { "name": "The Global Treasurer", "url": "https://www.theglobaltreasurer.com/",         "focus": "treasury, corporate finance, payments, liquidity, cash management trends", "priority": 1, "active": true },
+    { "name": "Strategic Treasurer",  "url": "https://strategictreasurer.com/",             "focus": "treasury strategy, cash management, payments, corporate finance, technology", "priority": 1, "active": true },
+    { "name": "SWIFT News",           "url": "https://www.swift.com/news-events/news",      "focus": "ISO 20022, payments messaging, correspondent banking, MX migration, SWIFT GPI", "priority": 1, "active": true },
+    { "name": "EBA / ECB",           "url": "https://www.eba.europa.eu/newsroom/news",     "focus": "SEPA regulation, instant payments, VoP, PSD3, DORA, AML, regulatory updates", "priority": 1, "active": true },
+    { "name": "Finextra",             "url": "https://www.finextra.com/newshub/fintech",    "focus": "payments, banking technology, fintech, ISO 20022, instant payments, open banking", "priority": 2, "active": true },
+    { "name": "The Paypers",          "url": "https://thepaypers.com/",                     "focus": "payments, fintech, open banking, e-payments, digital assets", "priority": 2, "active": true },
+    { "name": "Treasury Today",       "url": "https://treasurytoday.com/news",              "focus": "corporate treasury, cash management, payments, bank connectivity, TMS", "priority": 2, "active": true },
+    { "name": "Global Finance",       "url": "https://www.gfmag.com",                      "focus": "banking, cash management, transaction banking, CEE, corporate finance", "priority": 3, "active": true },
+    { "name": "Payments Dive",        "url": "https://www.paymentsdive.com/",               "focus": "payments industry news, regulation, technology, instant payments", "priority": 3, "active": true }
   ],
   "thought_leadership": [
-    { "name": "McKinsey Financial Services", "url": "https://www.mckinsey.com/industries/financial-services", "focus": "transaction banking, payments strategy, treasury transformation, digital banking", "priority": 1, "active": true },
-    { "name": "Oliver Wyman", "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services", "focus": "banking strategy, cash management, digital transformation, open banking", "priority": 1, "active": true },
-    { "name": "Journey to Treasury / EACT", "url": "https://www.journeytotreasury.com / https://eact.eu", "focus": "CEE treasury, corporate treasury trends, bank connectivity, treasury survey", "priority": 1, "active": true },
-    { "name": "BCG Transaction Banking", "url": "https://www.bcg.com/industries/financial-institutions/transaction-banking", "focus": "transaction banking strategy, cash management, payments innovation, corporate banking", "priority": 1, "active": true },
-    { "name": "Oliver Wyman Corporate & Institutional Banking", "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html", "focus": "corporate banking strategy, transaction banking, cash management, institutional banking", "priority": 1, "active": true },
-    { "name": "EY Future of Treasury", "url": "https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks", "focus": "treasury transformation, cash management trends, Voice of the Treasurer survey, digital assets", "priority": 1, "active": true },
-{ "name": "EY Cash Management Survey", "url": "https://www.ey.com/en_us/insights/banking-capital-markets/insights-from-ey-2024-cms-survey-on-cash-management", "focus": "annual cash management services benchmark, bank treasury products, API adoption, AI in cash management", "priority": 1, "active": true },
-{ "name": "PwC Global Treasury Survey", "url": "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html", "focus": "global treasury survey, TMS adoption, cash visibility, API banking, treasury technology", "priority": 1, "active": true },
-{ "name": "Deloitte Banking Outlook", "url": "https://www.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html", "focus": "banking outlook, transaction banking, digital transformation, stablecoins, AI in banking", "priority": 2, "active": true }
+    { "name": "McKinsey Financial Services", "url": "https://www.mckinsey.com/industries/financial-services/our-insights", "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance", "priority": 1, "active": true },
+    { "name": "BCG Transaction Banking",    "url": "https://www.bcg.com/industries/financial-institutions/transaction-banking", "focus": "transaction banking strategy, cash management, payments innovation, corporate banking", "priority": 1, "active": true },
+    { "name": "Oliver Wyman",              "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html", "focus": "corporate banking strategy, transaction banking, cash management, institutional banking", "priority": 1, "active": true },
+    { "name": "Journey to Treasury / EACT","url": "https://www.journeytotreasury.com",    "focus": "CEE treasury, corporate treasury trends, bank connectivity, treasury survey, EACT", "priority": 2, "active": true },
+    { "name": "Deloitte Banking Outlook",  "url": "https://www.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html", "focus": "banking outlook, transaction banking, digital transformation, stablecoins, AI in banking", "priority": 2, "active": true }
+  ],
+  "flagship_reports": [
+    {
+      "name": "EY Voice of the Treasurer — Four Trends Redefining Cash Management",
+      "publisher": "EY",
+      "url": "https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks",
+      "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf",
+      "file": "ey-gl-four-trends-redefining-cash-management-08-2025.pdf",
+      "year": "2025",
+      "frequency": "Annual",
+      "focus": "treasury automation, data-driven services, industry-specific solutions, digital assets, Voice of the Treasurer survey (1,800+ respondents)",
+      "active": true
+    },
+    {
+      "name": "McKinsey Global Payments Report",
+      "publisher": "McKinsey",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/global-payments-report",
+      "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf",
+      "file": "the-2025-mckinsey-global-payments-report.pdf",
+      "year": "2025",
+      "frequency": "Annual",
+      "focus": "global payments revenues, instant payments adoption, transaction banking, competitive landscape, EMEA trends, AI in payments",
+      "active": true
+    },
+    {
+      "name": "Journeys to Treasury",
+      "publisher": "BNP Paribas / PwC / SAP / EACT",
+      "url": "https://www.journeytotreasury.com",
+      "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf",
+      "file": "Journeys to Treasury 2025-26.pdf",
+      "year": "2025/26",
+      "frequency": "Annual",
+      "focus": "CEE corporate treasury, VoP, ISO 20022, instant payments, virtual accounts, AI in treasury, corporate case studies (Vodafone, DEME, Evonik, Comcast, Accell)",
+      "active": true
+    },
+    {
+      "name": "PwC Global Treasury Survey",
+      "publisher": "PwC",
+      "url": "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html",
+      "report_url": "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html",
+      "file": null,
+      "year": "2025",
+      "frequency": "Annual",
+      "focus": "TMS adoption, API banking, AI in treasury, FX risk, cash visibility, 350+ treasurers worldwide, managed services, eBAM",
+      "active": true
+    }
   ],
   "competitors": [
-    { "name": "BNP Paribas", "url": "https://group.bnpparibas/en/all-news / https://cib.bnpparibas/cash-management", "focus": "cash management, corporate banking, Connexis platform, CEE", "priority": 1, "active": true },
-    { "name": "HSBC", "url": "https://www.hsbc.com/who-we-are/newsroom", "focus": "transaction banking, cash management, API banking, CEE, treasury intelligence", "priority": 1, "active": true },
-    { "name": "UniCredit", "url": "https://www.unicredit.eu", "focus": "cash management, corporate banking, CEE expansion, digital banking", "priority": 1, "active": true },
-    { "name": "Erste Group", "url": "https://www.erstegroup.com/en/press", "focus": "cash management, corporate banking, CEE, Austria", "priority": 1, "active": true },
-    { "name": "Intesa Sanpaolo", "url": "https://group.intesasanpaolo.com/en/newsroom", "focus": "cash management, corporate banking, CEE", "priority": 2, "active": true },
-    { "name": "ING", "url": "https://www.ing.com/Newsroom.htm", "focus": "wholesale banking, payments, API banking, embedded finance", "priority": 2, "active": true },
-    { "name": "Deutsche Bank", "url": "https://flow.db.com / https://corporates.db.com", "focus": "cash management, CB Connect API, transaction banking, embedded finance, VoP", "priority": 1, "active": true }
+    { "name": "Deutsche Bank",   "url": "https://flow.db.com",                                         "focus": "cash management, CB Connect API, transaction banking, embedded finance, VoP, CEE", "priority": 1, "active": true },
+    { "name": "UniCredit",       "url": "https://www.unicredit.eu/en/newsroom.html",                   "focus": "cash management, corporate banking, CEE expansion, digital banking, UniCredit Direct", "priority": 1, "active": true },
+    { "name": "Erste Group",     "url": "https://www.erstegroup.com/en/news-media/press-releases",     "focus": "cash management, corporate banking, CEE, Austria, George platform", "priority": 1, "active": true },
+    { "name": "BNP Paribas",     "url": "https://cib.bnpparibas/cash-management",                     "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury", "priority": 1, "active": true },
+    { "name": "HSBC",            "url": "https://www.hsbc.com/who-we-are/newsroom",                    "focus": "transaction banking, cash management, API banking, HSBCnet, treasury intelligence", "priority": 2, "active": true },
+    { "name": "ING",             "url": "https://www.ing.com/Newsroom.htm",                            "focus": "wholesale banking, payments, API banking, embedded finance, InsideBusiness", "priority": 2, "active": true },
+    { "name": "Intesa Sanpaolo", "url": "https://group.intesasanpaolo.com/en/newsroom",                "focus": "cash management, corporate banking, CEE expansion, IMI CIB", "priority": 3, "active": true }
   ],
   "tags": [
     "ISO20022", "InstantPayments", "OpenBanking", "eBAM", "CashPooling",
     "EBICS", "Compliance", "DigitalBanking", "Stablecoins", "AI",
-    "ERP_TMS", "CEE", "VoP", "FX", "Liquidity"
+    "ERP_TMS", "CEE", "VoP", "FX", "Liquidity", "API", "PSD3",
+    "RealTime", "VirtualAccounts", "TMS", "PaymentFactory"
   ],
   "scan_config": {
     "market_lookback_days": 7,
     "thought_lookback_months": 12,
     "items_priority_1": 3,
-    "items_priority_2": 1,
+    "items_priority_2": 2,
+    "items_priority_3": 1,
     "language": "English",
-    "context": "CMIplus is RBI's (Raiffeisen Bank International) corporate cash management platform for large international corporates in CEE. Key topics: EBICS, H2H, ISO 20022, SEPA, instant payments, VoP, eBAM, Open Banking APIs, corporate treasury. Product Owner: Philipp Höfer.",
+    "context": "CMIplus is RBI's (Raiffeisen Bank International) corporate cash management platform for large international corporates in CEE. Key topics: EBICS, H2H, ISO 20022, SEPA, instant payments, VoP, eBAM, Open Banking APIs, corporate treasury, multi-currency payments. Channels: EBICS v2.5+v3, H2H, SWIFT, Web, Mobile, Open API. Network banks across Austria, CZ, HR, RS, XK, AL, RO, SK, HU. Product Owner: Philipp Höfer.",
     "relevance_tags": {
       "urgent": "Directly impacts CMIplus roadmap or compliance now",
       "watch": "Relevant trend to monitor in next 1-3 months",
