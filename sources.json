@@ -5,23 +5,113 @@
     "last_updated": "2026-04-08"
   },
   "market_news": [
-    { "name": "Der Treasurer",        "url": "https://www.dertreasurer.de/news/",          "focus": "Cash Management, Treasury, SEPA, Zahlungsverkehr, deutsche Unternehmen, Instant Payments", "priority": 1, "active": true },
-    { "name": "The Global Treasurer", "url": "https://www.theglobaltreasurer.com/",         "focus": "treasury, corporate finance, payments, liquidity, cash management trends", "priority": 1, "active": true },
-    { "name": "Strategic Treasurer",  "url": "https://strategictreasurer.com/",             "focus": "treasury strategy, cash management, payments, corporate finance, technology", "priority": 1, "active": true },
-    { "name": "SWIFT News",           "url": "https://www.swift.com/news-events/news",      "focus": "ISO 20022, payments messaging, correspondent banking, MX migration, SWIFT GPI", "priority": 1, "active": true },
-    { "name": "EBA / ECB",           "url": "https://www.eba.europa.eu/newsroom/news",     "focus": "SEPA regulation, instant payments, VoP, PSD3, DORA, AML, regulatory updates", "priority": 1, "active": true },
-    { "name": "Finextra",             "url": "https://www.finextra.com/newshub/fintech",    "focus": "payments, banking technology, fintech, ISO 20022, instant payments, open banking", "priority": 2, "active": true },
-    { "name": "The Paypers",          "url": "https://thepaypers.com/",                     "focus": "payments, fintech, open banking, e-payments, digital assets", "priority": 2, "active": true },
-    { "name": "Treasury Today",       "url": "https://treasurytoday.com/news",              "focus": "corporate treasury, cash management, payments, bank connectivity, TMS", "priority": 2, "active": true },
-    { "name": "Global Finance",       "url": "https://www.gfmag.com",                      "focus": "banking, cash management, transaction banking, CEE, corporate finance", "priority": 3, "active": true },
-    { "name": "Payments Dive",        "url": "https://www.paymentsdive.com/",               "focus": "payments industry news, regulation, technology, instant payments", "priority": 3, "active": true }
+    {
+      "name": "Der Treasurer",
+      "url": "https://www.dertreasurer.de/news/",
+      "focus": "Cash Management, Treasury, SEPA, Zahlungsverkehr, deutsche Unternehmen, Instant Payments",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "The Global Treasurer",
+      "url": "https://www.theglobaltreasurer.com/",
+      "focus": "treasury, corporate finance, payments, liquidity, cash management trends",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "Strategic Treasurer",
+      "url": "https://strategictreasurer.com/",
+      "focus": "treasury strategy, cash management, payments, corporate finance, technology",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "SWIFT News",
+      "url": "https://www.swift.com/news-events/news",
+      "focus": "ISO 20022, payments messaging, correspondent banking, MX migration, SWIFT GPI",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "EBA / ECB",
+      "url": "https://www.eba.europa.eu/newsroom/news",
+      "focus": "SEPA regulation, instant payments, VoP, PSD3, DORA, AML, regulatory updates",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "Finextra",
+      "url": "https://www.finextra.com/newshub/fintech",
+      "focus": "payments, banking technology, fintech, ISO 20022, instant payments, open banking",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "The Paypers",
+      "url": "https://thepaypers.com/",
+      "focus": "payments, fintech, open banking, e-payments, digital assets",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "Treasury Today",
+      "url": "https://treasurytoday.com/news",
+      "focus": "corporate treasury, cash management, payments, bank connectivity, TMS",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "Global Finance",
+      "url": "https://www.gfmag.com",
+      "focus": "banking, cash management, transaction banking, CEE, corporate finance",
+      "priority": 3,
+      "active": true
+    },
+    {
+      "name": "Payments Dive",
+      "url": "https://www.paymentsdive.com/",
+      "focus": "payments industry news, regulation, technology, instant payments",
+      "priority": 3,
+      "active": true
+    }
   ],
   "thought_leadership": [
-    { "name": "McKinsey Financial Services", "url": "https://www.mckinsey.com/industries/financial-services/our-insights", "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance", "priority": 1, "active": true },
-    { "name": "BCG Transaction Banking",    "url": "https://www.bcg.com/industries/financial-institutions/transaction-banking", "focus": "transaction banking strategy, cash management, payments innovation, corporate banking", "priority": 1, "active": true },
-    { "name": "Oliver Wyman",              "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html", "focus": "corporate banking strategy, transaction banking, cash management, institutional banking", "priority": 1, "active": true },
-    { "name": "Journey to Treasury / EACT","url": "https://www.journeytotreasury.com",    "focus": "CEE treasury, corporate treasury trends, bank connectivity, treasury survey, EACT", "priority": 2, "active": true },
-    { "name": "Deloitte Banking Outlook",  "url": "https://www.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html", "focus": "banking outlook, transaction banking, digital transformation, stablecoins, AI in banking", "priority": 2, "active": true }
+    {
+      "name": "McKinsey Financial Services",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights",
+      "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "BCG Transaction Banking",
+      "url": "https://www.bcg.com/industries/financial-institutions/transaction-banking",
+      "focus": "transaction banking strategy, cash management, payments innovation, corporate banking",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "Oliver Wyman",
+      "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html",
+      "focus": "corporate banking strategy, transaction banking, cash management, institutional banking",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "Journey to Treasury / EACT",
+      "url": "https://www.journeytotreasury.com",
+      "focus": "CEE treasury, corporate treasury trends, bank connectivity, treasury survey, EACT",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "Deloitte Banking Outlook",
+      "url": "https://www.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html",
+      "focus": "banking outlook, transaction banking, digital transformation, stablecoins, AI in banking",
+      "priority": 2,
+      "active": true
+    }
   ],
   "flagship_reports": [
     {
@@ -70,19 +160,78 @@
     }
   ],
   "competitors": [
-    { "name": "Deutsche Bank",   "url": "https://flow.db.com",                                         "focus": "cash management, CB Connect API, transaction banking, embedded finance, VoP, CEE", "priority": 1, "active": true },
-    { "name": "UniCredit",       "url": "https://www.unicredit.eu/en/newsroom.html",                   "focus": "cash management, corporate banking, CEE expansion, digital banking, UniCredit Direct", "priority": 1, "active": true },
-    { "name": "Erste Group",     "url": "https://www.erstegroup.com/en/news-media/press-releases",     "focus": "cash management, corporate banking, CEE, Austria, George platform", "priority": 1, "active": true },
-    { "name": "BNP Paribas",     "url": "https://cib.bnpparibas/cash-management",                     "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury", "priority": 1, "active": true },
-    { "name": "HSBC",            "url": "https://www.hsbc.com/who-we-are/newsroom",                    "focus": "transaction banking, cash management, API banking, HSBCnet, treasury intelligence", "priority": 2, "active": true },
-    { "name": "ING",             "url": "https://www.ing.com/Newsroom.htm",                            "focus": "wholesale banking, payments, API banking, embedded finance, InsideBusiness", "priority": 2, "active": true },
-    { "name": "Intesa Sanpaolo", "url": "https://group.intesasanpaolo.com/en/newsroom",                "focus": "cash management, corporate banking, CEE expansion, IMI CIB", "priority": 3, "active": true }
+    {
+      "name": "Deutsche Bank",
+      "url": "https://flow.db.com",
+      "focus": "cash management, CB Connect API, transaction banking, embedded finance, VoP, CEE",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "UniCredit",
+      "url": "https://www.unicredit.eu/en/newsroom.html",
+      "focus": "cash management, corporate banking, CEE expansion, digital banking, UniCredit Direct",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "Erste Group",
+      "url": "https://www.erstegroup.com/en/news-media/press-releases",
+      "focus": "cash management, corporate banking, CEE, Austria, George platform",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "BNP Paribas",
+      "url": "https://group.bnpparibas/en/all-news",
+      "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury",
+      "priority": 1,
+      "active": true
+    },
+    {
+      "name": "HSBC",
+      "url": "https://www.hsbc.com/news-and-media/media-releases",
+      "focus": "transaction banking, cash management, API banking, HSBCnet, treasury intelligence",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "ING",
+      "url": "https://www.ing.com/Newsroom/All-news.htm",
+      "focus": "wholesale banking, payments, API banking, embedded finance, InsideBusiness",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "Intesa Sanpaolo",
+      "url": "https://group.intesasanpaolo.com/en/newsroom",
+      "focus": "cash management, corporate banking, CEE expansion, IMI CIB",
+      "priority": 3,
+      "active": true
+    }
   ],
   "tags": [
-    "ISO20022", "InstantPayments", "OpenBanking", "eBAM", "CashPooling",
-    "EBICS", "Compliance", "DigitalBanking", "Stablecoins", "AI",
-    "ERP_TMS", "CEE", "VoP", "FX", "Liquidity", "API", "PSD3",
-    "RealTime", "VirtualAccounts", "TMS", "PaymentFactory"
+    "ISO20022",
+    "InstantPayments",
+    "OpenBanking",
+    "eBAM",
+    "CashPooling",
+    "EBICS",
+    "Compliance",
+    "DigitalBanking",
+    "Stablecoins",
+    "AI",
+    "ERP_TMS",
+    "CEE",
+    "VoP",
+    "FX",
+    "Liquidity",
+    "API",
+    "PSD3",
+    "RealTime",
+    "VirtualAccounts",
+    "TMS",
+    "PaymentFactory"
   ],
   "scan_config": {
     "market_lookback_days": 7,
