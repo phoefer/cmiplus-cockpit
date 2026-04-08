@@ -380,13 +380,14 @@ def run_weekly_briefing(scan_date, sources_data):
     # Executive summary
     print("\n--- EXECUTIVE SUMMARY ---", flush=True)
     top = (all_market[:3] + all_thought[:2] + all_competitors[:2])
-    exec_prompt = f"""Write a 4-5 sentence executive summary of the most important developments
-for RBI Cash Management / CMIplus this week, based on:
-
-{json.dumps([{{"title":i["title"],"summary_short":i["summary_short"]}} for i in top], indent=2)}
-
-Today: {scan_date}
-Return ONLY the summary text, no JSON."""
+    top_list = [{"title": i["title"], "summary_short": i.get("summary_short", "")} for i in top]
+    top_json = json.dumps(top_list, indent=2)
+    exec_prompt = (
+        "Write a 4-5 sentence executive summary of the most important developments "
+        "for RBI Cash Management / CMIplus this week, based on:\n\n"
+        + top_json
+        + f"\n\nToday: {scan_date}\nReturn ONLY the summary text, no JSON."
+    )
     try:
         exec_summary = gemini_call([{"text": exec_prompt}], max_tokens=400).strip()
     except Exception as e:
