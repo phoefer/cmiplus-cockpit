@@ -1,417 +1,498 @@
-#!/usr/bin/env python3
-"""
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>scan.py</title>
+<style>body{background:#1e1e1e;color:#d4d4d4;font-family:monospace;padding:20px;}pre{white-space:pre-wrap;font-size:13px;line-height:1.5;}button{position:fixed;top:20px;right:20px;background:#0066cc;color:white;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px;}</style></head>
+<body><button onclick="navigator.clipboard.writeText(document.getElementById('c').textContent).then(()=>this.textContent='Copied!').catch(()=>this.textContent='Select all + Ctrl+C')">Copy all</button>
+<pre id="c">#!/usr/bin/env python3
+&quot;&quot;&quot;
 CMIplus Intelligence Cockpit — Weekly Scan
 Runs every Monday 06:00 UTC via GitHub Actions.
 
+Sources are configured in sources.json — no code changes needed to add/remove/reprioritise.
+
 Produces:
-  - briefing.json         : structured weekly briefing
-  - flagship-analyses.json: CMIplus positioning vs. 4 flagship reports
-"""
+  - briefing.json         : structured weekly briefing (market/thought/competitors)
+  - flagship-analyses.json: deep analyses of 4 flagship reports
+&quot;&quot;&quot;
 
-import os, json, base64, urllib.request, urllib.error, datetime, re
+import os, json, base64, urllib.request, urllib.error, datetime, re, time
 
-GEMINI_API_KEY = os.environ.get("GEMINI_KEY", "")
-FLASH_MODEL    = "gemini-2.5-flash"
-GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-REPORTS_DIR    = os.path.join(os.path.dirname(__file__), "reports")
-
-# ---------------------------------------------------------------------------
-# Sources — per type
-# ---------------------------------------------------------------------------
-
-MARKET_SOURCES = [
-    {"name": "ECB",           "url": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html"},
-    {"name": "EBA",           "url": "https://www.eba.europa.eu/newsroom/news"},
-    {"name": "SWIFT",         "url": "https://www.swift.com/news-events/news"},
-    {"name": "Finextra",      "url": "https://www.finextra.com/newshub/fintech"},
-    {"name": "Treasury Today","url": "https://www.treasurytoday.com/news"},
-    {"name": "The Paypers",   "url": "https://thepaypers.com/"},
-    {"name": "Payments Dive", "url": "https://www.paymentsdive.com/"},
-]
-
-THOUGHT_SOURCES = [
-    {"name": "McKinsey",      "url": "https://www.mckinsey.com/industries/financial-services/our-insights"},
-    {"name": "BCG",           "url": "https://www.bcg.com/industries/financial-institutions/insights"},
-    {"name": "EY",            "url": "https://www.ey.com/en_gl/insights/financial-services"},
-    {"name": "PwC",           "url": "https://www.pwc.com/gx/en/industries/financial-services/publications.html"},
-    {"name": "Deloitte",      "url": "https://www2.deloitte.com/global/en/insights/industry/financial-services.html"},
-]
-
-COMPETITOR_SOURCES = [
-    {"name": "UniCredit",     "url": "https://www.unicredit.eu/en/newsroom.html",         "competitor": "UniCredit"},
-    {"name": "Erste Bank",    "url": "https://www.erstegroup.com/en/news-media/press-releases", "competitor": "Erste Bank"},
-    {"name": "Deutsche Bank", "url": "https://www.db.com/news/index.htm",                 "competitor": "Deutsche Bank"},
-    {"name": "ING",           "url": "https://www.ing.com/Newsroom.htm",                  "competitor": "ING"},
-    {"name": "Citi",          "url": "https://www.citigroup.com/global/news/",            "competitor": "Citi"},
-]
+GEMINI_API_KEY = os.environ.get(&quot;GEMINI_KEY&quot;, &quot;&quot;)
+FLASH_MODEL    = &quot;gemini-2.5-flash&quot;
+GEMINI_URL     = &quot;https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}&quot;
+REPORTS_DIR    = os.path.join(os.path.dirname(__file__), &quot;reports&quot;)
+SOURCES_FILE   = os.path.join(os.path.dirname(__file__), &quot;sources.json&quot;)
 
 FLAGSHIP_REPORTS = [
-    {"id":"ey_four_trends",      "title":"EY Four Trends Redefining Cash Management",   "year":"2025",    "source":"pdf",  "file":"ey-gl-four-trends-redefining-cash-management-08-2025.pdf",    "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf"},
-    {"id":"mckinsey_payments",   "title":"McKinsey Global Payments Report",              "year":"2025",    "source":"pdf",  "file":"the-2025-mckinsey-global-payments-report.pdf",                 "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf"},
-    {"id":"journeys_to_treasury","title":"Journeys to Treasury",                         "year":"2025/26", "source":"pdf",  "file":"Journeys to Treasury 2025-26.pdf",                             "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf"},
-    {"id":"pwc_treasury_survey", "title":"PwC Global Treasury Survey",                  "year":"2025",    "source":"web",  "url":"https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html", "report_url":"https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html"},
+    {&quot;id&quot;:&quot;ey_four_trends&quot;,       &quot;title&quot;:&quot;EY Four Trends Redefining Cash Management&quot;,  &quot;year&quot;:&quot;2025&quot;,    &quot;source&quot;:&quot;pdf&quot;,  &quot;file&quot;:&quot;ey-gl-four-trends-redefining-cash-management-08-2025.pdf&quot;,   &quot;report_url&quot;:&quot;https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf&quot;},
+    {&quot;id&quot;:&quot;mckinsey_payments&quot;,    &quot;title&quot;:&quot;McKinsey Global Payments Report&quot;,             &quot;year&quot;:&quot;2025&quot;,    &quot;source&quot;:&quot;pdf&quot;,  &quot;file&quot;:&quot;the-2025-mckinsey-global-payments-report.pdf&quot;,                &quot;report_url&quot;:&quot;https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf&quot;},
+    {&quot;id&quot;:&quot;journeys_to_treasury&quot;, &quot;title&quot;:&quot;Journeys to Treasury&quot;,                        &quot;year&quot;:&quot;2025/26&quot;, &quot;source&quot;:&quot;pdf&quot;,  &quot;file&quot;:&quot;Journeys to Treasury 2025-26.pdf&quot;,                            &quot;report_url&quot;:&quot;https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf&quot;},
+    {&quot;id&quot;:&quot;pwc_treasury_survey&quot;,  &quot;title&quot;:&quot;PwC Global Treasury Survey&quot;,                 &quot;year&quot;:&quot;2025&quot;,    &quot;source&quot;:&quot;web&quot;,  &quot;url&quot;:&quot;https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html&quot;, &quot;report_url&quot;:&quot;https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html&quot;},
 ]
 
-CMIPLUS_CONTEXT = """
-CMIplus is Raiffeisen Bank International's (RBI) corporate cash management platform
-serving large international corporates across CEE (Central & Eastern Europe).
-- Channels: EBICS v2.5+v3, H2H, SWIFT, Web, Mobile, Open API
-- Network banks: Austria, CZ, HR, RS, XK, AL, RO, SK, HU and other CEE markets
-- ~1,700 customers migrated (Q1 2026)
-- VoP live Oct 2025, eBAM resuming, Open API Q3/26, AI Forecasting Q4/26
-- Competitors: UniCredit, Erste Bank, Citi, Deutsche Bank, ING
-"""
+# ---------------------------------------------------------------------------
+# Load sources.json
+# ---------------------------------------------------------------------------
+
+def load_sources():
+    &quot;&quot;&quot;Load and validate sources from sources.json.&quot;&quot;&quot;
+    try:
+        with open(SOURCES_FILE, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
+            data = json.load(f)
+        print(f&quot;sources.json loaded (updated: {data.get(&#x27;meta&#x27;,{}).get(&#x27;last_updated&#x27;,&#x27;?&#x27;)})&quot;, flush=True)
+        return data
+    except Exception as e:
+        print(f&quot;WARNING: Could not load sources.json: {e} — using fallback sources&quot;, flush=True)
+        return None
+
+def get_active_sources(sources_data, section_key):
+    &quot;&quot;&quot;Return active sources for a section, sorted by priority.&quot;&quot;&quot;
+    if not sources_data:
+        return []
+    sources = sources_data.get(section_key, [])
+    active  = [s for s in sources if s.get(&quot;active&quot;, True)]
+    active.sort(key=lambda x: x.get(&quot;priority&quot;, 2))
+    return active
+
+def get_scan_config(sources_data):
+    &quot;&quot;&quot;Return scan_config from sources.json with defaults.&quot;&quot;&quot;
+    defaults = {
+        &quot;items_priority_1&quot;: 3,
+        &quot;items_priority_2&quot;: 2,
+        &quot;items_priority_3&quot;: 1,
+        &quot;language&quot;: &quot;English&quot;,
+        &quot;context&quot;: &quot;CMIplus is RBI&#x27;s corporate cash management platform for large corporates in CEE.&quot;,
+    }
+    if sources_data and &quot;scan_config&quot; in sources_data:
+        defaults.update(sources_data[&quot;scan_config&quot;])
+    return defaults
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
+HEADERS = {
+    &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36&quot;,
+    &quot;Accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&quot;,
+    &quot;Accept-Language&quot;: &quot;en-US,en;q=0.9,de;q=0.8&quot;,
+    &quot;Accept-Encoding&quot;: &quot;identity&quot;,
+    &quot;Connection&quot;: &quot;keep-alive&quot;,
+}
+
 def gemini_call(parts, max_tokens=8000):
     url = GEMINI_URL.format(model=FLASH_MODEL, key=GEMINI_API_KEY)
-    payload = {"contents":[{"parts":parts}],"generationConfig":{"maxOutputTokens":max_tokens,"temperature":0.3}}
-    data = json.dumps(payload).encode("utf-8")
-    req  = urllib.request.Request(url, data=data, headers={"Content-Type":"application/json"})
+    payload = {
+        &quot;contents&quot;: [{&quot;parts&quot;: parts}],
+        &quot;generationConfig&quot;: {&quot;maxOutputTokens&quot;: max_tokens, &quot;temperature&quot;: 0.3},
+    }
+    data = json.dumps(payload).encode(&quot;utf-8&quot;)
+    req  = urllib.request.Request(url, data=data, headers={&quot;Content-Type&quot;: &quot;application/json&quot;})
     try:
         with urllib.request.urlopen(req, timeout=180) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-            return result["candidates"][0]["content"]["parts"][0]["text"]
+            result = json.loads(resp.read().decode(&quot;utf-8&quot;))
+            return result[&quot;candidates&quot;][0][&quot;content&quot;][&quot;parts&quot;][0][&quot;text&quot;]
     except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Gemini HTTP {e.code}: {body[:400]}")
+        body = e.read().decode(&quot;utf-8&quot;, errors=&quot;replace&quot;)
+        raise RuntimeError(f&quot;Gemini HTTP {e.code}: {body[:300]}&quot;)
 
-def fetch_url_text(url, max_bytes=150_000):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 CMIplus-Cockpit/1.0"})
+def fetch_url_text(url, max_bytes=150_000, timeout=45):
+    # Handle multiple URLs separated by &quot; / &quot;
+    urls = [u.strip() for u in url.split(&quot; / &quot;) if u.strip().startswith(&quot;http&quot;)]
+    primary_url = urls[0] if urls else url
+
+    req = urllib.request.Request(primary_url, headers=HEADERS)
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            raw = resp.read(max_bytes).decode("utf-8", errors="replace")
-        text = re.sub(r"<[^>]+>", " ", raw)
-        text = re.sub(r"\s{3,}", "\n\n", text)
-        return text[:60_000]
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read(max_bytes).decode(&quot;utf-8&quot;, errors=&quot;replace&quot;)
+        text = re.sub(r&quot;&lt;script[^&gt;]*&gt;.*?&lt;/script&gt;&quot;, &quot; &quot;, raw, flags=re.DOTALL|re.IGNORECASE)
+        text = re.sub(r&quot;&lt;style[^&gt;]*&gt;.*?&lt;/style&gt;&quot;,   &quot; &quot;, text, flags=re.DOTALL|re.IGNORECASE)
+        text = re.sub(r&quot;&lt;[^&gt;]+&gt;&quot;, &quot; &quot;, text)
+        text = re.sub(r&quot;\s{3,}&quot;, &quot;\n\n&quot;, text)
+        return text[:50_000]
     except Exception as e:
-        return f"[Error fetching {url}: {e}]"
+        return f&quot;[FETCH_ERROR: {e}]&quot;
 
 def load_pdf_base64(filename):
     path = os.path.join(REPORTS_DIR, filename)
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode("utf-8")
+    with open(path, &quot;rb&quot;) as f:
+        return base64.b64encode(f.read()).decode(&quot;utf-8&quot;)
 
 def parse_json_loose(raw):
-    clean = re.sub(r"^```[a-z]*\n?","",raw.strip(),flags=re.MULTILINE)
-    clean = re.sub(r"\n?```$","",clean.strip(),flags=re.MULTILINE).strip()
-    try: return json.loads(clean)
-    except: pass
-    start = clean.find("{")
-    if start == -1: raise ValueError("No JSON found")
-    depth,end = 0,start
-    for i,ch in enumerate(clean[start:],start):
-        if ch=="{": depth+=1
-        elif ch=="}":
-            depth-=1
-            if depth==0: end=i; break
+    clean = re.sub(r&quot;^```[a-z]*\n?&quot;, &quot;&quot;, raw.strip(), flags=re.MULTILINE)
+    clean = re.sub(r&quot;\n?```$&quot;, &quot;&quot;, clean.strip(), flags=re.MULTILINE).strip()
+    try:
+        return json.loads(clean)
+    except:
+        pass
+    start = clean.find(&quot;{&quot;)
+    if start == -1:
+        raise ValueError(&quot;No JSON found&quot;)
+    depth, end = 0, start
+    for i, ch in enumerate(clean[start:], start):
+        if ch == &quot;{&quot;: depth += 1
+        elif ch == &quot;}&quot;:
+            depth -= 1
+            if depth == 0: end = i; break
     return json.loads(clean[start:end+1])
 
 def normalize_relevance(r):
     r = str(r).lower()
-    if r in ("high","urgent"): return "urgent"
-    if r in ("medium","watch"): return "watch"
-    return "fyi"
+    if r in (&quot;high&quot;, &quot;urgent&quot;): return &quot;urgent&quot;
+    if r in (&quot;medium&quot;, &quot;watch&quot;): return &quot;watch&quot;
+    return &quot;fyi&quot;
+
+def boost_score(score, priority):
+    boost = {1: 2, 2: 1, 3: 0}
+    return min(10, int(score) + boost.get(priority, 0))
 
 # ---------------------------------------------------------------------------
-# Per-source extraction prompts
+# Prompts
 # ---------------------------------------------------------------------------
 
-MARKET_PROMPT = """
+MARKET_PROMPT = &quot;&quot;&quot;
 You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
-Extract the top 3 most relevant NEWS items from this source for cash management professionals.
+Extract the top {n_items} most relevant NEWS items from this source.
 
 Source: {source_name} ({source_url})
+Source focus: {focus}
 Content:
 {content}
 
-Today's date: {scan_date}
+Today: {scan_date}
+Context: {context}
 
 Focus on: payment regulations, instant payments, ISO 20022, VoP, EBICS, Open Banking,
-PSD3, treasury technology, CEE banking, fraud prevention, cross-border payments.
+PSD3, treasury technology, CEE/European banking, fraud prevention, SEPA.
 
-For EACH of the 3 items produce EXACTLY these fields:
-- title: Compelling headline max 12 words
+IMPORTANT: Translate any non-English content to English in your response.
+
+For EACH item produce:
+- title: Compelling English headline max 12 words
 - summary_short: 2 sentences — what happened
-- summary_detail: 5-7 sentences — full context, background, regulatory details, timeline, industry impact
-- key_points: Array of 4 specific facts, data points or quotes from the article
-- rbi_cash_management: 2-3 sentences — what this means specifically for RBI Cash Management and CMIplus customers
-- url: Direct article URL if visible in content, otherwise use source URL "{source_url}"
-- source: "{source_name}"
-- source_url: "{source_url}"
-- relevance_score: Integer 1-10 (10 = most critical for CMIplus/RBI)
-- relevance: "urgent" if score>=8, "watch" if score>=5, "fyi" otherwise
-- tags: Array of 2-4 tags e.g. ["ISO20022","InstantPayments","CEE","EBICS"]
-- date: "{scan_date}"
+- summary_detail: 5-7 sentences — full context, regulatory details, timeline, industry impact
+- key_points: Array of 4 specific facts, numbers or quotes
+- rbi_cash_management: 2-3 sentences — what this means for RBI Cash Management and CMIplus
+- url: Direct article URL if found in content, else &quot;{source_url}&quot;
+- source: &quot;{source_name}&quot;
+- source_url: &quot;{source_url}&quot;
+- relevance_score: 1-10 (10 = most critical for CMIplus/RBI)
+- relevance: &quot;urgent&quot; if &gt;=8, &quot;watch&quot; if &gt;=5, &quot;fyi&quot; otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: &quot;{scan_date}&quot;
 
 Respond ONLY with valid JSON:
-{{"source":"{source_name}","items":[/* exactly 3 */]}}
-"""
+{{&quot;source&quot;:&quot;{source_name}&quot;,&quot;items&quot;:[/* exactly {n_items} items */]}}
+&quot;&quot;&quot;
 
-THOUGHT_PROMPT = """
+THOUGHT_PROMPT = &quot;&quot;&quot;
 You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
-Extract the top 3 most relevant THOUGHT LEADERSHIP insights from this source.
+Extract the top {n_items} most relevant THOUGHT LEADERSHIP insights from this source.
 
 Source: {source_name} ({source_url})
+Source focus: {focus}
 Content:
 {content}
 
-Today's date: {scan_date}
+Today: {scan_date}
+Context: {context}
 
-Focus on: treasury strategy, AI in banking, cash management trends, payment transformation,
-digital banking innovation, corporate banking evolution, CEE market trends.
+Focus: treasury strategy, AI in banking, cash management trends, payment transformation,
+digital banking, corporate banking evolution, Open Banking, real-time treasury.
 
-For EACH of the 3 items produce EXACTLY these fields:
-- title: Strategic headline max 12 words
-- summary_short: 2 sentences — core finding or argument
-- summary_detail: 5-7 sentences — full strategic context, methodology, key data, implications for corporate banking
-- key_points: Array of 4 specific insights, statistics or strategic conclusions
-- rbi_cash_management: 2-3 sentences — strategic implication for RBI Cash Management positioning and CMIplus roadmap
-- url: Direct article URL if visible in content, otherwise use source URL "{source_url}"
-- source: "{source_name}"
-- source_url: "{source_url}"
-- relevance_score: Integer 1-10
-- relevance: "urgent" if score>=8, "watch" if score>=5, "fyi" otherwise
-- tags: Array of 2-4 tags
-- date: "{scan_date}"
+For EACH item produce:
+- title: Strategic English headline max 12 words
+- summary_short: 2 sentences — core finding
+- summary_detail: 5-7 sentences — full strategic context, methodology, key data, implications
+- key_points: Array of 4 specific insights or statistics
+- rbi_cash_management: 2-3 sentences — strategic implication for RBI Cash Management and CMIplus roadmap
+- url: Direct article URL if found, else &quot;{source_url}&quot;
+- source: &quot;{source_name}&quot;
+- source_url: &quot;{source_url}&quot;
+- relevance_score: 1-10
+- relevance: &quot;urgent&quot; if &gt;=8, &quot;watch&quot; if &gt;=5, &quot;fyi&quot; otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: &quot;{scan_date}&quot;
 
 Respond ONLY with valid JSON:
-{{"source":"{source_name}","items":[/* exactly 3 */]}}
-"""
+{{&quot;source&quot;:&quot;{source_name}&quot;,&quot;items&quot;:[/* exactly {n_items} items */]}}
+&quot;&quot;&quot;
 
-COMPETITOR_PROMPT = """
+COMPETITOR_PROMPT = &quot;&quot;&quot;
 You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
-Extract the top 3 most relevant items about {competitor} from this source.
+Analyse {competitor}&#x27;s latest moves in corporate/transaction banking.
 
 Source: {source_name} ({source_url})
+Source focus: {focus}
 Content:
 {content}
 
-Today's date: {scan_date}
+Today: {scan_date}
+Context: {context}
 
-Focus on: product launches, CEE expansion, cash management features, payment capabilities,
-API/digital banking announcements, treasury solutions, partnership deals.
+Focus: cash management products, CEE expansion, payment capabilities, API/digital banking,
+treasury solutions, EBICS offerings, instant payments, partnership deals.
 
-If no specific news is found, infer likely strategic moves based on industry trends and
-what you know about {competitor}'s cash management strategy.
+If specific news is not found, produce items based on known strategic directions
+of {competitor} in European corporate banking — mark these as inferred.
 
-For EACH of the 3 items produce EXACTLY these fields:
+For EACH item produce:
 - title: Headline max 12 words
-- summary_short: 2 sentences — what happened or what is inferred
-- summary_detail: 4-6 sentences — full context, product details, strategic rationale, CEE relevance
-- key_points: Array of 3-4 specific facts or strategic observations
-- rbi_cash_management: 2 sentences — competitive implication for RBI CMIplus
-- url: Direct article URL if visible, otherwise use source URL "{source_url}"
-- source: "{source_name}"
-- source_url: "{source_url}"
-- competitor: "{competitor}"
-- relevance_score: Integer 1-10
-- relevance: "urgent" if score>=8, "watch" if score>=5, "fyi" otherwise
-- tags: Array of 2-4 tags
-- date: "{scan_date}"
-- inferred: true if based on inference rather than actual news, false otherwise
+- summary_short: 2 sentences
+- summary_detail: 4-6 sentences — context, product details, strategic rationale, CEE relevance
+- key_points: Array of 3 specific facts or observations
+- rbi_cash_management: 2 sentences — competitive implication for CMIplus
+- url: Direct URL if found, else &quot;{source_url}&quot;
+- source: &quot;{source_name}&quot;
+- source_url: &quot;{source_url}&quot;
+- competitor: &quot;{competitor}&quot;
+- relevance_score: 1-10
+- relevance: &quot;urgent&quot; if &gt;=8, &quot;watch&quot; if &gt;=5, &quot;fyi&quot; otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: &quot;{scan_date}&quot;
+- inferred: true if based on inference, false if actual news
 
 Respond ONLY with valid JSON:
-{{"source":"{source_name}","competitor":"{competitor}","items":[/* exactly 3 */]}}
-"""
+{{&quot;source&quot;:&quot;{source_name}&quot;,&quot;competitor&quot;:&quot;{competitor}&quot;,&quot;items&quot;:[/* exactly {n_items} items */]}}
+&quot;&quot;&quot;
 
 # ---------------------------------------------------------------------------
 # Per-source extraction
 # ---------------------------------------------------------------------------
 
-def extract_from_source(src, prompt_template, scan_date, extra=None):
-    print(f"  → {src['name']}: fetching...")
-    text = fetch_url_text(src["url"])
-    if text.startswith("[Error"):
-        print(f"    FAILED: {text[:80]}")
-        return {"source": src["name"], "items": []}
+def extract_source(src, prompt_template, scan_date, config, extra=None):
+    name   = src[&quot;name&quot;]
+    url    = src[&quot;url&quot;]
+    prio   = src.get(&quot;priority&quot;, 2)
+    focus  = src.get(&quot;focus&quot;, &quot;treasury, payments, cash management&quot;)
+    tags   = &quot;, &quot;.join(config.get(&quot;tags&quot;, [&quot;ISO20022&quot;,&quot;CEE&quot;,&quot;EBICS&quot;,&quot;AI&quot;,&quot;InstantPayments&quot;]))
+    context = config.get(&quot;context&quot;, &quot;CMIplus is RBI&#x27;s cash management platform.&quot;)
+
+    # Items count based on priority
+    n_map = {
+        1: config.get(&quot;items_priority_1&quot;, 3),
+        2: config.get(&quot;items_priority_2&quot;, 2),
+        3: config.get(&quot;items_priority_3&quot;, 1),
+    }
+    n_items = n_map.get(prio, 2)
+
+    print(f&quot;  [P{prio}] {name} (→{n_items} items): fetching...&quot;, flush=True)
+    text = fetch_url_text(url)
+
+    if text.startswith(&quot;[FETCH_ERROR&quot;):
+        print(f&quot;      FAILED: {text[:80]}&quot;, flush=True)
+        return []
+
+    print(f&quot;      {len(text):,} chars → Gemini...&quot;, flush=True)
 
     kwargs = {
-        "source_name": src["name"],
-        "source_url":  src["url"],
-        "content":     text[:15_000],
-        "scan_date":   scan_date,
+        &quot;source_name&quot;: name,
+        &quot;source_url&quot;:  url.split(&quot; / &quot;)[0],  # use first URL for reference
+        &quot;content&quot;:     text[:18_000],
+        &quot;scan_date&quot;:   scan_date,
+        &quot;focus&quot;:       focus,
+        &quot;context&quot;:     context,
+        &quot;tags&quot;:        tags,
+        &quot;n_items&quot;:     n_items,
     }
     if extra:
         kwargs.update(extra)
 
     prompt = prompt_template.format(**kwargs)
+
     try:
-        raw    = gemini_call([{"text": prompt}], max_tokens=8000)
+        raw    = gemini_call([{&quot;text&quot;: prompt}], max_tokens=6000)
         result = parse_json_loose(raw)
-        items  = result.get("items", [])
+        items  = result.get(&quot;items&quot;, [])
+
         for item in items:
-            item["relevance"]       = normalize_relevance(item.get("relevance", "fyi"))
-            item["relevance_score"] = int(item.get("relevance_score", 5))
-            item["source"]          = src["name"]
-            item["source_url"]      = src["url"]
-            if extra and "competitor" in extra:
-                item["competitor"] = extra["competitor"]
-        print(f"    OK: {len(items)} items (scores: {[i['relevance_score'] for i in items]})")
-        return {"source": src["name"], "items": items}
+            raw_score               = item.get(&quot;relevance_score&quot;, 5)
+            item[&quot;relevance_score&quot;] = boost_score(raw_score, prio)
+            # Re-normalize after boost
+            if   item[&quot;relevance_score&quot;] &gt;= 8: item[&quot;relevance&quot;] = &quot;urgent&quot;
+            elif item[&quot;relevance_score&quot;] &gt;= 5: item[&quot;relevance&quot;] = &quot;watch&quot;
+            else:                              item[&quot;relevance&quot;] = &quot;fyi&quot;
+            item[&quot;source&quot;]          = name
+            item[&quot;source_url&quot;]      = url.split(&quot; / &quot;)[0]
+            item[&quot;priority&quot;]        = prio
+            if extra and &quot;competitor&quot; in extra:
+                item[&quot;competitor&quot;] = extra[&quot;competitor&quot;]
+
+        print(f&quot;      OK: {len(items)} items, scores: {[i[&#x27;relevance_score&#x27;] for i in items]}&quot;, flush=True)
+        return items
+
     except Exception as e:
-        print(f"    ERROR: {e}")
-        return {"source": src["name"], "items": []}
+        print(f&quot;      Gemini ERROR: {e}&quot;, flush=True)
+        return []
 
 # ---------------------------------------------------------------------------
 # Weekly briefing
 # ---------------------------------------------------------------------------
 
-def run_weekly_briefing(scan_date):
-    print("\n--- MARKET NEWS ---")
+def run_weekly_briefing(scan_date, sources_data):
+    config = get_scan_config(sources_data)
+
+    # Merge tags from sources.json into config
+    if sources_data and &quot;tags&quot; in sources_data:
+        config[&quot;tags&quot;] = sources_data[&quot;tags&quot;]
+
+    print(&quot;\n--- MARKET NEWS ---&quot;, flush=True)
+    market_sources = get_active_sources(sources_data, &quot;market_news&quot;)
+    print(f&quot;  {len(market_sources)} active sources&quot;, flush=True)
     all_market = []
-    for src in MARKET_SOURCES:
-        result = extract_from_source(src, MARKET_PROMPT, scan_date)
-        for item in result["items"]:
-            item["_source_group"] = src["name"]
-        all_market.extend(result["items"])
+    for src in market_sources:
+        items = extract_source(src, MARKET_PROMPT, scan_date, config)
+        all_market.extend(items)
+        time.sleep(1)
 
-    # Sort by relevance_score descending → ranked list
-    all_market.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    all_market.sort(key=lambda x: x.get(&quot;relevance_score&quot;, 0), reverse=True)
     for i, item in enumerate(all_market):
-        item["rank"] = i + 1
+        item[&quot;rank&quot;] = i + 1
 
-    print(f"\n  Total market items: {len(all_market)}")
+    print(f&quot;\n  Total market: {len(all_market)} items from: {list(set(i[&#x27;source&#x27;] for i in all_market))}&quot;, flush=True)
 
-    print("\n--- THOUGHT LEADERSHIP ---")
+    print(&quot;\n--- THOUGHT LEADERSHIP ---&quot;, flush=True)
+    thought_sources = get_active_sources(sources_data, &quot;thought_leadership&quot;)
+    print(f&quot;  {len(thought_sources)} active sources&quot;, flush=True)
     all_thought = []
-    for src in THOUGHT_SOURCES:
-        result = extract_from_source(src, THOUGHT_PROMPT, scan_date)
-        for item in result["items"]:
-            item["_source_group"] = src["name"]
-        all_thought.extend(result["items"])
+    for src in thought_sources:
+        items = extract_source(src, THOUGHT_PROMPT, scan_date, config)
+        all_thought.extend(items)
+        time.sleep(1)
 
-    all_thought.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    all_thought.sort(key=lambda x: x.get(&quot;relevance_score&quot;, 0), reverse=True)
     for i, item in enumerate(all_thought):
-        item["rank"] = i + 1
+        item[&quot;rank&quot;] = i + 1
 
-    print(f"\n  Total thought items: {len(all_thought)}")
+    print(f&quot;\n  Total thought: {len(all_thought)} items&quot;, flush=True)
 
-    print("\n--- COMPETITORS ---")
+    print(&quot;\n--- COMPETITORS ---&quot;, flush=True)
+    comp_sources = get_active_sources(sources_data, &quot;competitors&quot;)
+    print(f&quot;  {len(comp_sources)} active sources&quot;, flush=True)
     all_competitors = []
-    for src in COMPETITOR_SOURCES:
-        result = extract_from_source(
-            src, COMPETITOR_PROMPT, scan_date,
-            extra={"competitor": src["competitor"]}
-        )
-        for item in result["items"]:
-            item["_source_group"] = src["competitor"]
-        all_competitors.extend(result["items"])
+    for src in comp_sources:
+        competitor = src.get(&quot;name&quot;, src.get(&quot;competitor&quot;, &quot;Unknown&quot;))
+        items = extract_source(src, COMPETITOR_PROMPT, scan_date, config,
+                               extra={&quot;competitor&quot;: competitor})
+        all_competitors.extend(items)
+        time.sleep(1)
 
-    all_competitors.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    all_competitors.sort(key=lambda x: x.get(&quot;relevance_score&quot;, 0), reverse=True)
     for i, item in enumerate(all_competitors):
-        item["rank"] = i + 1
+        item[&quot;rank&quot;] = i + 1
 
-    print(f"\n  Total competitor items: {len(all_competitors)}")
+    print(f&quot;\n  Total competitors: {len(all_competitors)} items&quot;, flush=True)
 
     # Executive summary
-    print("\n--- EXECUTIVE SUMMARY ---")
-    top_items = (all_market[:3] + all_thought[:3] + all_competitors[:2])
-    exec_prompt = f"""
-Based on these top intelligence items for RBI Cash Management this week,
-write a 4-5 sentence executive summary of the most important developments
-and their strategic implications for CMIplus.
+    print(&quot;\n--- EXECUTIVE SUMMARY ---&quot;, flush=True)
+    top = (all_market[:3] + all_thought[:2] + all_competitors[:2])
+    exec_prompt = f&quot;&quot;&quot;Write a 4-5 sentence executive summary of the most important developments
+for RBI Cash Management / CMIplus this week, based on:
 
-Items:
-{json.dumps([{"title":i["title"],"summary_short":i["summary_short"]} for i in top_items], indent=2)}
+{json.dumps([{{&quot;title&quot;:i[&quot;title&quot;],&quot;summary_short&quot;:i[&quot;summary_short&quot;]}} for i in top], indent=2)}
 
 Today: {scan_date}
-
-Return ONLY the summary text, no JSON, no preamble.
-"""
+Return ONLY the summary text, no JSON.&quot;&quot;&quot;
     try:
-        exec_summary = gemini_call([{"text": exec_prompt}], max_tokens=500).strip()
+        exec_summary = gemini_call([{&quot;text&quot;: exec_prompt}], max_tokens=400).strip()
     except Exception as e:
-        exec_summary = f"Weekly scan completed. {len(all_market)} market, {len(all_thought)} thought leadership, {len(all_competitors)} competitor items collected."
+        exec_summary = f&quot;Scan complete: {len(all_market)} market, {len(all_thought)} thought, {len(all_competitors)} competitor items.&quot;
 
     return {
-        "scan_date":         scan_date,
-        "week_label":        f"Week of {scan_date}",
-        "executive_summary": exec_summary,
-        "market":            all_market,
-        "thought":           all_thought,
-        "competitors":       all_competitors,
+        &quot;scan_date&quot;:         scan_date,
+        &quot;week_label&quot;:        f&quot;Week of {scan_date}&quot;,
+        &quot;executive_summary&quot;: exec_summary,
+        &quot;market&quot;:            all_market,
+        &quot;thought&quot;:           all_thought,
+        &quot;competitors&quot;:       all_competitors,
+        &quot;source_stats&quot;: {
+            &quot;market_sources_used&quot;:     list(set(i[&quot;source&quot;] for i in all_market)),
+            &quot;thought_sources_used&quot;:    list(set(i[&quot;source&quot;] for i in all_thought)),
+            &quot;competitor_sources_used&quot;: list(set(i[&quot;source&quot;] for i in all_competitors)),
+        }
     }
 
 # ---------------------------------------------------------------------------
 # Flagship analyses
 # ---------------------------------------------------------------------------
 
-FLAGSHIP_PROMPT = """
-You are a senior analyst for RBI's CMIplus platform.
+FLAGSHIP_PROMPT = &quot;&quot;&quot;
+You are a senior analyst for RBI&#x27;s CMIplus cash management platform.
 Produce a comprehensive strategic analysis of this report.
 
 Context: {context}
-Report: "{title}" ({year})
+Report: &quot;{title}&quot; ({year})
 
-Produce a DETAILED analysis:
-1. executive_summary: 4-5 sentences — coverage, methodology, main conclusions
-2. key_stats: Array of 6-8 most important statistics from the report
-3. themes: Array of 5-6 themes, each with:
-   - name, description (3-4 sentences), key_stat
-4. key_actions: Array of 3-4 actions for CMIplus, each with:
-   - action, urgency (HIGH/MEDIUM/LOW), rationale (2 sentences), timeline
+Produce:
+1. executive_summary: 4-5 sentences
+2. key_stats: Array of 6-8 most important statistics
+3. themes: Array of 5-6 themes, each: name, description (3-4 sentences), key_stat
+4. key_actions: Array of 3-4 actions, each: action, urgency (HIGH/MEDIUM/LOW), rationale, timeline
 5. competitive_implications: 2-3 sentences
-6. case_studies: Array of corporate case studies from the report (if any), each with:
-   - company, headline (1 sentence summary of their treasury journey),
-     key_achievement (most impressive result), lesson (main takeaway for CMIplus customers)
+6. case_studies: Corporate case studies from the report (if any), each:
+   company, headline, key_achievement, lesson
 
 Respond ONLY with valid JSON:
 {{
-  "report_id":"{report_id}","report_title":"{title}","report_year":"{year}","report_url":"{report_url}",
-  "executive_summary":"...","key_stats":[],"themes":[],"key_actions":[],"competitive_implications":"...","case_studies":[],"scan_date":"{scan_date}"
+  &quot;report_id&quot;:&quot;{report_id}&quot;,&quot;report_title&quot;:&quot;{title}&quot;,&quot;report_year&quot;:&quot;{year}&quot;,&quot;report_url&quot;:&quot;{report_url}&quot;,
+  &quot;executive_summary&quot;:&quot;...&quot;,&quot;key_stats&quot;:[],&quot;themes&quot;:[],&quot;key_actions&quot;:[],
+  &quot;competitive_implications&quot;:&quot;...&quot;,&quot;case_studies&quot;:[],&quot;scan_date&quot;:&quot;{scan_date}&quot;
 }}
-"""
+&quot;&quot;&quot;
 
-def analyse_flagship_pdf(report, scan_date):
-    print(f"  PDF: {report['file']} ...")
+def analyse_flagship_pdf(report, scan_date, context):
+    print(f&quot;  PDF: {report[&#x27;file&#x27;]} ...&quot;, flush=True)
     try:
-        pdf_b64 = load_pdf_base64(report["file"])
+        pdf_b64 = load_pdf_base64(report[&quot;file&quot;])
     except FileNotFoundError:
-        return _error_entry(report, scan_date, "PDF not found")
+        return _error_entry(report, scan_date, &quot;PDF not found&quot;)
 
     prompt = FLAGSHIP_PROMPT.format(
-        context=CMIPLUS_CONTEXT, title=report["title"], year=report["year"],
-        report_id=report["id"], report_url=report.get("report_url",""), scan_date=scan_date,
+        context=context, title=report[&quot;title&quot;], year=report[&quot;year&quot;],
+        report_id=report[&quot;id&quot;], report_url=report.get(&quot;report_url&quot;,&quot;&quot;), scan_date=scan_date,
     )
     try:
-        raw = gemini_call([{"inline_data":{"mime_type":"application/pdf","data":pdf_b64}},{"text":prompt}], max_tokens=16000)
+        raw = gemini_call([
+            {&quot;inline_data&quot;: {&quot;mime_type&quot;: &quot;application/pdf&quot;, &quot;data&quot;: pdf_b64}},
+            {&quot;text&quot;: prompt}
+        ], max_tokens=16000)
         result = parse_json_loose(raw)
-        result["report_url"] = report.get("report_url","")
+        result[&quot;report_url&quot;] = report.get(&quot;report_url&quot;, &quot;&quot;)
+        print(f&quot;      OK: {len(result.get(&#x27;themes&#x27;,[]))} themes, {len(result.get(&#x27;case_studies&#x27;,[]))} cases&quot;, flush=True)
         return result
     except Exception as e:
-        print(f"  ERROR: {e}")
+        print(f&quot;      ERROR: {e}&quot;, flush=True)
         return _error_entry(report, scan_date, str(e))
 
-def analyse_flagship_web(report, scan_date):
-    print(f"  Web: {report['url']} ...")
-    page_text = fetch_url_text(report["url"])
+def analyse_flagship_web(report, scan_date, context):
+    print(f&quot;  Web: {report[&#x27;url&#x27;]} ...&quot;, flush=True)
+    page_text = fetch_url_text(report[&quot;url&quot;])
     prompt = FLAGSHIP_PROMPT.format(
-        context=CMIPLUS_CONTEXT, title=report["title"], year=report["year"],
-        report_id=report["id"], report_url=report.get("report_url",""), scan_date=scan_date,
-    ) + f"\n\nWebpage content:\n{page_text}"
+        context=context, title=report[&quot;title&quot;], year=report[&quot;year&quot;],
+        report_id=report[&quot;id&quot;], report_url=report.get(&quot;report_url&quot;,&quot;&quot;), scan_date=scan_date,
+    ) + f&quot;\n\nContent:\n{page_text}&quot;
     try:
-        raw = gemini_call([{"text":prompt}], max_tokens=16000)
+        raw = gemini_call([{&quot;text&quot;: prompt}], max_tokens=16000)
         result = parse_json_loose(raw)
-        result["report_url"] = report.get("report_url","")
+        result[&quot;report_url&quot;] = report.get(&quot;report_url&quot;, &quot;&quot;)
         return result
     except Exception as e:
-        print(f"  ERROR: {e}")
+        print(f&quot;      ERROR: {e}&quot;, flush=True)
         return _error_entry(report, scan_date, str(e))
 
 def _error_entry(report, scan_date, error):
-    return {"report_id":report["id"],"report_title":report["title"],"report_year":report["year"],
-            "report_url":report.get("report_url",""),"executive_summary":f"Error: {error}",
-            "key_stats":[],"themes":[],"key_actions":[],"competitive_implications":"","case_studies":[],"scan_date":scan_date,"error":error}
+    return {
+        &quot;report_id&quot;: report[&quot;id&quot;], &quot;report_title&quot;: report[&quot;title&quot;],
+        &quot;report_year&quot;: report[&quot;year&quot;], &quot;report_url&quot;: report.get(&quot;report_url&quot;,&quot;&quot;),
+        &quot;executive_summary&quot;: f&quot;Error: {error}&quot;, &quot;key_stats&quot;: [], &quot;themes&quot;: [],
+        &quot;key_actions&quot;: [], &quot;competitive_implications&quot;: &quot;&quot;, &quot;case_studies&quot;: [],
+        &quot;scan_date&quot;: scan_date, &quot;error&quot;: error,
+    }
 
-def run_flagship_analyses(scan_date):
+def run_flagship_analyses(scan_date, context):
     results = []
     for report in FLAGSHIP_REPORTS:
-        r = analyse_flagship_pdf(report, scan_date) if report["source"]=="pdf" else analyse_flagship_web(report, scan_date)
+        r = analyse_flagship_pdf(report, scan_date, context) if report[&quot;source&quot;]==&quot;pdf&quot; \
+            else analyse_flagship_web(report, scan_date, context)
         results.append(r)
+        time.sleep(2)
     return results
 
 # ---------------------------------------------------------------------------
@@ -420,23 +501,32 @@ def run_flagship_analyses(scan_date):
 
 def main():
     if not GEMINI_API_KEY:
-        raise RuntimeError("GEMINI_KEY environment variable not set")
-    scan_date = datetime.date.today().isoformat()
-    print(f"\n{'='*60}\nCMIplus Intelligence Cockpit — Scan {scan_date}\n{'='*60}")
+        raise RuntimeError(&quot;GEMINI_KEY environment variable not set&quot;)
 
-    print("\n=== WEEKLY BRIEFING ===")
-    briefing = run_weekly_briefing(scan_date)
-    with open("briefing.json","w",encoding="utf-8") as f:
-        json.dump(briefing,f,ensure_ascii=False,indent=2)
-    print(f"\nbriefing.json written: {len(briefing['market'])} market, {len(briefing['thought'])} thought, {len(briefing['competitors'])} competitors")
+    scan_date    = datetime.date.today().isoformat()
+    sources_data = load_sources()
+    config       = get_scan_config(sources_data)
+    context      = config.get(&quot;context&quot;, &quot;CMIplus is RBI&#x27;s corporate cash management platform.&quot;)
 
-    print("\n=== FLAGSHIP ANALYSES ===")
-    analyses = run_flagship_analyses(scan_date)
-    with open("flagship-analyses.json","w",encoding="utf-8") as f:
-        json.dump(analyses,f,ensure_ascii=False,indent=2)
-    print(f"flagship-analyses.json written ({len(analyses)} reports)")
+    print(f&quot;\n{&#x27;=&#x27;*60}\nCMIplus Intelligence Cockpit — Scan {scan_date}\n{&#x27;=&#x27;*60}&quot;, flush=True)
 
-    print(f"\nScan complete. {scan_date}")
+    print(&quot;\n=== WEEKLY BRIEFING ===&quot;, flush=True)
+    briefing = run_weekly_briefing(scan_date, sources_data)
+    with open(&quot;briefing.json&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
+        json.dump(briefing, f, ensure_ascii=False, indent=2)
+    stats = briefing.get(&quot;source_stats&quot;, {})
+    print(f&quot;\nbriefing.json written:&quot;)
+    print(f&quot;  Market:     {len(briefing[&#x27;market&#x27;])} items from {stats.get(&#x27;market_sources_used&#x27;,[])}&quot;)
+    print(f&quot;  Thought:    {len(briefing[&#x27;thought&#x27;])} items from {stats.get(&#x27;thought_sources_used&#x27;,[])}&quot;)
+    print(f&quot;  Competitors:{len(briefing[&#x27;competitors&#x27;])} items from {stats.get(&#x27;competitor_sources_used&#x27;,[])}&quot;)
 
-if __name__ == "__main__":
+    print(&quot;\n=== FLAGSHIP ANALYSES ===&quot;, flush=True)
+    analyses = run_flagship_analyses(scan_date, context)
+    with open(&quot;flagship-analyses.json&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
+        json.dump(analyses, f, ensure_ascii=False, indent=2)
+    print(f&quot;flagship-analyses.json written ({len(analyses)} reports)&quot;, flush=True)
+    print(f&quot;\nScan complete. {scan_date}&quot;, flush=True)
+
+if __name__ == &quot;__main__&quot;:
     main()
+</pre></body></html>
