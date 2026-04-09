@@ -80,7 +80,7 @@
   "thought_leadership": [
     {
       "name": "McKinsey Financial Services",
-      "url": "https://www.mckinsey.com/industries/financial-services/our-insights",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/banking",
       "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance, stablecoins",
       "priority": 1,
       "active": true
@@ -214,7 +214,7 @@
     },
     {
       "name": "BNP Paribas",
-      "url": "https://group.bnpparibas/en/all-news",
+      "url": "https://www.bnpparibas.com/en/news-and-media/",
       "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury",
       "priority": 1,
       "active": true
@@ -265,8 +265,8 @@
     "PaymentFactory"
   ],
   "scan_config": {
-    "market_lookback_days": 56,
-    "thought_lookback_months": 8,
+    "market_lookback_days": 42,
+    "thought_lookback_months": 6,
     "items_priority_1": 3,
     "items_priority_2": 2,
     "items_priority_3": 1,
