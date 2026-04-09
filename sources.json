@@ -32,7 +32,8 @@
       "url": "https://www.swift.com/news-events/press-releases",
       "focus": "ISO 20022, payments messaging, correspondent banking, MX migration, SWIFT GPI",
       "priority": 1,
-      "active": true
+      "active": false,
+      "note_disabled": "Consistent timeout on GitHub Actions"
     },
     {
       "name": "EBA / ECB",
@@ -74,7 +75,8 @@
       "url": "https://www.paymentsdive.com/news/",
       "focus": "payments industry news, regulation, technology, instant payments",
       "priority": 3,
-      "active": true
+      "active": false,
+      "note_disabled": "Returns 403 - bot detection"
     }
   ],
   "thought_leadership": [
@@ -83,22 +85,25 @@
       "url": "https://www.mckinsey.com/industries/financial-services/our-insights/banking",
       "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance, stablecoins",
       "priority": 1,
-      "active": true
+      "active": false,
+      "note_disabled": "Blocks GitHub Actions IPs - consistent timeout"
     },
     {
       "name": "McKinsey Payments",
       "url": "https://www.mckinsey.com/industries/financial-services/our-insights/payments",
       "focus": "global payments report, instant payments, transaction banking, payment rails, digital assets",
       "priority": 1,
-      "active": true
+      "active": false,
+      "note_disabled": "Blocks GitHub Actions IPs - consistent timeout"
     },
     {
       "name": "BCG Financial Institutions",
       "url": "https://www.bcg.com/publications?fi2=00000172-0efd-d58d-a97a-5eff5173007f",
       "focus": "transaction banking strategy, cash management, agentic AI in banking, corporate banking",
       "priority": 1,
-      "active": true,
-      "note": "Filtered publications page for financial institutions"
+      "active": false,
+      "note": "Filtered publications page for financial institutions",
+      "note_disabled": "Returns 403 on GitHub Actions - bot detection"
     },
     {
       "name": "Oliver Wyman Corporate Banking",
@@ -207,16 +212,16 @@
     },
     {
       "name": "Erste Group",
-      "url": "https://www.erstegroup.com/en/news-media/press-releases",
+      "url": "https://www.erstegroup.com/en/news-media",
       "focus": "cash management, corporate banking, CEE, Austria, George platform",
       "priority": 1,
       "active": true
     },
     {
       "name": "BNP Paribas",
-      "url": "https://www.bnpparibas.com/en/news-and-media/",
+      "url": "https://group.bnpparibas/en/all-news",
       "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury",
-      "priority": 1,
+      "priority": 3,
       "active": true
     },
     {
@@ -228,9 +233,9 @@
     },
     {
       "name": "ING",
-      "url": "https://www.ing.com/Newsroom/All-news.htm",
+      "url": "https://www.ing.com/Newsroom.htm",
       "focus": "wholesale banking, payments, API banking, embedded finance, InsideBusiness",
-      "priority": 2,
+      "priority": 3,
       "active": true
     },
     {
