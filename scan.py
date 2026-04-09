@@ -14,7 +14,7 @@ import os, json, base64, urllib.request, urllib.error, datetime, re, time
 
 GEMINI_API_KEY  = os.environ.get("GEMINI_KEY", "")
 FLASH_MODEL     = "gemini-2.5-flash"
-FALLBACK_MODEL  = "gemini-2.0-flash"
+FALLBACK_MODEL  = "gemini-2.5-flash-lite"
 GEMINI_URL      = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
 REPORTS_DIR    = os.path.join(os.path.dirname(__file__), "reports")
 SOURCES_FILE   = os.path.join(os.path.dirname(__file__), "sources.json")
@@ -90,10 +90,10 @@ def gemini_call(parts, max_tokens=8000, model=None):
         }
         data = json.dumps(payload).encode("utf-8")
         req  = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-        for wait in [0, 20, 40]:
-            if wait:
-                print(f"      503 overload on {m} - waiting {wait}s...", flush=True)
-                time.sleep(wait)
+        for attempt in range(2):
+            if attempt == 1:
+                print(f"      503 on {m} - waiting 15s before retry...", flush=True)
+                time.sleep(15)
             try:
                 with urllib.request.urlopen(req, timeout=180) as resp:
                     result = json.loads(resp.read().decode("utf-8"))
@@ -103,11 +103,11 @@ def gemini_call(parts, max_tokens=8000, model=None):
             except urllib.error.HTTPError as e:
                 body = e.read().decode("utf-8", errors="replace")
                 if e.code == 503:
-                    continue  # retry with backoff
+                    continue
                 raise RuntimeError(f"Gemini HTTP {e.code}: {body[:300]}")
             except Exception as e:
                 raise RuntimeError(f"Gemini call failed: {e}")
-        print(f"      {m} exhausted after retries, trying fallback...", flush=True)
+        print(f"      {m} exhausted - trying fallback model...", flush=True)
     raise RuntimeError("All Gemini models exhausted")
 
 def fetch_url_text(url, max_bytes=150_000, timeout=45):
@@ -355,17 +355,26 @@ def extract_source(src, prompt_template, scan_date, config, extra=None):
                 item["competitor"] = extra["competitor"]
         return items_raw
 
-    # gemini_call already handles 503 retries + fallback internally
-    try:
-        raw    = gemini_call([{"text": prompt}], max_tokens=6000)
-        result = parse_json_loose(raw)
-        items  = result.get("items", [])
-        items  = _process_items(items)
-        print(f"      OK: {len(items)} items, scores: {[i['relevance_score'] for i in items]}", flush=True)
-        return items
-    except Exception as e:
-        print(f"      Gemini ERROR: {e} -- giving up.", flush=True)
-        return []
+    # gemini_call handles 503 retries + fallback internally
+    # Outer retry handles JSON parse errors (can happen after 503 recovery)
+    for parse_attempt in range(2):
+        try:
+            raw    = gemini_call([{"text": prompt}], max_tokens=6000)
+            result = parse_json_loose(raw)
+            items  = result.get("items", [])
+            items  = _process_items(items)
+            print(f"      OK: {len(items)} items, scores: {[i['relevance_score'] for i in items]}", flush=True)
+            return items
+        except (ValueError, KeyError) as e:
+            if parse_attempt == 0:
+                print(f"      JSON parse error: {e} -- retrying once...", flush=True)
+                time.sleep(5)
+            else:
+                print(f"      JSON parse error on retry: {e} -- giving up.", flush=True)
+                return []
+        except Exception as e:
+            print(f"      Gemini ERROR: {e} -- giving up.", flush=True)
+            return []
 
 # ---------------------------------------------------------------------------
 # Weekly briefing
