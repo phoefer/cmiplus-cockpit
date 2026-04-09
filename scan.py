@@ -1,18 +1,3 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>scan.py</title>
-<style>body{background:#1e1e1e;color:#d4d4d4;font-family:monospace;padding:20px;}pre{white-space:pre-wrap;font-size:13px;line-height:1.5;}button{position:fixed;top:20px;right:20px;background:#0066cc;color:white;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px;}</style></head>
-<body><button onclick="navigator.clipboard.writeText(document.getElementById('c').textContent).then(()=>this.textContent='Copied!').catch(()=>this.textContent='Select all + Ctrl+C')">Copy all</button>
-<pre id="c">#!/usr/bin/env python3
-&quot;&quot;&quot;
-CMIplus Intelligence Cockpit - Weekly Scan
-Runs every Monday 06:00 UTC via GitHub Actions.
-
-Sources are configured in sources.json - no code changes needed to add/remove/reprioritise.
-
-Produces:
-  - briefing.json         : structured weekly briefing (market/thought/competitors)
-  - flagship-analyses.json: deep analyses of 4 flagship reports
-&quot;&quot;&quot;
-
 import os, json, base64, urllib.request, urllib.error, datetime, re, time
 
 GEMINI_API_KEY = os.environ.get(&quot;GEMINI_KEY&quot;, &quot;&quot;)
@@ -568,4 +553,3 @@ def main():
 
 if __name__ == &quot;__main__&quot;:
     main()
-</pre></body></html>
