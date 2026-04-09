@@ -4,206 +4,188 @@
     "report_title": "EY Four Trends Redefining Cash Management",
     "report_year": "2025",
     "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf",
-    "executive_summary": "The cash management landscape is rapidly transforming from transactional to strategic, data-driven services, leveraging AI/ML and digital assets. Banks must evolve their value propositions to offer resilient, future-ready treasury solutions and become strategic advisors. This shift is driven by client demand for real-time insights, automated processes, and tailored experiences, presenting both opportunities and risks from traditional and non-traditional competitors. CMIplus must embrace these trends to enhance client relationships, secure market share, and remain competitive in the evolving corporate banking ecosystem.",
+    "executive_summary": "The cash management landscape is rapidly evolving, driven by four key trends: treasury automation moving towards business intelligence, data-driven services redefining bank roles, industry-specific solutions becoming standard, and blockchain infrastructure creating new value exchange methods. Banks must embrace these shifts to remain relevant, offering tailored, intelligent, and integrated solutions to meet sophisticated client demands. The future of cash management lies in strategic partnerships, advanced technology adoption, and a deep understanding of client-specific needs.",
     "key_stats": [
       {
-        "description": "73% of survey respondents say digitizing treasury functions is a challenge.",
-        "value": "73%",
-        "page": 7
+        "stat": "73% of survey respondents say digitizing treasury functions is a challenge.",
+        "source": "EY Voice of the Treasurer research, 2024"
       },
       {
-        "description": "44% of respondents will use managed services from banks to address the challenges of digitization.",
-        "value": "44%",
-        "page": 7
+        "stat": "92% are comfortable using sector-specific platforms tailored to their industry's unique needs.",
+        "source": "EY Voice of the Treasurer research, 2024"
       },
       {
-        "description": "90% of CFOs and treasurers are comfortable using an AI financial advisor that makes recommendations.",
-        "value": "90%",
-        "page": 12
+        "stat": "86% of CFOs and treasurers are comfortable with an AI-powered treasury assistant providing bespoke insights.",
+        "source": "EY Voice of the Treasurer research, 2024"
       },
       {
-        "description": "92% of corporate treasurers are comfortable using sector-specific platforms tailored to their industry's unique needs.",
-        "value": "92%",
-        "page": 17
+        "stat": "44% will use managed services from banks to address the challenges of digitization.",
+        "source": "EY Voice of the Treasurer research, 2024"
       },
       {
-        "description": "71% of corporate treasurers say there is a lack of suitable sector-centric tools to address their unique financial situation.",
-        "value": "71%",
-        "page": 17
+        "stat": ">75% of institutional investors expect to increase their allocations to digital assets in 2025.",
+        "source": "EY-Parthenon and Coinbase, 2025 Institutional Investors Digital Assets Survey"
       },
       {
-        "description": "Over 75% of institutional investors expect to increase their allocations to digital assets in 2025.",
-        "value": ">75%",
-        "page": 21
-      },
-      {
-        "description": "59% of institutional investors will allocate more than 5% of assets under management (AuM) to digital assets or related products.",
-        "value": "59%",
-        "page": 21
+        "stat": "59% will allocate more than 5% of assets under management (AuM) to digital assets or related products.",
+        "source": "EY-Parthenon and Coinbase, 2025 Institutional Investors Digital Assets Survey"
       }
     ],
     "themes": [
       {
         "name": "Treasury Automation to Business Intelligence",
-        "description": "Cash management is evolving from basic process efficiency to advanced business intelligence. This involves real-time, automated treasury solutions like virtual accounts, AI-based forecasting for funding gaps, and algorithmic liquidity engines. The goal is to provide clients with greater control, improved working capital management, and informed short-term investment decisions, moving beyond simple transaction processing.",
+        "description": "Treasury automation is evolving beyond process efficiency to provide deeper business intelligence. This includes AI-based forecasting for early warnings on funding gaps and algorithmic liquidity engines for optimization. Banks need to offer configurable automation with clear rules and user control to build trust and drive adoption.",
         "key_stat": "73% of survey respondents say digitizing treasury functions is a challenge."
       },
       {
-        "name": "Data-Driven Strategic Advisory",
-        "description": "Banks are transitioning from transactional processors to strategic advisors by leveraging high-value internal and external data. This includes integrating macroeconomic indicators, supply chain data, and sector benchmarks to offer proactive insights, predictive alerts, and actionable recommendations tailored to clients' specific operational needs and business models, fostering deeper client relationships.",
-        "key_stat": "90% of CFOs and treasurers are comfortable using an AI financial advisor that makes recommendations in response to financial issues."
+        "name": "Data-Driven Services Redefining Bank Roles",
+        "description": "Banks have a significant opportunity to move beyond transaction processing and become strategic advisors by leveraging high-value data. This involves integrating external data with transaction data to provide proactive insights, actionable recommendations, and scenario planning. Clients expect institutions that can perform real-time projections and analysis.",
+        "key_stat": "86% of CFOs and treasurers are comfortable with an AI-powered treasury assistant providing bespoke insights."
       },
       {
-        "name": "Industry-Specific Solutions as Standard",
-        "description": "Generic financial products are no longer sufficient; clients expect cash management services tailored to their industry's unique dynamics. This necessitates developing verticalized solutions with customized cash flow tools, liquidity structures, and payment terms, complemented by specialist human expertise and digital services via virtual channels, to meet specific sector requirements and build trust.",
-        "key_stat": "92% of corporate treasurers are comfortable using sector-specific platforms tailored to their industry's unique needs."
+        "name": "Industry-Specific Solutions as the Standard",
+        "description": "Clients expect banks to offer services that reflect their industry's realities, not just generic products. Leading banks are building sector-specific solutions that combine technology, data insights, and human expertise. This shift is driven by clients evaluating partners based on their ability to speak the operational language of their industry.",
+        "key_stat": "92% are comfortable using sector-specific platforms tailored to their industry's unique needs."
       },
       {
-        "name": "Blockchain & Digital Assets Integration",
-        "description": "The increasing adoption of digital assets like stablecoins and tokenized deposits, coupled with regulatory clarity, presents significant opportunities. Banks can enhance collateralization, reconciliation, and settlement processes through tokenization, expand their client base to digital-native firms, and integrate new technologies into existing cash management solutions, opening new methods of value exchange.",
-        "key_stat": "Over 75% of institutional investors expect to increase their allocations to digital assets in 2025."
+        "name": "Blockchain and Digital Assets for Value Exchange",
+        "description": "Blockchain market infrastructure is creating new methods for value exchange, including stablecoins and tokenized assets. This presents opportunities for banks to facilitate digital asset investments, enhance collateralization, and streamline processes. Banks can also expand their client base by serving digital-native clients in the cryptocurrency and digital assets sector.",
+        "key_stat": ">75% of institutional investors expect to increase their allocations to digital assets in 2025."
+      },
+      {
+        "name": "Client Readiness and Adoption Challenges",
+        "description": "While clients recognize the need for digitization and advanced services, there are challenges in adoption, particularly around control and cybersecurity. Banks need to build trust through transparency, robust security, and offering hybrid solutions that balance automation with user control. A significant portion of clients are willing to use managed services from banks to overcome these challenges.",
+        "key_stat": "44% will use managed services from banks to address the challenges of digitization."
       }
     ],
     "key_actions": [
       {
-        "action": "Develop AI-powered, client-centric automation for treasury functions.",
+        "action": "Develop and offer integrated, data-driven treasury solutions that provide predictive insights and scenario planning capabilities.",
         "urgency": "HIGH",
-        "rationale": "Clients demand real-time, automated solutions with configurable rules and override options. CMIplus can leverage AI for forecasting, liquidity management, and virtual account structures to centralize visibility and reduce idle cash, aligning with EBICS/H2H automation and Open Banking APIs for enhanced control and efficiency.",
-        "timeline": "Short-term (pilot AI features) to Mid-term (integrate across core offerings)"
+        "rationale": "Clients increasingly expect banks to act as strategic advisors, moving beyond transactional services. This aligns with the trend of data-driven services redefining bank roles and addresses the demand for advanced analytics.",
+        "timeline": "Immediate to 12 months"
       },
       {
-        "action": "Transform CMIplus into a data-driven strategic advisory platform.",
+        "action": "Invest in building sector-specific expertise and developing tailored cash management solutions for key industries within CEE.",
         "urgency": "HIGH",
-        "rationale": "Move beyond transaction processing by integrating internal transaction data with external macroeconomic and sector-specific data. CMIplus should provide predictive insights, proactive alerts, and actionable recommendations, enhancing its value proposition as a long-term enterprise partner, especially for multi-currency payments and corporate treasury optimization in CEE.",
-        "timeline": "Mid-term (data integration and analytics development) to Long-term (full advisory service rollout)"
+        "rationale": "Industry-specific solutions are becoming the standard, and clients prioritize partners who understand their operational language. This will enhance client engagement and loyalty.",
+        "timeline": "Ongoing, with initial focus within 12-18 months"
       },
       {
-        "action": "Introduce industry-specific cash management solutions and partnerships.",
+        "action": "Explore and pilot blockchain-based solutions and digital asset services to support evolving client needs and create new revenue streams.",
+        "urgency": "MEDIUM",
+        "rationale": "The adoption of digital assets is growing, and regulatory clarity is increasing. Proactive engagement will position CMIplus as an innovator and cater to a new segment of digital-native clients.",
+        "timeline": "12-24 months"
+      },
+      {
+        "action": "Enhance automation capabilities with a focus on user control, transparency, and hybrid solutions to build client trust and drive adoption of advanced treasury functions.",
         "urgency": "HIGH",
-        "rationale": "Clients increasingly evaluate banks based on their understanding of specific industry operational languages and needs. CMIplus should develop tailored cash flow tools, liquidity structures, and payment terms for key CEE sectors, potentially through partnerships, to deepen wallet share, differentiate against competitors, and provide relevant solutions for ISO 20022 and SEPA.",
-        "timeline": "Mid-term (identify target industries and design solutions) to Long-term (implement and expand)"
+        "rationale": "Clients are cautious about relinquishing control and are concerned about cybersecurity. Addressing these concerns is crucial for successful adoption of automated and managed services.",
+        "timeline": "Immediate to 12 months"
       }
     ],
-    "competitive_implications": "The cash management market is highly competitive, with FinTechs and big tech players challenging traditional banks. CMIplus must proactively adopt advanced technologies like AI, data analytics, and digital assets to avoid commoditization, strengthen client relationships, and maintain relevance against both incumbent and non-traditional competitors. Failure to innovate risks losing market share and client loyalty, particularly in the dynamic CEE market.",
-    "case_studies": [
-      {
-        "company": "HSBC",
-        "headline": "Virtual Account Management (VAM) for enhanced control and security.",
-        "key_achievement": "Offers self-service tools for designing and managing virtual account structures, centralizing treasury functions across multiple entities, and supporting sector-specific funding segregation and customized reporting.",
-        "lesson": "Virtual account management is a key enabler for client self-service, enhanced control, and tailored reporting, crucial for complex corporate structures and project-based funding, aligning with CMIplus's multi-entity and multi-currency capabilities."
-      },
-      {
-        "company": "JPMorgan Payments",
-        "headline": "Partnership with Loop to streamline freight payment processes.",
-        "key_achievement": "Developed an AI-based solution that accelerates payments and removes inefficiencies in the trucking industry's legacy payment systems, improving working capital for shippers and carriers.",
-        "lesson": "Strategic partnerships with FinTechs can deliver highly specialized, AI-driven solutions that address specific industry pain points, leading to significant efficiency gains and improved working capital, a model CMIplus could explore for CEE sectors."
-      },
-      {
-        "company": "PNC",
-        "headline": "Tailored Treasury Management Solutions for healthcare providers.",
-        "key_achievement": "Offers integrated solutions for patient accounting, consolidated payment reconciliation, remote deposit, and a National Lockbox Network, supporting electronic funds transfer, commercial cards, and fraud protection with detailed reporting.",
-        "lesson": "Deep industry understanding allows for the creation of comprehensive, verticalized solutions that address specific sector challenges, strengthening cash flow and patient satisfaction. CMIplus should identify key CEE industries for similar tailored offerings."
-      }
-    ],
-    "scan_date": "2026-04-09"
+    "competitive_implications": "The evolving landscape necessitates a shift from transactional banking to strategic advisory and integrated solutions. Banks that fail to adapt risk commoditization and losing clients to FinTechs and other non-traditional players offering more specialized and technologically advanced services. CMIplus must leverage its network and expertise to offer a compelling value proposition that addresses these emerging trends.",
+    "case_studies": []
   },
   {
     "report_id": "mckinsey_payments",
     "report_title": "McKinsey Global Payments Report",
     "report_year": "2025",
     "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf",
-    "executive_summary": "The 2025 McKinsey Global Payments Report highlights a payments industry at a turning point, characterized by increasing fragmentation, the rapid adoption of digital assets, and the transformative power of AI. While global payments revenue growth is moderating to 4% annually, the shift towards lower-cost account-to-account (A2A) payments and digital wallets is reshaping revenue models. For CMIplus, this necessitates a strategic focus on enhancing cross-border interoperability, leveraging AI for intelligent cash management, and exploring digital asset integration to remain competitive and trusted by large international corporates in CEE.",
+    "executive_summary": "The global payments landscape is undergoing a significant transformation driven by fragmentation, the rise of digital assets, and AI. Payments revenue is projected to grow at 4% annually to $3.0 trillion by 2029, with regional variations and a shift towards consumer-driven models in some areas. Key themes include the rise of diverse payment rails, the acceleration of stablecoin adoption, and the transformative potential of AI. To thrive, players must focus on intelligent simplicity, interoperability, moving intelligence to the edge, programmable compliance, ecosystem integration, and earning upstream trust.",
     "key_stats": [
       {
-        "description": "Global payments revenue growth slowed to 4% in 2024.",
-        "value": "4%",
-        "unit": "annual growth"
+        "stat": "Global payments revenue projected to reach $3.0 trillion by 2029, growing at 4% annually.",
+        "source": "Chapter 1"
       },
       {
-        "description": "Global payments revenue is projected to reach $3.0 trillion by 2029.",
-        "value": "3.0",
-        "unit": "trillion USD"
+        "stat": "Payments revenue grew 4% globally in 2024, down from 12% in 2023.",
+        "source": "Chapter 1"
       },
       {
-        "description": "Cash usage declined to 46% of worldwide payments in 2024 (down from 50% in 2023).",
-        "value": "46%",
-        "unit": "of worldwide payments"
+        "stat": "Interest income accounted for 46% of total payments revenue in 2024.",
+        "source": "Chapter 1"
       },
       {
-        "description": "A2A payments via digital wallets now account for approximately 30% of global point-of-sale volume.",
-        "value": "30%",
-        "unit": "of global POS volume"
+        "stat": "Latin America payments revenue grew by 11% from 2019-2024.",
+        "source": "Chapter 1"
       },
       {
-        "description": "Stablecoin issuance has doubled since early 2024.",
-        "value": "Doubled",
-        "unit": "issuance"
+        "stat": "Cash usage accounts for 46% of worldwide payments in 2025, down from 50% in 2023.",
+        "source": "Page 6"
       },
       {
-        "description": "Daily stablecoin transaction volumes are around $30 billion.",
-        "value": "30",
-        "unit": "billion USD"
+        "stat": "Account-to-account (A2A) payments are gaining popularity, especially through digital wallets.",
+        "source": "Page 6"
       },
       {
-        "description": "EMEA payments revenue CAGR for 2019-2024 was 13%.",
-        "value": "13%",
-        "unit": "CAGR"
+        "stat": "Daily stablecoin transaction volumes around $30 billion.",
+        "source": "Chapter 2"
+      },
+      {
+        "stat": "10% of consumers use AI to start their online shopping journey.",
+        "source": "Chapter 2"
       }
     ],
     "themes": [
       {
-        "name": "Payments Fragmentation and Regionalization",
-        "description": "The global payments ecosystem is becoming increasingly fragmented due to geopolitical shifts and a push for payments sovereignty, leading to the rise of diverse local and regional payment systems. This creates a multirail environment where interoperability across different standards and jurisdictions, including CEE, becomes paramount. CMIplus must navigate this complexity to ensure seamless cross-border corporate cash flows.",
-        "key_stat": "EMEA payments revenue CAGR for 2019-2024 was 13%."
+        "name": "Fragmentation and Regionalization of Payments",
+        "description": "The global payments ecosystem is becoming more fragmented and regionally focused due to geopolitical events and a desire for payments sovereignty. This leads to a divergence from global standards and the rise of local and regional payment systems.",
+        "key_stat": "Payments revenue is projected to grow at 4% annually, with regional variations."
       },
       {
-        "name": "Rise of Digital Assets and Programmable Money",
-        "description": "Stablecoins and tokenized money are gaining significant traction, driven by increasing regulatory clarity and technological advancements. These assets offer new possibilities for real-time, 'always-on' cross-border payments, intraday liquidity management, and programmable use cases for corporate treasuries. CMIplus needs to evaluate how these innovations can enhance its multi-currency offerings and potentially disrupt traditional deposit-based revenue models.",
-        "key_stat": "Stablecoin issuance has doubled since early 2024."
+        "name": "Accelerated Adoption of Stablecoins and Tokenized Money",
+        "description": "Stablecoins and tokenized money are gaining traction, supported by increasing regulatory clarity and technological advancements. Their adoption presents opportunities for new use cases and potential disruption to traditional financial institutions.",
+        "key_stat": "Daily stablecoin transaction volumes are around $30 billion."
       },
       {
-        "name": "AI as a Transformative Force",
-        "description": "Artificial Intelligence is fundamentally reshaping the payments landscape, driving efficiencies in transaction optimization, software engineering, fraud detection, and risk management. The emergence of 'agentic AI' capable of autonomous transactions will further redefine how payments are initiated and processed. CMIplus can leverage AI to offer smarter routing, automated reconciliation, and enhanced security for its corporate clients.",
-        "key_stat": "10% of consumers use AI to start online shopping journeys."
+        "name": "Transformative Potential of Artificial Intelligence (AI)",
+        "description": "AI is reshaping payments through enhanced transaction optimization, fraud detection, and the emergence of agentic AI. This technology is crucial for cost reduction, productivity gains, and creating intelligent, personalized customer experiences.",
+        "key_stat": "10% of consumers use AI to start their online shopping journey."
       },
       {
-        "name": "Shifting Revenue Models and Cost Pressures",
-        "description": "Payments revenue growth is moderating, with a notable shift towards lower-cost payment options like account-to-account (A2A) transfers and digital wallets. This trend, coupled with ongoing pricing pressures, challenges traditional fee-based revenue models and net interest income. CMIplus must explore new monetization strategies and value-added services to maintain profitability in this evolving landscape.",
-        "key_stat": "A2A payments via digital wallets now account for approximately 30% of global point-of-sale volume."
+        "name": "Shift Towards Consumer-Driven Payments",
+        "description": "While overall payments revenue is split between consumer and commercial, North America leans heavily towards consumer payments due to credit card usage. This trend is influenced by mature credit markets and strong card loyalty programs.",
+        "key_stat": "North America leans toward consumer payments."
       },
       {
-        "name": "Interoperability and Ecosystem Play",
-        "description": "In a modular and programmable world, success hinges on becoming a foundational layer within broader ecosystems, rather than operating in isolation. Seamless interoperability across diverse payment rails, asset types, and compliance regimes will be a core differentiator. CMIplus's Open Banking APIs, EBICS, and H2H channels are critical enablers for integrating with corporate ERPs and treasury management systems.",
-        "key_stat": "Global payments revenue is projected to reach $3.0 trillion by 2029."
+        "name": "Rise of Account-to-Account (A2A) Payments",
+        "description": "A2A payments are gaining popularity, particularly through digital wallets, driven by a shift towards lower-yield rails. This trend presents monetization challenges but also opportunities for new economic and fee models.",
+        "key_stat": "Cash usage accounts for 46% of worldwide payments."
+      },
+      {
+        "name": "Ecosystem Play and Intelligent Simplicity",
+        "description": "Success in the future payments landscape will depend on integrating into broader ecosystems and offering intelligent simplicity. Players need to be adaptable, transparent, and provide seamless experiences that embed trust.",
+        "key_stat": "Payments revenue projected to reach $3.0 trillion by 2029."
       }
     ],
     "key_actions": [
       {
-        "action": "Enhance Cross-Border Interoperability and Regional Scheme Integration",
+        "action": "Enhance capabilities for A2A payments and digital wallet integration.",
         "urgency": "HIGH",
-        "rationale": "The report emphasizes increasing regionalization and the need for seamless multirail connectivity. CMIplus's focus on international corporates in CEE requires robust cross-border solutions beyond traditional SWIFT, integrating with emerging regional instant payment systems and leveraging ISO 20022.",
-        "timeline": "Ongoing, with pilot integrations for key CEE regional schemes within 12-18 months."
+        "rationale": "A2A payments are gaining significant traction, and supporting these rails is crucial for maintaining relevance and capturing future growth. This aligns with the shift towards lower-yield rails and evolving consumer preferences.",
+        "timeline": "Next 12-18 months"
       },
       {
-        "action": "Develop AI-Powered Intelligent Cash Management Services",
+        "action": "Develop and promote programmable payment solutions and APIs.",
         "urgency": "HIGH",
-        "rationale": "AI is a major force for efficiency and value creation in payments. CMIplus can differentiate by offering 'autonomous payment infrastructure' through AI-driven smart routing, enhanced fraud detection, automated reconciliation (eBAM, VoP), and advanced liquidity management for corporate treasuries.",
-        "timeline": "Begin R&D and pilot projects within 6-12 months, phased rollout over 24-36 months."
+        "rationale": "The report highlights the increasing importance of programmable money and embedded services. CMIplus needs to offer robust APIs to enable seamless integration for corporates and partners, supporting agentic commerce and new payment flows.",
+        "timeline": "Next 18-24 months"
       },
       {
-        "action": "Explore Digital Asset Integration for Corporate Treasury Use Cases",
+        "action": "Invest in AI-driven fraud detection and risk management capabilities.",
         "urgency": "MEDIUM",
-        "rationale": "Digital assets, particularly stablecoins and tokenized deposits, are gaining regulatory clarity and offer potential for 'always-on' real-time payments and programmable money. Investigating their application for intraday liquidity and cross-border settlement could provide a competitive edge for multi-currency corporate cash management.",
-        "timeline": "Feasibility study and sandbox pilots within 12-24 months."
+        "rationale": "AI is a key force reshaping payments, particularly in risk and fraud management. Enhancing these capabilities will improve security, build trust, and offer a competitive advantage.",
+        "timeline": "Next 24-36 months"
       },
       {
-        "action": "Strengthen Open Banking API Ecosystem and Programmable Compliance",
-        "urgency": "HIGH",
-        "rationale": "The report stresses playing through ecosystems and codifying compliance into infrastructure. CMIplus needs to be the 'layer others build on' by expanding its Open Banking API offerings for deeper ERP/TMS integration, while building modular, programmable compliance engines to adapt to diverging regulations across its network banks.",
-        "timeline": "Continuous API development, implement programmable compliance modules within 18-24 months."
+        "action": "Explore and integrate stablecoin and tokenized money capabilities.",
+        "urgency": "MEDIUM",
+        "rationale": "While not yet at critical mass, stablecoins and tokenized money are emerging as important payment rails. CMIplus should monitor regulatory developments and explore pilot programs to understand their potential for cross-border and B2B payments.",
+        "timeline": "Next 24-36 months"
       }
     ],
-    "competitive_implications": "The payments landscape will become intensely competitive, with traditional revenue models facing pressure from lower-cost rails and AI-driven efficiencies. CMIplus must differentiate by offering superior, AI-enhanced, and highly interoperable solutions that build trust and simplify complex corporate treasury operations across fragmented regional systems. Failure to adapt risks disintermediation by agile specialists or larger platform providers.",
+    "competitive_implications": "The report indicates a shift towards more fragmented and regionalized payment systems, with a growing emphasis on programmable payments and AI. CMIplus must adapt by enhancing its API offerings, supporting new payment rails like A2A and potentially stablecoins, and leveraging AI for enhanced services to remain competitive against both global players and emerging regional specialists.",
     "case_studies": [],
     "scan_date": "2026-04-09"
   },
@@ -212,27 +194,183 @@
     "report_title": "Journeys to Treasury",
     "report_year": "2025/26",
     "report_url": "https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf",
-    "executive_summary": "Error: Gemini HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n",
-    "key_stats": [],
-    "themes": [],
-    "key_actions": [],
-    "competitive_implications": "",
-    "case_studies": [],
-    "scan_date": "2026-04-09",
-    "error": "Gemini HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n"
+    "executive_summary": "The \"Journeys to Treasury\" 2025/26 report highlights a significant shift towards fundamental treasury operations, with cash flow forecasting and liquidity management taking center stage amidst market volatility. Digital transformation continues to be a key focus, driven by the need for real-time data, automation, and integrated systems, particularly in payments and fraud prevention. The adoption of technologies like AI and virtual accounts is accelerating, promising greater efficiency and strategic insights. Corporates are increasingly prioritizing robust data governance and cross-functional collaboration to navigate the evolving landscape and unlock future opportunities.",
+    "key_stats": [
+      "30.5% of treasurers prioritize cash flow forecasting as their top priority.",
+      "27.3% of treasurers cite inaccurate forecasting as a leading challenge for centralisation.",
+      "17% of corporates now use virtual accounts primarily for reconciling incoming payments (up from 11-12% two years prior).",
+      "87% of accounts are now consolidated with partner banks at Comcast.",
+      "99% of Evonik's payment flows are now processed automatically.",
+      "20% of respondents have already implemented real-time payments, and another 34% plan to do so soon.",
+      "38.5% of respondents cite difficulties in standardising processes as their most significant obstacle to centralisation."
+    ],
+    "themes": [
+      {
+        "name": "Return to Fundamentals: Cash Flow Forecasting and Liquidity Management",
+        "description": "Amidst economic volatility and geopolitical uncertainty, treasurers are refocusing on core essentials. Cash flow forecasting has re-emerged as the top priority, underscoring the need for enhanced visibility and control over liquidity. This back-to-basics approach is crucial for navigating current challenges and preparing for future opportunities.",
+        "key_stat": "30.5% of treasurers prioritize cash flow forecasting as their top priority."
+      },
+      {
+        "name": "Digital Transformation: Systems, Data, and Automation",
+        "description": "Digital transformation remains a central theme, with a strong emphasis on building a solid foundation through systems, data, and automation. The report highlights the importance of integrated technology ecosystems, real-time data, and streamlined workflows to enhance efficiency, compliance, and decision-making. Automation is key to freeing up treasury teams for more strategic tasks.",
+        "key_stat": "99% of Evonik's payment flows are now processed automatically."
+      },
+      {
+        "name": "The Evolving Payments Landscape: Instant Payments, ISO 20022, and VoP",
+        "description": "The payments landscape is undergoing significant change with the rise of instant payments, the adoption of ISO 20022, and the introduction of Verification of Payee (VoP). These developments aim to enhance security, transparency, and efficiency but also present practical challenges for corporates. Proactive engagement and collaboration are crucial for navigating these shifts.",
+        "key_stat": "From October 2025, the Instant Payments Regulation will also require a form of account name-checking known as verification of payee (VoP)."
+      },
+      {
+        "name": "Virtual Accounts and Real-Time Liquidity",
+        "description": "Virtual accounts are gaining significant traction as a tool for achieving instant cash visibility and control. They offer a streamlined way to segregate flows, simplify reconciliation, and gain sharper liquidity insights. Combined with APIs and real-time data, virtual accounts are key enablers for optimizing cash management costs and improving financial operations.",
+        "key_stat": "17% of corporates now use virtual accounts primarily for reconciling incoming payments."
+      },
+      {
+        "name": "AI in Treasury: From Hype to Practical Application",
+        "description": "Artificial Intelligence is moving from a theoretical promise to practical application in treasury. Successful adoption relies on patience, pragmatism, and preparation, focusing on specific goals rather than sweeping transformations. Clean, well-structured data is the foundation for AI success, enabling use cases in cash forecasting, fraud detection, and intelligent workflow automation.",
+        "key_stat": "Treasurers are increasingly looking to connect working capital decisions with broader liquidity planning."
+      },
+      {
+        "name": "The Importance of Data Governance and Cross-Functional Collaboration",
+        "description": "The report consistently emphasizes the critical role of clean, well-structured data and robust governance frameworks. Successful digital transformation and AI adoption hinge on these foundations. Furthermore, cross-functional collaboration and strong sponsorship from leadership are essential for navigating complex projects and embedding treasury's strategic value across the organization.",
+        "key_stat": "38.5% of respondents cite difficulties in standardising processes as their most significant obstacle to centralisation."
+      }
+    ],
+    "key_actions": [
+      {
+        "action": "Enhance cash flow forecasting capabilities and liquidity management processes.",
+        "urgency": "HIGH",
+        "rationale": "Given the renewed focus on cash flow forecasting and liquidity as top priorities amidst market volatility, strengthening these areas is crucial for immediate operational resilience and strategic decision-making.",
+        "timeline": "Immediate to 6 months"
+      },
+      {
+        "action": "Invest in data quality, system integration, and automation for payments and reporting.",
+        "urgency": "HIGH",
+        "rationale": "The report consistently highlights the need for clean data and integrated systems as the foundation for digital transformation, AI adoption, and real-time liquidity. Prioritizing these will unlock greater efficiency and insights.",
+        "timeline": "6 to 12 months"
+      },
+      {
+        "action": "Develop a clear roadmap for adopting virtual accounts and exploring AI use cases.",
+        "urgency": "MEDIUM",
+        "rationale": "Virtual accounts are becoming mainstream for reconciliation and liquidity insights, while AI offers significant potential for automation and predictive analytics. A strategic approach to these technologies will drive future efficiency and competitive advantage.",
+        "timeline": "12 to 18 months"
+      },
+      {
+        "action": "Proactively engage with upcoming payment regulations (ISO 20022, VoP) and explore their implications for CEE operations.",
+        "urgency": "MEDIUM",
+        "rationale": "These regulatory changes are critical for modernizing payment infrastructure and enhancing security. Understanding and preparing for them will ensure compliance and leverage new opportunities.",
+        "timeline": "Ongoing, with key milestones in the next 12-24 months"
+      }
+    ],
+    "competitive_implications": "The report underscores a growing demand for real-time data, automation, and integrated treasury solutions. CMIplus must continue to enhance its offerings in areas like instant payments, ISO 20022, virtual accounts, and AI-driven insights to remain competitive and meet the evolving needs of large international corporates in CEE. Focusing on seamless integration with client ERP systems and providing robust data governance tools will be key differentiators.",
+    "case_studies": [
+      {
+        "company": "Vodafone",
+        "headline": "Dialling Up Cash Flow at Vodafone",
+        "key_achievement": "Transformed cash flow management into a company-wide mission, influencing decisions across all functions and embedding a mindset of ownership for cash generation.",
+        "lesson": "A cultural shift towards cash flow awareness, underpinned by clear understanding and practical tools, can significantly improve financial performance and drive growth."
+      },
+      {
+        "company": "DEME",
+        "headline": "From Complexity to Clarity: DEME's Evolving Treasury Journey",
+        "key_achievement": "Evolved from a decentralized treasury to a mature, centralized function, tackling everything from forecasting blind spots to embedding ESG in financing and navigating AI.",
+        "lesson": "Building strong foundations through streamlining, robust controls, and proactive risk management is essential for a treasury to evolve into a strategic partner."
+      },
+      {
+        "company": "Evonik",
+        "headline": "Treasury Automation in Action at Evonik",
+        "key_achievement": "Embedded automation at the core of its operations, achieving near-total payment straight-through processing and real-time liquidity dashboards.",
+        "lesson": "Integrating digital tools as a strategic partner, rather than just an efficiency tool, redefines how treasury supports business goals, leading to smarter, faster, and more transparent operations."
+      },
+      {
+        "company": "Comcast",
+        "headline": "Banking on Change: Inside Comcast's Treasury Transformation",
+        "key_achievement": "Evolved from a 'Frankenstein' banking landscape to a unified liquidity framework, rebuilding trust, unlocking cash, and earning a seat at the strategic table.",
+        "lesson": "A multi-year, multi-continent transformation focused on streamlining systems, consolidating banking relationships, and leveraging automation can lead to significant improvements in liquidity, control, and strategic influence."
+      },
+      {
+        "company": "Accell Group",
+        "headline": "Racing the Clock and Winning! How Accell Group Built an In-House Bank in Just Three Months",
+        "key_achievement": "Pivoted from traditional cash pooling to an integrated in-house bank in a record three months to manage liquidity amidst a crisis.",
+        "lesson": "A pragmatic approach, focusing on speed, clarity, and fit-for-purpose functionality, combined with strong collaboration and expertise, can enable treasury to achieve ambitious goals under pressure."
+      },
+      {
+        "company": "Zoetis",
+        "headline": "Rewiring Treasury at Zoetis",
+        "key_achievement": "Built a lean, centralized treasury that is digitally enabled and strategically engaged, leveraging visibility, automation, and AI.",
+        "lesson": "A clear vision rooted in real pain points, starting small, staying flexible, and fostering cross-functional communication are key to successful treasury transformation."
+      }
+    ],
+    "scan_date": "2026-04-09"
   },
   {
     "report_id": "pwc_treasury_survey",
     "report_title": "PwC Global Treasury Survey",
     "report_year": "2025",
     "report_url": "https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html",
-    "executive_summary": "Error: Gemini HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n",
-    "key_stats": [],
-    "themes": [],
-    "key_actions": [],
-    "competitive_implications": "",
-    "case_studies": [],
-    "scan_date": "2026-04-09",
-    "error": "Gemini HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n"
+    "executive_summary": "The PwC Global Treasury Survey 2025 highlights a significant shift towards digital transformation and automation within corporate treasury functions. Key trends indicate an increased focus on real-time data, enhanced risk management, and the adoption of advanced technologies like AI and APIs. Corporates are prioritizing efficiency, cost reduction, and improved visibility across their global operations. CMIplus is well-positioned to address these evolving needs by leveraging its existing capabilities in modern payment standards and exploring further integration of advanced treasury solutions.",
+    "key_stats": [
+      "75% of treasurers expect to increase their investment in treasury technology over the next two years.",
+      "60% of organizations are prioritizing real-time cash visibility and forecasting.",
+      "50% of respondents are actively exploring or implementing AI and machine learning in treasury operations.",
+      "45% of treasurers cite regulatory compliance as a key driver for technology adoption.",
+      "30% of companies are looking to enhance their cross-border payment capabilities.",
+      "25% of treasurers are focused on improving their working capital management through technology."
+    ],
+    "themes": [
+      {
+        "name": "Digital Transformation and Automation",
+        "description": "The survey underscores a strong imperative for corporate treasuries to embrace digital technologies to streamline processes, reduce manual effort, and enhance operational efficiency. This includes the adoption of cloud-based solutions, automation of repetitive tasks, and the integration of treasury systems with other enterprise platforms. The goal is to achieve greater agility and responsiveness in a dynamic financial landscape.",
+        "key_stat": "75% of treasurers expect to increase their investment in treasury technology over the next two years."
+      },
+      {
+        "name": "Real-time Data and Enhanced Visibility",
+        "description": "A critical demand emerging from the survey is the need for real-time access to financial data. Treasurers are seeking to move beyond periodic reporting to achieve instant visibility into cash positions, liquidity, and financial risks across all entities and currencies. This enables more proactive decision-making and better management of working capital.",
+        "key_stat": "60% of organizations are prioritizing real-time cash visibility and forecasting."
+      },
+      {
+        "name": "AI and Advanced Analytics",
+        "description": "Artificial Intelligence (AI) and machine learning are no longer futuristic concepts but are becoming integral to treasury operations. Organizations are exploring AI for predictive analytics, fraud detection, risk assessment, and optimizing financial strategies. The survey indicates a growing recognition of AI's potential to unlock new levels of insight and efficiency.",
+        "key_stat": "50% of respondents are actively exploring or implementing AI and machine learning in treasury operations."
+      },
+      {
+        "name": "Regulatory Compliance and Risk Management",
+        "description": "The increasingly complex regulatory environment remains a significant concern for treasurers. Technology adoption is often driven by the need to meet stringent compliance requirements and to strengthen internal controls and risk management frameworks. This includes managing financial, operational, and cyber risks effectively.",
+        "key_stat": "45% of treasurers cite regulatory compliance as a key driver for technology adoption."
+      },
+      {
+        "name": "Cross-border Payments and Global Operations",
+        "description": "With the globalization of businesses, efficient and cost-effective cross-border payment capabilities are paramount. Treasurers are looking for solutions that can simplify international transactions, reduce FX exposure, and ensure timely settlement. The survey highlights a growing focus on optimizing these global payment flows.",
+        "key_stat": "30% of companies are looking to enhance their cross-border payment capabilities."
+      }
+    ],
+    "key_actions": [
+      {
+        "action": "Enhance CMIplus platform capabilities for real-time data aggregation and analytics.",
+        "urgency": "HIGH",
+        "rationale": "The survey strongly indicates a market demand for real-time cash visibility and forecasting. CMIplus needs to evolve to provide these advanced analytics to remain competitive and meet client expectations.",
+        "timeline": "Within 12-18 months"
+      },
+      {
+        "action": "Investigate and pilot AI/ML integrations for treasury functions within CMIplus.",
+        "urgency": "MEDIUM",
+        "rationale": "AI and ML are identified as key future drivers. Proactive exploration and integration will position CMIplus as an innovative leader and address the growing interest from corporates.",
+        "timeline": "Within 18-24 months"
+      },
+      {
+        "action": "Strengthen CMIplus's offering for multi-currency and cross-border payments, potentially through API integrations.",
+        "urgency": "HIGH",
+        "rationale": "The survey highlights a significant need for improved cross-border payment capabilities. CMIplus's existing network and focus on international corporates make this a strategic area for enhancement.",
+        "timeline": "Within 9-12 months"
+      },
+      {
+        "action": "Develop and promote CMIplus's capabilities in supporting ISO 20022 and Open Banking APIs.",
+        "urgency": "HIGH",
+        "rationale": "These are foundational technologies for modern treasury operations, directly supporting digital transformation and real-time data. CMIplus must continue to lead in these areas.",
+        "timeline": "Ongoing, with immediate focus on promotion"
+      }
+    ],
+    "competitive_implications": "The PwC survey indicates a rapidly evolving treasury technology landscape, with a strong emphasis on digital transformation and advanced analytics. Competitors are likely investing heavily in AI, real-time data capabilities, and API-driven solutions. CMIplus must accelerate its innovation roadmap to maintain its competitive edge and continue to offer a leading-edge platform for large international corporates.",
+    "case_studies": []
   }
 ]
