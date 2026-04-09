@@ -736,7 +736,7 @@ document.querySelectorAll('.date-chip').forEach(btn=>btn.addEventListener('click
   S.ovFilter.weeks=parseInt(btn.dataset.weeks)||0;
   renderOverview();
 }));
-document.getElementById('ov-sort').addEventListener('change',e=>{S.ovFilter.sort=e.target.value;renderOverview();});
+const _ovSort=document.getElementById('ov-sort');if(_ovSort)_ovSort.addEventListener('change',e=>{S.ovFilter.sort=e.target.value;renderOverview();});
 
 // SOURCES — live status
 function renderSources(){
@@ -800,9 +800,9 @@ document.getElementById('searchClear').addEventListener('click',()=>{
 async function loadAll(){
   try{
     const[br,fa]=await Promise.all([fetch('briefing.json?v='+Date.now()),fetch('flagship-analyses.json?v='+Date.now())]);
-    if(fa.ok)S.flagshipAnalyses=await fa.json();
+    if(fa.ok){try{S.flagshipAnalyses=await fa.json();}catch(e){console.warn('flagship-analyses.json parse error:',e);}}
     if(br.ok){
-      S.briefing=await br.json();
+      try{S.briefing=await br.json();}catch(e){throw new Error('briefing.json is invalid JSON: '+e.message);}
       const m=S.briefing.market||[],t=S.briefing.thought||[],c=S.briefing.competitors||[];
       document.getElementById('cnt-market').textContent=m.length;
       document.getElementById('cnt-thought').textContent=t.length;
@@ -821,8 +821,12 @@ async function loadAll(){
       document.getElementById('ov-empty').querySelector('span').textContent='Trigger a scan via GitHub Actions.';
     }
   }catch(e){
-    document.getElementById('ov-empty').querySelector('p').textContent='Could not load briefing';
-    document.getElementById('ov-empty').querySelector('span').textContent=e.message;
+    console.error('loadAll error:', e);
+    const emEl=document.getElementById('ov-empty');
+    if(emEl){
+      emEl.querySelector('p').textContent='Could not load briefing';
+      emEl.querySelector('span').textContent=e.message+' (check console)';
+    }
   }
   renderFlagship();
   renderSources();
