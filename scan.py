@@ -12,9 +12,10 @@ Produces:
 
 import os, json, base64, urllib.request, urllib.error, datetime, re, time
 
-GEMINI_API_KEY = os.environ.get("GEMINI_KEY", "")
-FLASH_MODEL    = "gemini-2.5-flash"
-GEMINI_URL     = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+GEMINI_API_KEY  = os.environ.get("GEMINI_KEY", "")
+FLASH_MODEL     = "gemini-2.5-flash"
+FALLBACK_MODEL  = "gemini-2.0-flash"
+GEMINI_URL      = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
 REPORTS_DIR    = os.path.join(os.path.dirname(__file__), "reports")
 SOURCES_FILE   = os.path.join(os.path.dirname(__file__), "sources.json")
 
@@ -74,21 +75,40 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-def gemini_call(parts, max_tokens=8000):
-    url = GEMINI_URL.format(model=FLASH_MODEL, key=GEMINI_API_KEY)
-    payload = {
-        "contents": [{"parts": parts}],
-        "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.3},
-    }
-    data = json.dumps(payload).encode("utf-8")
-    req  = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-    try:
-        with urllib.request.urlopen(req, timeout=180) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-            return result["candidates"][0]["content"]["parts"][0]["text"]
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Gemini HTTP {e.code}: {body[:300]}")
+def gemini_call(parts, max_tokens=8000, model=None):
+    """Call Gemini. On 503 overload, retry with exponential backoff then fallback model."""
+    models_to_try = [model or FLASH_MODEL, FALLBACK_MODEL]
+    tried_models = set()
+    for m in models_to_try:
+        if m in tried_models:
+            continue
+        tried_models.add(m)
+        url = GEMINI_URL.format(model=m, key=GEMINI_API_KEY)
+        payload = {
+            "contents": [{"parts": parts}],
+            "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.3},
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req  = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+        for wait in [0, 20, 40]:
+            if wait:
+                print(f"      503 overload on {m} - waiting {wait}s...", flush=True)
+                time.sleep(wait)
+            try:
+                with urllib.request.urlopen(req, timeout=180) as resp:
+                    result = json.loads(resp.read().decode("utf-8"))
+                    if m != (model or FLASH_MODEL):
+                        print(f"      Used fallback model: {m}", flush=True)
+                    return result["candidates"][0]["content"]["parts"][0]["text"]
+            except urllib.error.HTTPError as e:
+                body = e.read().decode("utf-8", errors="replace")
+                if e.code == 503:
+                    continue  # retry with backoff
+                raise RuntimeError(f"Gemini HTTP {e.code}: {body[:300]}")
+            except Exception as e:
+                raise RuntimeError(f"Gemini call failed: {e}")
+        print(f"      {m} exhausted after retries, trying fallback...", flush=True)
+    raise RuntimeError("All Gemini models exhausted")
 
 def fetch_url_text(url, max_bytes=150_000, timeout=45):
     # Handle multiple URLs separated by " / "
@@ -335,21 +355,17 @@ def extract_source(src, prompt_template, scan_date, config, extra=None):
                 item["competitor"] = extra["competitor"]
         return items_raw
 
-    for attempt in range(2):
-        try:
-            raw    = gemini_call([{"text": prompt}], max_tokens=6000)
-            result = parse_json_loose(raw)
-            items  = result.get("items", [])
-            items  = _process_items(items)
-            print(f"      OK: {len(items)} items, scores: {[i['relevance_score'] for i in items]}", flush=True)
-            return items
-        except Exception as e:
-            if attempt == 0:
-                print(f"      Gemini ERROR (attempt 1): {e} -- retrying in 5s...", flush=True)
-                time.sleep(5)
-            else:
-                print(f"      Gemini ERROR (attempt 2): {e} -- giving up.", flush=True)
-                return []
+    # gemini_call already handles 503 retries + fallback internally
+    try:
+        raw    = gemini_call([{"text": prompt}], max_tokens=6000)
+        result = parse_json_loose(raw)
+        items  = result.get("items", [])
+        items  = _process_items(items)
+        print(f"      OK: {len(items)} items, scores: {[i['relevance_score'] for i in items]}", flush=True)
+        return items
+    except Exception as e:
+        print(f"      Gemini ERROR: {e} -- giving up.", flush=True)
+        return []
 
 # ---------------------------------------------------------------------------
 # Weekly briefing
