@@ -2,8 +2,8 @@
   "meta": {
     "description": "CMIplus Weekly Intelligence Cockpit — Source Configuration v3",
     "instructions": "Edit sources here. priority: 1=high (more items), 2=medium, 3=low. Set active: false to pause. flagship_reports are analysed separately via PDF/web — not part of the weekly scan.",
-    "last_updated": "2026-04-08",
-    "notes": "URLs verified April 2026. McKinsey/BCG/EY/PwC use main FS pages. EACT uses /news. Finextra uses /latest-news."
+    "last_updated": "2026-04-09",
+    "notes": "URLs verified April 2026. McKinsey/EY/PwC use specific content pages. BCG uses publications filter. Lookback extended to 8 weeks."
   },
   "market_news": [
     {
@@ -81,58 +81,67 @@
     {
       "name": "McKinsey Financial Services",
       "url": "https://www.mckinsey.com/industries/financial-services/our-insights",
-      "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance",
+      "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance, stablecoins",
       "priority": 1,
-      "active": true,
-      "note": "Confirmed accessible — main FS insights page"
+      "active": true
+    },
+    {
+      "name": "McKinsey Payments",
+      "url": "https://www.mckinsey.com/industries/financial-services/our-insights/payments",
+      "focus": "global payments report, instant payments, transaction banking, payment rails, digital assets",
+      "priority": 1,
+      "active": true
     },
     {
       "name": "BCG Financial Institutions",
-      "url": "https://www.bcg.com/industries/financial-institutions/insights",
-      "focus": "transaction banking strategy, cash management, payments innovation, corporate banking, agentic AI",
+      "url": "https://www.bcg.com/publications?fi2=00000172-0efd-d58d-a97a-5eff5173007f",
+      "focus": "transaction banking strategy, cash management, agentic AI in banking, corporate banking",
       "priority": 1,
       "active": true,
-      "note": "Confirmed accessible — FI insights page"
+      "note": "Filtered publications page for financial institutions"
     },
     {
       "name": "Oliver Wyman Corporate Banking",
       "url": "https://www.oliverwyman.com/our-expertise/industries/financial-services/corporate-and-institutional-banking.html",
       "focus": "corporate banking strategy, transaction banking, cash management, institutional banking",
       "priority": 1,
-      "active": true,
-      "note": "Working in run #36"
+      "active": true
     },
     {
-      "name": "EY Financial Services",
-      "url": "https://www.ey.com/en_gl/financial-services",
-      "focus": "treasury transformation, cash management trends, Voice of the Treasurer survey, digital assets, AI",
+      "name": "EY Future of Treasury",
+      "url": "https://www.ey.com/en_gl/future-of-treasury-services-opportunity-for-banks",
+      "focus": "treasury transformation, cash management trends, Voice of the Treasurer, digital assets, AI in treasury",
       "priority": 1,
-      "active": true,
-      "note": "Main EY FS page — more accessible than sub-pages"
+      "active": true
+    },
+    {
+      "name": "EY Financial Services Regulatory",
+      "url": "https://www.ey.com/en_gl/insights/financial-services/four-regulatory-shifts-financial-firms-must-watch-in-2026",
+      "focus": "financial services regulation 2026, PSD3, DORA, AI governance, payments regulation",
+      "priority": 2,
+      "active": true
     },
     {
       "name": "PwC Financial Services",
-      "url": "https://www.pwc.com/gx/en/industries/financial-services.html",
-      "focus": "global treasury survey, TMS adoption, cash visibility, API banking, AI in treasury",
+      "url": "https://www.pwc.com/us/en/industries/financial-services/banking-capital-markets/commercial-banking.html",
+      "focus": "global treasury survey, TMS adoption, cash visibility, API banking, AI in treasury, 350+ treasurers",
       "priority": 1,
       "active": true,
-      "note": "Global FS page — more accessible than US-specific page"
+      "note": "PwC commercial banking page — more specific, better content"
     },
     {
       "name": "EACT",
       "url": "https://eact.eu/news",
-      "focus": "CEE treasury, corporate treasury trends, European treasury survey, regulatory advocacy, Journeys to Treasury",
+      "focus": "European corporate treasury, instant payments, VoP, ISO 20022, EACT survey, CEE treasury",
       "priority": 2,
-      "active": true,
-      "note": "Confirmed accessible — eact.eu/news page"
+      "active": true
     },
     {
       "name": "Deloitte Banking Outlook",
       "url": "https://www2.deloitte.com/us/en/insights/industry/financial-services/financial-services-industry-outlooks/banking-industry-outlook.html",
       "focus": "banking outlook, transaction banking, digital transformation, AI in banking, stablecoins",
       "priority": 2,
-      "active": true,
-      "note": "Working in run #36"
+      "active": true
     }
   ],
   "flagship_reports": [
@@ -256,8 +265,8 @@
     "PaymentFactory"
   ],
   "scan_config": {
-    "market_lookback_days": 7,
-    "thought_lookback_months": 12,
+    "market_lookback_days": 56,
+    "thought_lookback_months": 8,
     "items_priority_1": 3,
     "items_priority_2": 2,
     "items_priority_3": 1,
@@ -267,6 +276,7 @@
       "urgent": "Directly impacts CMIplus roadmap or compliance now",
       "watch": "Relevant trend to monitor in next 1-3 months",
       "fyi": "Background context and market awareness"
-    }
+    },
+    "competitor_lookback_days": 56
   }
 }
