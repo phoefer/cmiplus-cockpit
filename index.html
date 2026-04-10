@@ -543,9 +543,13 @@ function openFlagshipDD(id){
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
-document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modalOverlay').classList.add('hidden'));
-document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.add('hidden');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modalOverlay').classList.add('hidden');});
+(function(){
+  const mc=document.getElementById('modalClose');
+  const mo=document.getElementById('modalOverlay');
+  if(mc)mc.addEventListener('click',()=>mo&&mo.classList.add('hidden'));
+  if(mo)mo.addEventListener('click',e=>{if(e.target===mo)mo.classList.add('hidden');});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mo)mo.classList.add('hidden');});
+})();
 
 // FLAGSHIP CARDS
 const FL_META=[
@@ -786,15 +790,24 @@ function doSearch(q){
   else{document.getElementById('sr-empty').style.display='none';document.getElementById('sr-content').style.display='block';document.getElementById('cards-search').innerHTML=res.map(i=>cardHTML(i,true)).join('');}
   switchTab('search');
 }
-document.getElementById('searchBtn').addEventListener('click',()=>doSearch(document.getElementById('searchInput').value));
-document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch(document.getElementById('searchInput').value);});
-document.getElementById('searchClear').addEventListener('click',()=>{
-  document.getElementById('searchInput').value='';
-  document.getElementById('cnt-search').style.display='none';
-  document.getElementById('sr-content').style.display='none';
-  document.getElementById('sr-empty').style.display='block';
-  switchTab('overview');
-});
+// Wire up search — guard against null in case element missing
+(function(){
+  const btn=document.getElementById('searchBtn');
+  const inp=document.getElementById('searchInput');
+  const clr=document.getElementById('searchClear');
+  if(btn)btn.addEventListener('click',()=>doSearch(inp?inp.value:''));
+  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch(inp.value);});
+  if(clr)clr.addEventListener('click',()=>{
+    if(inp)inp.value='';
+    const cs=document.getElementById('cnt-search');
+    const sc=document.getElementById('sr-content');
+    const se=document.getElementById('sr-empty');
+    if(cs)cs.style.display='none';
+    if(sc)sc.style.display='none';
+    if(se)se.style.display='block';
+    switchTab('overview');
+  });
+})();
 
 // LOAD
 async function loadAll(){
