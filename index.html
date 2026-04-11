@@ -414,6 +414,15 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 </div>
 
 <script>
+window.onerror = function(msg, src, line, col, err) {
+  var el = document.getElementById('ov-empty');
+  if(el) {
+    el.querySelector('p').textContent = 'JS Error: ' + msg;
+    el.querySelector('span').textContent = 'Line ' + line + ' - ' + (err ? err.stack : '');
+  }
+  console.error('Global error:', msg, 'line:', line, err);
+  return false;
+};
 const S={
   briefing:null, flagshipAnalyses:null,
   filters:{market:{sort:'relevance',sources:[],tags:[]}, thought:{sort:'relevance',sources:[],tags:[]}, competitors:{sort:'relevance',sources:[],tags:[],bank:null}},
@@ -451,7 +460,7 @@ function withinWeeks(d,w){
   try{return(new Date()-new Date(d))/86400000<=w*7;}catch{return true;}
 }
 
-// CARD HTML — collapsible
+// CARD HTML - collapsible
 function cardHTML(item,showComp){
   const r=item.relevance||'fyi';
   const rank=item.rank;
@@ -476,8 +485,8 @@ function cardHTML(item,showComp){
             <div class="card-title" data-item="${itemJ}">${esc(item.title)}</div>
             <div class="card-meta-row">
               <span class="src-chip">${esc(item.source||'')}</span>
-              ${dateStr?`<span class="cdot">·</span><span class="date-chip-sm">${esc(dateStr)}</span>`:''}
-              ${comp?`<span class="cdot">·</span>${comp}`:''}
+              ${dateStr?`<span class="cdot">&middot;</span><span class="date-chip-sm">${esc(dateStr)}</span>`:''}
+              ${comp?`<span class="cdot">&middot;</span>${comp}`:''}
               ${inf}
             </div>
           </div>
@@ -512,7 +521,7 @@ document.addEventListener('click',e=>{
   if(deepBtn&&deepBtn.dataset.item){try{openItemDD(JSON.parse(deepBtn.dataset.item));}catch(e){}}
 });
 
-// DEEP DIVE — item
+// DEEP DIVE - item
 function openItemDD(item){
   document.getElementById('modalTitle').textContent=item.title;
   const url=item.url||item.source_url||'';
@@ -527,11 +536,11 @@ function openItemDD(item){
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
-// DEEP DIVE — flagship
+// DEEP DIVE - flagship
 function openFlagshipDD(id){
   if(!S.flagshipAnalyses){alert('Scan not yet complete.');return;}
   const a=S.flagshipAnalyses.find(x=>x.report_id===id);
-  if(!a||a.error){alert('Analysis pending — trigger a scan.');return;}
+  if(!a||a.error){alert('Analysis pending - trigger a scan.');return;}
   document.getElementById('modalTitle').textContent=a.report_title+' '+a.report_year;
   const statsH=a.key_stats&&a.key_stats.length?`<div class="m-sec"><div class="m-lbl">Key statistics</div><div class="m-box rbi"><ul class="m-stats">${a.key_stats.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div></div>`:'';
   const themesH=a.themes&&a.themes.length?`<div class="m-sec"><div class="m-lbl">Theme analysis</div>${a.themes.map(t=>`<div class="m-theme"><div class="m-theme-name">${esc(t.name)}</div><div class="m-theme-desc">${esc(t.description)}</div>${t.key_stat?`<div class="m-theme-stat">>> ${esc(t.key_stat)}</div>`:''}</div>`).join('')}</div>`:'';
@@ -576,7 +585,7 @@ function renderFlagship(){
   document.querySelectorAll('.fl-deep-btn').forEach(b=>b.addEventListener('click',()=>openFlagshipDD(b.dataset.rid)));
 }
 
-// FILTER TOOLBAR — new Source + Tag + Sort pattern
+// FILTER TOOLBAR - new Source + Tag + Sort pattern
 function buildFilterToolbar(section, items){
   const el=document.getElementById('ft-'+section);
   if(!el)return;
@@ -677,7 +686,7 @@ function renderCompetitors(){
     </div>`).join('');
 }
 
-// OVERVIEW — date filter + sort
+// OVERVIEW - date filter + sort
 function renderOverview(){
   const b=S.briefing;
   const all=[...(b.market||[]),...(b.thought||[]),...(b.competitors||[])];
@@ -714,8 +723,8 @@ function renderOverview(){
         <div class="dash-item-meta">
           <span class="urgdot" style="background:${urgColor(item.relevance)}"></span>
           <span>${esc(item.source||item.competitor||'')}</span>
-          <span>·</span><span>${esc(relDate(item.article_date||item.date||''))}</span>
-          ${item.rank?`<span>· #${item.rank}</span>`:''}
+          <span>&middot;</span><span>${esc(relDate(item.article_date||item.date||''))}</span>
+          ${item.rank?`<span>&middot; #${item.rank}</span>`:''}
         </div>
       </div>`).join('')}
     </div>`;
@@ -742,7 +751,7 @@ document.querySelectorAll('.date-chip').forEach(btn=>btn.addEventListener('click
 }));
 const _ovSort=document.getElementById('ov-sort');if(_ovSort)_ovSort.addEventListener('change',e=>{S.ovFilter.sort=e.target.value;renderOverview();});
 
-// SOURCES — live status
+// SOURCES - live status
 function renderSources(){
   const stats=S.briefing?S.briefing.source_stats:{};
   const usedM=stats.market_sources_used||[];
@@ -767,7 +776,7 @@ function renderSources(){
     </div>`;
   }
 
-  const scanDate=S.briefing?S.briefing.scan_date:'—';
+  const scanDate=S.briefing?S.briefing.scan_date:'-';
   document.getElementById('src-content').innerHTML=`
     <p style="font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:1rem;">Last scan: ${esc(scanDate)} &middot; Green = items extracted &middot; Red = fetch failed &middot; Grey = no data yet</p>
     <div class="src-grid">
@@ -790,7 +799,7 @@ function doSearch(q){
   else{document.getElementById('sr-empty').style.display='none';document.getElementById('sr-content').style.display='block';document.getElementById('cards-search').innerHTML=res.map(i=>cardHTML(i,true)).join('');}
   switchTab('search');
 }
-// Wire up search — guard against null in case element missing
+// Wire up search - guard against null in case element missing
 (function(){
   const btn=document.getElementById('searchBtn');
   const inp=document.getElementById('searchInput');
