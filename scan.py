@@ -50,6 +50,15 @@ def get_active_sources(sources_data, section_key):
     active.sort(key=lambda x: x.get("priority", 2))
     return active
 
+def get_regulatory_sources(sources_data):
+    """Return active regulatory radar sources sorted by priority."""
+    if not sources_data:
+        return []
+    sources = sources_data.get("regulatory_radar", [])
+    active = [s for s in sources if s.get("active", True)]
+    active.sort(key=lambda x: x.get("priority", 2))
+    return active
+
 def get_scan_config(sources_data):
     """Return scan_config from sources.json with defaults."""
     defaults = {
@@ -280,6 +289,45 @@ Respond ONLY with valid JSON:
 {{"source":"{source_name}","competitor":"{competitor}","items":[/* exactly {n_items} items */]}}
 """
 
+
+REGULATORY_PROMPT = """
+You are a regulatory intelligence analyst for RBI Cash Management (CMIplus, CEE focus).
+Extract the top {n_items} most relevant REGULATORY updates from this source.
+
+Source: {source_name} ({source_url})
+Regulation area: {regulation}
+Source focus: {focus}
+Content:
+{content}
+
+Today: {scan_date}
+Context: {context}
+
+Focus on: regulatory deadlines, new rules, implementation requirements, compliance obligations,
+technical standards (ITS/RTS), enforcement actions, consultation papers, directive updates.
+Prioritise items with concrete deadlines or compliance obligations for banks in EU/CEE.
+
+For EACH item produce:
+- title: Regulatory headline max 12 words
+- summary_short: 2 sentences - what the regulation requires and when
+- summary_detail: 5-7 sentences - full regulatory context, scope, timeline, compliance requirements
+- key_points: Array of 4 specific obligations, deadlines or data points
+- rbi_cash_management: 2-3 sentences - concrete compliance action required for RBI/CMIplus
+- deadline: Most relevant compliance deadline as YYYY-MM-DD or "Ongoing" if no specific date
+- regulation_area: e.g. "Instant Payments", "ISO 20022", "PSD3", "VoP", "DORA", "AML"
+- url: Direct document URL if found, else "{source_url}"
+- source: "{source_name}"
+- source_url: "{source_url}"
+- relevance_score: 1-10 (10 = immediate compliance obligation for CMIplus)
+- relevance: "urgent" if >=8, "watch" if >=5, "fyi" otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: "{scan_date}"
+- article_date: Best estimate of publication date (YYYY-MM-DD)
+
+Respond ONLY with valid JSON:
+{{"source":"{source_name}","items":[/* exactly {n_items} items */]}}
+"""
+
 # ---------------------------------------------------------------------------
 # Per-source extraction
 # ---------------------------------------------------------------------------
@@ -377,6 +425,83 @@ def extract_source(src, prompt_template, scan_date, config, extra=None):
             return []
 
 # ---------------------------------------------------------------------------
+# Regulatory radar
+# ---------------------------------------------------------------------------
+
+def run_regulatory_radar(scan_date, sources_data):
+    config = get_scan_config(sources_data)
+    if sources_data and "tags" in sources_data:
+        config["tags"] = sources_data["tags"]
+
+    reg_sources = get_regulatory_sources(sources_data)
+    if not reg_sources:
+        print("  No regulatory radar sources configured", flush=True)
+        return []
+
+    print(f"  {len(reg_sources)} active regulatory sources", flush=True)
+    all_items = []
+    for src in reg_sources:
+        n_map = {1: config.get("items_priority_1", 3), 2: config.get("items_priority_2", 2), 3: 1}
+        n_items = n_map.get(src.get("priority", 2), 2)
+        prio = src.get("priority", 2)
+        name = src["name"]
+        url = src["url"]
+        regulation = src.get("regulation", "Regulation")
+        focus = src.get("focus", "regulatory updates")
+        tags = ", ".join(config.get("tags", []))
+        context = config.get("context", "")
+
+        print(f"  [P{prio}] {name} (->{n_items} items): fetching...", flush=True)
+        text = fetch_url_text(url)
+
+        if text.startswith("[FETCH_ERROR"):
+            if "attempt 1" not in text:
+                time.sleep(3)
+                text = fetch_url_text(url)
+            if text.startswith("[FETCH_ERROR"):
+                print(f"      FAILED: {text[:60]}", flush=True)
+                continue
+
+        if len(text.strip()) < 500:
+            print(f"      SKIPPED: only {len(text)} chars", flush=True)
+            continue
+
+        print(f"      {len(text):,} chars -> Gemini...", flush=True)
+        kwargs = {
+            "source_name": name, "source_url": url, "content": text[:18000],
+            "scan_date": scan_date, "focus": focus, "context": context,
+            "tags": tags, "n_items": n_items, "regulation": regulation,
+        }
+        prompt = REGULATORY_PROMPT.format(**kwargs)
+        try:
+            raw = gemini_call([{"text": prompt}], max_tokens=6000)
+            result = parse_json_loose(raw)
+            items = result.get("items", [])
+            for item in items:
+                raw_score = item.get("relevance_score", 5)
+                item["relevance_score"] = boost_score(raw_score, prio)
+                if item["relevance_score"] >= 8: item["relevance"] = "urgent"
+                elif item["relevance_score"] >= 5: item["relevance"] = "watch"
+                else: item["relevance"] = "fyi"
+                item["source"] = name
+                item["source_url"] = url
+                item["priority"] = prio
+                item["regulation_area"] = item.get("regulation_area", regulation)
+                item["article_date"] = item.get("article_date", scan_date)
+                item["deadline"] = item.get("deadline", "")
+            all_items.extend(items)
+            print(f"      OK: {len(items)} items", flush=True)
+        except Exception as e:
+            print(f"      ERROR: {e}", flush=True)
+        time.sleep(1)
+
+    # Sort by relevance_score, then by deadline proximity
+    all_items.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    for i, item in enumerate(all_items):
+        item["rank"] = i + 1
+    return all_items
+
+# ---------------------------------------------------------------------------
 # Weekly briefing
 # ---------------------------------------------------------------------------
 
@@ -453,6 +578,10 @@ def run_weekly_briefing(scan_date, sources_data):
     except Exception as e:
         exec_summary = f"Scan complete: {len(all_market)} market, {len(all_thought)} thought, {len(all_competitors)} competitor items."
 
+    print("\n--- REGULATORY RADAR ---", flush=True)
+    all_regulatory = run_regulatory_radar(scan_date, sources_data)
+    print(f"\n  Total regulatory: {len(all_regulatory)} items", flush=True)
+
     return {
         "scan_date":         scan_date,
         "week_label":        f"Week of {scan_date}",
@@ -460,6 +589,7 @@ def run_weekly_briefing(scan_date, sources_data):
         "market":            all_market,
         "thought":           all_thought,
         "competitors":       all_competitors,
+        "regulatory":        all_regulatory,
         "source_stats": {
             "market_sources_used":      list(set(i["source"] for i in all_market)),
             "thought_sources_used":     list(set(i["source"] for i in all_thought)),
@@ -467,6 +597,8 @@ def run_weekly_briefing(scan_date, sources_data):
             "market_sources_all":       [s["name"] for s in get_active_sources(sources_data, "market_news")],
             "thought_sources_all":      [s["name"] for s in get_active_sources(sources_data, "thought_leadership")],
             "competitor_sources_all":   [s["name"] for s in get_active_sources(sources_data, "competitors")],
+            "regulatory_sources_used":  list(set(i["source"] for i in all_regulatory)),
+            "regulatory_sources_all":   [s["name"] for s in get_regulatory_sources(sources_data)],
         }
     }
 
