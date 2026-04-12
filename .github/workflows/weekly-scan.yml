@@ -3,7 +3,12 @@ name: Weekly Intelligence Scan
 on:
   schedule:
     - cron: '0 6 * * 1'   # Every Monday 06:00 UTC
-  workflow_dispatch:        # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      force_flagship:
+        description: 'Re-analyse all flagship reports (true/false)'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -21,15 +26,25 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run scan
+      - name: Install dependencies
+        run: pip install reportlab
+
+      - name: Run weekly scan
         env:
           GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FORCE_FLAGSHIP: ${{ github.event.inputs.force_flagship || 'false' }}
         run: python scan.py
+
+      - name: Generate PDF report
+        run: |
+          mkdir -p reports/weekly
+          python generate_report.py
 
       - name: Commit results
         run: |
           git config user.name  "CMIplus Bot"
           git config user.email "bot@cmiplus-cockpit"
           git add briefing.json flagship-analyses.json
+          git add reports/weekly/*.pdf
           git diff --cached --quiet || git commit -m "Weekly scan $(date -u '+%Y-%m-%d')"
           git push
