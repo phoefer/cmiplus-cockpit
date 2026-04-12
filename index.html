@@ -1,728 +1,593 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMIplus Intelligence Cockpit</title>
-<!-- v2026-04-12 -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#f4f5f7;--surface:#fff;--surface2:#f0f2f5;--surface3:#e8eaed;
-  --border:#dde1e7;--border2:#c5cad3;
-  --text:#1a1d23;--text2:#4a5060;--muted:#8a909e;
-  --rbi:#c8102e;--rbi-dark:#a00d24;--rbi-light:#fdf0f2;--rbi-border:#f0c0c8;
-  --gold:#9a6f28;--gold-light:#fdf8f0;
-  --urgent:#c8102e;--urgent-bg:#fff0f2;--urgent-border:#f5c0c8;
-  --watch:#b86000;--watch-bg:#fffbf5;--watch-border:#f5d8b0;
-  --fyi:#1a7a48;--fyi-bg:#f0faf5;--fyi-border:#b0dfc0;
-  --navy:#0a1f3d;--navy-light:#eef2f8;--navy-border:#c0cfe0;
-  --r:6px;--rl:10px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;}
-.hdr{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
-.hdr-brand{display:flex;align-items:center;gap:12px;}
-.rbi-chev{display:flex;flex-direction:column;gap:2px;}
-.rbi-chev span{display:block;height:3px;background:var(--rbi);border-radius:1px;}
-.rbi-chev span:nth-child(1){width:16px;}
-.rbi-chev span:nth-child(2){width:12px;}
-.rbi-chev span:nth-child(3){width:8px;}
-.brand-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.01em;}
-.brand-sub{font-size:11px;color:rgba(255,255,255,.4);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-left:8px;text-transform:uppercase;}
-.hdr-right{display:flex;align-items:center;gap:10px;}
-.week-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:4px 10px;}
-.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px);}
-.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
-.sb-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:0 1.25rem;margin-bottom:4px;}
-.nav-item{display:flex;align-items:center;justify-content:space-between;padding:8px 1.25rem;cursor:pointer;font-size:13px;color:var(--text2);border-left:3px solid transparent;transition:all .12s;}
-.nav-item:hover{background:var(--surface2);}
-.nav-item.active{background:var(--rbi-light);color:var(--rbi);font-weight:500;border-left-color:var(--rbi);}
-.nav-icon{font-size:13px;margin-right:8px;}
-.nav-ct{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:1px 6px;border-radius:10px;background:var(--surface3);color:var(--muted);}
-.nav-divider{height:1px;background:var(--border);margin:.75rem 1.25rem;}
-.content{padding:1.75rem 2rem;}
-.section{display:none;}
-.section.active{display:block;}
-.status-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:1rem;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.8;}
-.status-ok{color:var(--fyi);}
-.status-err{color:var(--urgent);}
-.status-warn{color:var(--watch);}
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem;}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.125rem;}
-.kpi-num{font-size:26px;font-weight:600;line-height:1;margin-bottom:2px;}
-.kpi-num.urgent{color:var(--urgent);}
-.kpi-num.watch{color:var(--watch);}
-.kpi-num.fyi{color:var(--fyi);}
-.kpi-num.total{color:var(--navy);}
-.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500;}
-.exec-card{background:var(--navy);border-radius:var(--rl);padding:1.375rem 1.5rem;margin-bottom:1.25rem;}
-.exec-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:'IBM Plex Mono',monospace;}
-.exec-text{font-size:14px;color:rgba(255,255,255,.88);line-height:1.75;}
-.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.dash-col-hdr{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.dash-see-all{font-size:11px;color:var(--rbi);font-weight:500;text-transform:none;letter-spacing:0;cursor:pointer;}
-.dash-item{padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
-.dash-item:last-child{border-bottom:none;}
-.dash-item:hover .dash-it{color:var(--rbi);}
-.dash-it{font-size:13px;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:3px;}
-.dash-im{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;}
-.urgdot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.filter-bar{display:flex;align-items:center;gap:6px;margin-bottom:1rem;flex-wrap:wrap;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);}
-.ft-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.ft-chip{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;}
-.ft-chip:hover,.ft-chip.active{background:var(--navy);border-color:var(--navy);color:#fff;}
-.ft-chip.src.active{background:var(--rbi-light);border-color:var(--rbi-border);color:var(--rbi);}
-.ft-sep{width:1px;height:18px;background:var(--border);margin:0 4px;}
-.sort-wrap{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
-.sort-sel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:3px 8px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;}
-.sec-hdr{display:flex;align-items:center;margin-bottom:1.125rem;}
-.sec-h{font-size:17px;font-weight:600;}
-.sec-ct{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface3);padding:2px 8px;border-radius:10px;margin-left:8px;}
-.cards{display:flex;flex-direction:column;gap:8px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
-.card:hover{border-color:var(--border2);}
-.card-inner{display:flex;}
-.card-stripe{width:4px;flex-shrink:0;}
-.card-stripe.urgent{background:var(--urgent);}
-.card-stripe.watch{background:var(--watch);}
-.card-stripe.fyi{background:var(--fyi);}
-.card-body{flex:1;padding:.9rem 1.125rem;min-width:0;}
-.card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
-.card-rank{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);min-width:22px;flex-shrink:0;}
-.card-rank.top{color:var(--rbi);}
-.card-tw{flex:1;min-width:0;}
-.card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.35;cursor:pointer;}
-.card-title:hover{color:var(--rbi);}
-.card-mr{display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap;}
-.src-chip{font-size:10px;font-weight:500;color:var(--text2);background:var(--surface2);border:1px solid var(--border);padding:1px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;}
-.comp-chip{font-size:10px;background:var(--navy-light);border:1px solid var(--navy-border);color:var(--navy);padding:1px 6px;border-radius:3px;font-weight:500;}
-.inf-chip{font-size:10px;background:var(--surface3);border:1px solid var(--border2);color:var(--muted);padding:1px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;}
-.date-sm{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
-.cdot{color:var(--border2);}
-.badge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid;white-space:nowrap;}
-.bu{color:var(--urgent);background:var(--urgent-bg);border-color:var(--urgent-border);}
-.bw{color:var(--watch);background:var(--watch-bg);border-color:var(--watch-border);}
-.bf{color:var(--fyi);background:var(--fyi-bg);border-color:var(--fyi-border);}
-.card-preview{font-size:13px;color:var(--text2);line-height:1.55;cursor:pointer;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:6px;}
-.card-preview.exp{display:block;}
-.card-expand{display:none;margin-top:10px;}
-.card-expand.open{display:block;}
-.card-full{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px;}
-.rbi-block{background:var(--gold-light);border-radius:var(--r);border:1px solid #e8d8b0;padding:9px 12px;margin-bottom:10px;}
-.rbi-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
-.rbi-txt{font-size:12px;color:var(--text);line-height:1.55;}
-.kp-wrap{margin-bottom:10px;}
-.kp-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px;}
-.kp{font-size:12px;color:var(--text2);padding:3px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;line-height:1.5;}
-.kp:last-child{border-bottom:none;}
-.kp::before{content:"->";color:var(--fyi);font-weight:600;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11px;}
-.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
-.card-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;}
-.tag-chip{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:1px 6px;border-radius:3px;}
-.card-actions{display:flex;align-items:center;gap:8px;}
-.act-link{font-size:11px;font-weight:500;color:var(--rbi);text-decoration:none;}
-.act-link:hover{text-decoration:underline;}
-.deep-btn{font-size:11px;font-weight:500;color:var(--navy);background:var(--navy-light);border:1px solid var(--navy-border);padding:3px 10px;border-radius:4px;cursor:pointer;}
-.deep-btn:hover{background:var(--navy);color:#fff;}
-.comp-group{margin-bottom:1.5rem;}
-.comp-grp-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);}
-.comp-grp-name{font-size:13px;font-weight:600;}
-.comp-grp-ct{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
-.fl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-.fl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
-.fl-top{background:var(--navy);padding:.9rem 1.125rem;}
-.fl-pub{font-size:10px;font-weight:600;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.08em;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;}
-.fl-title{font-size:14px;font-weight:600;color:#fff;line-height:1.3;}
-.fl-body{padding:.9rem 1.125rem;}
-.fl-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
-.fl-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
-.fl-footer{display:flex;align-items:center;justify-content:space-between;}
-.fl-link{font-size:12px;font-weight:500;color:var(--rbi);text-decoration:none;}
-.fl-link:hover{text-decoration:underline;}
-.fl-deep-btn{font-size:11px;font-weight:500;color:#fff;background:var(--rbi);border:none;padding:5px 14px;border-radius:4px;cursor:pointer;}
-.fl-deep-btn:hover{background:var(--rbi-dark);}
-.src-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.src-group{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.125rem;}
-.src-grp-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--rbi);margin-bottom:10px;}
-.src-item{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);}
-.src-item:last-child{border-bottom:none;}
-.src-name{font-size:12px;}
-.src-dot{width:7px;height:7px;border-radius:50%;}
-.src-dot.ok{background:var(--fyi);}
-.src-dot.fail{background:var(--urgent);}
-.src-dot.unk{background:var(--border2);}
-.src-ct{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
-.empty{text-align:center;padding:3rem 2rem;color:var(--muted);}
-.empty p{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:6px;}
-.modal-overlay{position:fixed;inset:0;background:rgba(10,31,61,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(3px);}
-.modal-overlay.hidden{display:none;}
-.modal{background:var(--surface);border-radius:var(--rl);border:1px solid var(--border);width:100%;max-width:780px;max-height:88vh;overflow-y:auto;}
-.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;border-radius:var(--rl) var(--rl) 0 0;}
-.modal-title{font-size:17px;font-weight:600;line-height:1.3;flex:1;}
-.modal-close{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--muted);}
-.modal-close:hover{background:var(--surface3);}
-.modal-body{padding:1.5rem;}
-.m-sec{margin-bottom:1.25rem;}
-.m-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:500;margin-bottom:8px;color:var(--muted);}
-.m-box{border-radius:var(--r);padding:12px 14px;font-size:13px;line-height:1.65;}
-.m-sum{background:var(--surface2);border:1px solid var(--border);}
-.m-rbi{background:var(--gold-light);border:1px solid #e8d8b0;}
-.m-nvy{background:var(--navy-light);border:1px solid var(--navy-border);}
-.m-pts{list-style:none;padding:0;}
-.m-pts li{font-size:13px;color:var(--text2);line-height:1.55;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;}
-.m-pts li:last-child{border-bottom:none;}
-.m-pts li::before{content:"->";color:var(--fyi);font-weight:600;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11px;}
-.m-theme{margin-bottom:8px;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border);}
-.m-theme-n{font-size:13px;font-weight:600;margin-bottom:3px;}
-.m-theme-d{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:3px;}
-.m-theme-s{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--gold);}
-.m-action{margin-bottom:8px;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border-left:3px solid var(--rbi);}
-.m-au{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;font-weight:600;margin-bottom:3px;}
-.m-at{font-size:13px;font-weight:500;margin-bottom:3px;}
-.m-ar{font-size:12px;color:var(--text2);line-height:1.5;}
-.m-atime{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px;}
-.m-case{margin-bottom:8px;padding:10px 12px;background:var(--navy-light);border-radius:var(--r);border:1px solid var(--navy-border);}
-.m-case-co{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:2px;}
-.m-case-hl{font-size:13px;line-height:1.4;margin-bottom:4px;}
-.m-case-ach{font-size:11px;color:var(--fyi);font-family:'IBM Plex Mono',monospace;margin-bottom:2px;}
-.m-case-les{font-size:12px;color:var(--text2);line-height:1.4;}
-.m-footer{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:6px 0;}
-.mob-items{display:flex;justify-content:space-around;}
-.mob-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;cursor:pointer;font-size:10px;color:var(--muted);min-width:56px;}
-.mob-item.active{color:var(--rbi);}
-.mob-icon{font-size:18px;line-height:1;}
-.sr-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-.sr-title{font-size:14px;font-weight:600;}
-.sr-clear{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;}
-@media(max-width:768px){
-  .layout{grid-template-columns:1fr;}
-  .sidebar{display:none;}
-  .mobile-nav{display:block;}
-  .content{padding:1rem;padding-bottom:80px;}
-  .kpi-row,.dash-grid,.fl-grid,.src-grid{grid-template-columns:repeat(2,1fr);}
-}
-</style>
-</head>
-<body>
-<header class="hdr">
-  <div class="hdr-brand">
-    <div class="rbi-chev"><span></span><span></span><span></span></div>
-    <span class="brand-name">CMIplus Intelligence</span>
-    <span class="brand-sub">Cash Management</span>
-  </div>
-  <div class="hdr-right">
-    <span class="week-badge" id="weekBadge">Loading...</span>
-    <input id="searchInput" type="text" placeholder="Search..." style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:6px 12px;font-size:13px;color:#fff;font-family:'Inter',sans-serif;width:180px;" />
-    <button id="searchBtn" style="background:var(--rbi);border:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#fff;cursor:pointer;font-weight:500;">Search</button>
-  </div>
-</header>
-<div class="layout">
-  <nav class="sidebar">
-    <div style="margin-bottom:1rem;">
-      <div class="sb-label">Intelligence</div>
-      <div class="nav-item active" data-tab="overview"><span><span class="nav-icon">&#9632;</span>Overview</span></div>
-      <div class="nav-item" data-tab="market"><span><span class="nav-icon">&#9675;</span>Market news</span><span class="nav-ct" id="cnt-market">-</span></div>
-      <div class="nav-item" data-tab="thought"><span><span class="nav-icon">&#9651;</span>Thought leadership</span><span class="nav-ct" id="cnt-thought">-</span></div>
-      <div class="nav-item" data-tab="competitors"><span><span class="nav-icon">&#9671;</span>Competitors</span><span class="nav-ct" id="cnt-competitors">-</span></div>
-    </div>
-    <div class="nav-divider"></div>
-    <div style="margin-bottom:1rem;">
-      <div class="sb-label">Reports</div>
-      <div class="nav-item" data-tab="flagship"><span><span class="nav-icon">&#9733;</span>Flagship reports</span></div>
-    </div>
-    <div class="nav-divider"></div>
-    <div>
-      <div class="sb-label">Tools</div>
-      <div class="nav-item" data-tab="sources"><span><span class="nav-icon">&#9702;</span>Sources</span></div>
-      <div class="nav-item" data-tab="search"><span><span class="nav-icon">&#128269;</span>Search</span><span class="nav-ct" id="cnt-search" style="display:none">-</span></div>
-    </div>
-  </nav>
-  <main class="content">
-    <div class="section active" id="tab-overview">
-      <div id="ov-empty" class="empty"><p>Loading briefing...</p><span>Fetching briefing.json</span></div>
-      <div id="ov-content" style="display:none">
-        <div class="kpi-row">
-          <div class="kpi"><div class="kpi-num urgent" id="meta-urgent">0</div><div class="kpi-label">Urgent</div></div>
-          <div class="kpi"><div class="kpi-num watch" id="meta-watch">0</div><div class="kpi-label">Watch</div></div>
-          <div class="kpi"><div class="kpi-num fyi" id="meta-fyi">0</div><div class="kpi-label">FYI</div></div>
-          <div class="kpi"><div class="kpi-num total" id="meta-total">0</div><div class="kpi-label">Total</div></div>
-        </div>
-        <div class="exec-card"><div class="exec-lbl">Executive summary</div><div class="exec-text" id="exec-text"></div></div>
-        <div class="dash-grid" id="dash-grid"></div>
-      </div>
-    </div>
-    <div class="section" id="tab-market">
-      <div class="sec-hdr"><div class="sec-h">Market news</div><span class="sec-ct" id="sc-market">-</span></div>
-      <div class="filter-bar" id="ft-market"></div>
-      <div class="cards" id="cards-market"></div>
-    </div>
-    <div class="section" id="tab-thought">
-      <div class="sec-hdr"><div class="sec-h">Thought leadership</div><span class="sec-ct" id="sc-thought">-</span></div>
-      <div class="filter-bar" id="ft-thought"></div>
-      <div class="cards" id="cards-thought"></div>
-    </div>
-    <div class="section" id="tab-flagship">
-      <div class="sec-hdr"><div class="sec-h">Flagship reports</div></div>
-      <div class="fl-grid" id="fl-grid"></div>
-    </div>
-    <div class="section" id="tab-competitors">
-      <div class="sec-hdr"><div class="sec-h">Competitors</div><span class="sec-ct" id="sc-competitors">-</span></div>
-      <div class="filter-bar" id="ft-competitors"></div>
-      <div id="comps-grouped"></div>
-    </div>
-    <div class="section" id="tab-search">
-      <div id="sr-empty" class="empty"><p>Search intelligence</p><span>Enter keywords and press Search</span></div>
-      <div id="sr-content" style="display:none">
-        <div class="sr-hdr"><div class="sr-title" id="sr-title"></div><button class="sr-clear" id="searchClear">Clear</button></div>
-        <div class="cards" id="cards-search"></div>
-      </div>
-    </div>
-    <div class="section" id="tab-sources">
-      <div class="sec-hdr"><div class="sec-h">Sources</div></div>
-      <div id="src-content"></div>
-    </div>
-  </main>
-</div>
-<nav class="mobile-nav">
-  <div class="mob-items">
-    <div class="mob-item active" data-tab="overview"><div class="mob-icon">&#9632;</div>Overview</div>
-    <div class="mob-item" data-tab="market"><div class="mob-icon">&#9675;</div>Market</div>
-    <div class="mob-item" data-tab="thought"><div class="mob-icon">&#9651;</div>Thought</div>
-    <div class="mob-item" data-tab="competitors"><div class="mob-icon">&#9671;</div>Compete</div>
-    <div class="mob-item" data-tab="flagship"><div class="mob-icon">&#9733;</div>Reports</div>
-  </div>
-</nav>
-<div class="modal-overlay hidden" id="modalOverlay">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title" id="modalTitle"></div>
-      <button class="modal-close" id="modalClose">x</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
-<script>
-var S = {
-  briefing: null,
-  flagshipAnalyses: null,
-  filters: {
-    market: {sort:'relevance', sources:[], tags:[]},
-    thought: {sort:'relevance', sources:[], tags:[]},
-    competitors: {sort:'relevance', sources:[], tags:[], bank:null}
-  }
-};
+Select all + Ctrl+C
+#!/usr/bin/env python3
+"""
+CMIplus Intelligence Cockpit - Weekly Scan
+Runs every Monday 06:00 UTC via GitHub Actions.
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function escA(s) { return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function urgColor(u) { return u==='urgent'?'var(--urgent)':u==='watch'?'var(--watch)':'var(--fyi)'; }
-function badgeHTML(r) {
-  if(r==='urgent') return '<span class="badge bu">URGENT</span>';
-  if(r==='watch')  return '<span class="badge bw">WATCH</span>';
-  return '<span class="badge bf">FYI</span>';
-}
-function relDate(d) {
-  if(!d) return '';
-  try {
-    var diff = Math.floor((new Date() - new Date(d)) / 86400000);
-    if(diff < 0) return d;
-    if(diff === 0) return 'Today';
-    if(diff === 1) return 'Yesterday';
-    if(diff < 7) return diff + 'd ago';
-    if(diff < 14) return '1 week ago';
-    return Math.floor(diff/7) + ' weeks ago';
-  } catch(e) { return d; }
-}
+Sources are configured in sources.json - no code changes needed to add/remove/reprioritise.
 
-// NAV
-function switchTab(t) {
-  document.querySelectorAll('[data-tab]').forEach(function(el) {
-    el.classList.toggle('active', el.dataset.tab === t);
-  });
-  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-  var sec = document.getElementById('tab-' + t);
-  if(sec) sec.classList.add('active');
-}
-document.querySelectorAll('[data-tab]').forEach(function(el) {
-  el.addEventListener('click', function() { switchTab(el.dataset.tab); });
-});
+Produces:
+  - briefing.json         : structured weekly briefing (market/thought/competitors)
+  - flagship-analyses.json: deep analyses of 4 flagship reports
+"""
 
-// CARD
-function cardHTML(item, showComp) {
-  var r = item.relevance || 'fyi';
-  var rank = item.rank;
-  var rc = (rank && rank <= 3) ? 'card-rank top' : 'card-rank';
-  var rs = rank ? String(rank).padStart(2,'0') : '';
-  var url = item.url || item.source_url || '';
-  var linkHTML = url ? '<a class="act-link" href="' + escA(url) + '" target="_blank">Read -&gt;</a>' : '';
-  var comp = (showComp && item.competitor) ? '<span class="comp-chip">' + esc(item.competitor) + '</span>' : '';
-  var inf = item.inferred ? '<span class="inf-chip">inferred</span>' : '';
-  var adate = item.article_date || item.date || '';
-  var dateStr = relDate(adate);
-  var itemJ = escA(JSON.stringify(item));
-  var kpHTML = '';
-  if(item.key_points && item.key_points.length) {
-    kpHTML = '<div class="kp-wrap"><div class="kp-lbl">Key facts</div>' +
-      item.key_points.map(function(p) { return '<div class="kp">' + esc(p) + '</div>'; }).join('') + '</div>';
-  }
-  var tagsHTML = '';
-  if(item.tags && item.tags.length) {
-    tagsHTML = '<div class="card-tags">' + item.tags.map(function(t) { return '<span class="tag-chip">' + esc(t) + '</span>'; }).join('') + '</div>';
-  }
-  return '<div class="card">' +
-    '<div class="card-inner">' +
-    '<div class="card-stripe ' + r + '"></div>' +
-    '<div class="card-body">' +
-    '<div class="card-top">' +
-    '<span class="' + rc + '">' + rs + '</span>' +
-    '<div class="card-tw">' +
-    '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + '</div>' +
-    '<div class="card-mr">' +
-    '<span class="src-chip">' + esc(item.source||'') + '</span>' +
-    (dateStr ? '<span class="cdot">|</span><span class="date-sm">' + esc(dateStr) + '</span>' : '') +
-    (comp ? '<span class="cdot">|</span>' + comp : '') + inf +
-    '</div></div>' +
-    '<div>' + badgeHTML(r) + '</div>' +
-    '</div>' +
-    '<div class="card-preview" data-item="' + itemJ + '">' + esc(item.summary_short||item.summary||'') + '</div>' +
-    '<div class="card-expand">' +
-    '<div class="card-full" style="margin-top:10px">' + esc(item.summary_detail||item.summary_short||'') + '</div>' +
-    kpHTML +
-    '<div class="rbi-block"><div class="rbi-lbl">So what for RBI Cash Management</div><div class="rbi-txt">' + esc(item.rbi_cash_management||item.sowhat||'') + '</div></div>' +
-    tagsHTML +
-    '</div>' +
-    '<div class="card-footer"><div></div><div class="card-actions">' + linkHTML +
-    '<button class="deep-btn" data-item="' + itemJ + '">Deep dive</button>' +
-    '</div></div>' +
-    '</div></div></div>';
-}
+import os, json, base64, urllib.request, urllib.error, datetime, re, time
 
-// CARD CLICK
-document.addEventListener('click', function(e) {
-  var titleEl = e.target.closest('.card-title');
-  var prevEl = e.target.closest('.card-preview');
-  var deepBtn = e.target.closest('.deep-btn');
-  if(titleEl || prevEl) {
-    var card = (titleEl || prevEl).closest('.card');
-    card.querySelector('.card-expand').classList.toggle('open');
-    card.querySelector('.card-preview').classList.toggle('exp');
-  }
-  if(deepBtn && deepBtn.dataset.item) {
-    try { openItemDD(JSON.parse(deepBtn.dataset.item)); } catch(e) {}
-  }
-});
+GEMINI_API_KEY  = os.environ.get("GEMINI_KEY", "")
+FLASH_MODEL     = "gemini-2.5-flash"
+FALLBACK_MODEL  = "gemini-2.5-flash-lite"
+GEMINI_URL      = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+REPORTS_DIR    = os.path.join(os.path.dirname(__file__), "reports")
+SOURCES_FILE   = os.path.join(os.path.dirname(__file__), "sources.json")
 
-// ITEM DEEP DIVE
-function openItemDD(item) {
-  document.getElementById('modalTitle').textContent = item.title;
-  var url = item.url || item.source_url || '';
-  var linkHTML = url ? '<a class="act-link" href="' + escA(url) + '" target="_blank">Read full article -&gt;</a>' : '';
-  var kpHTML = '';
-  if(item.key_points && item.key_points.length) {
-    kpHTML = '<div class="m-sec"><div class="m-lbl">Key facts</div><div class="m-box m-nvy"><ul class="m-pts">' +
-      item.key_points.map(function(p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div></div>';
-  }
-  document.getElementById('modalBody').innerHTML =
-    '<div class="m-sec"><div class="m-lbl">Full summary</div><div class="m-box m-sum">' + esc(item.summary_detail||item.summary_short||item.summary||'') + '</div></div>' +
-    kpHTML +
-    '<div class="m-sec"><div class="m-lbl">So what for RBI Cash Management</div><div class="m-box m-rbi">' + esc(item.rbi_cash_management||item.sowhat||'') + '</div></div>' +
-    '<div class="m-footer"><span>' + esc(item.source||'') + ' | ' + esc(relDate(item.article_date||item.date||'')) + (item.rank ? ' | Rank #'+item.rank : '') + '</span>' + linkHTML + '</div>';
-  document.getElementById('modalOverlay').classList.remove('hidden');
-}
+FLAGSHIP_REPORTS = [
+    {"id":"ey_four_trends",       "title":"EY Four Trends Redefining Cash Management",  "year":"2025",    "source":"pdf",  "file":"ey-gl-four-trends-redefining-cash-management-08-2025.pdf",   "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf"},
+    {"id":"mckinsey_payments",    "title":"McKinsey Global Payments Report",             "year":"2025",    "source":"pdf",  "file":"the-2025-mckinsey-global-payments-report.pdf",                "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf"},
+    {"id":"journeys_to_treasury", "title":"Journeys to Treasury",                        "year":"2025/26", "source":"pdf",  "file":"Journeys to Treasury 2025-26.pdf",                            "report_url":"https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf"},
+    {"id":"pwc_treasury_survey",  "title":"PwC Global Treasury Survey",                 "year":"2025",    "source":"web",  "url":"https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html", "report_url":"https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html"},
+]
 
-// FLAGSHIP DEEP DIVE
-function openFlagshipDD(id) {
-  if(!S.flagshipAnalyses) { alert('Scan not yet complete.'); return; }
-  var a = null;
-  for(var i=0;i<S.flagshipAnalyses.length;i++) { if(S.flagshipAnalyses[i].report_id===id) { a=S.flagshipAnalyses[i]; break; } }
-  if(!a || a.error) { alert('Analysis pending - trigger a scan.'); return; }
-  document.getElementById('modalTitle').textContent = a.report_title + ' ' + a.report_year;
-  var html = '<div class="m-sec"><div class="m-lbl">Executive summary</div><div class="m-box m-sum">' + esc(a.executive_summary) + '</div></div>';
-  if(a.key_stats && a.key_stats.length) {
-    html += '<div class="m-sec"><div class="m-lbl">Key statistics</div><div class="m-box m-rbi"><ul class="m-pts">' +
-      a.key_stats.map(function(s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>';
-  }
-  if(a.themes && a.themes.length) {
-    html += '<div class="m-sec"><div class="m-lbl">Themes</div>';
-    a.themes.forEach(function(t) {
-      html += '<div class="m-theme"><div class="m-theme-n">' + esc(t.name) + '</div><div class="m-theme-d">' + esc(t.description) + '</div>' + (t.key_stat ? '<div class="m-theme-s">>> ' + esc(t.key_stat) + '</div>' : '') + '</div>';
-    });
-    html += '</div>';
-  }
-  if(a.key_actions && a.key_actions.length) {
-    html += '<div class="m-sec"><div class="m-lbl">Actions for CMIplus</div>';
-    a.key_actions.forEach(function(x) {
-      var uc = x.urgency==='HIGH'?'var(--urgent)':x.urgency==='MEDIUM'?'var(--watch)':'var(--fyi)';
-      html += '<div class="m-action"><div class="m-au" style="color:'+uc+'">' + esc(x.urgency) + '</div><div class="m-at">' + esc(x.action) + '</div><div class="m-ar">' + esc(x.rationale) + '</div>' + (x.timeline?'<div class="m-atime">Timeline: '+esc(x.timeline)+'</div>':'') + '</div>';
-    });
-    html += '</div>';
-  }
-  if(a.case_studies && a.case_studies.length) {
-    html += '<div class="m-sec"><div class="m-lbl">Corporate case studies</div>';
-    a.case_studies.forEach(function(c) {
-      html += '<div class="m-case"><div class="m-case-co">' + esc(c.company) + '</div><div class="m-case-hl">' + esc(c.headline) + '</div><div class="m-case-ach">>> ' + esc(c.key_achievement) + '</div><div class="m-case-les">Lesson: ' + esc(c.lesson) + '</div></div>';
-    });
-    html += '</div>';
-  }
-  if(a.competitive_implications) {
-    html += '<div class="m-sec"><div class="m-lbl">Competitive implications</div><div class="m-box m-nvy">' + esc(a.competitive_implications) + '</div></div>';
-  }
-  var repLink = a.report_url ? '<a class="act-link" href="' + escA(a.report_url) + '" target="_blank">Open full report -&gt;</a>' : '';
-  html += '<div class="m-footer"><span>Analysed: ' + esc(a.scan_date||'') + '</span>' + repLink + '</div>';
-  document.getElementById('modalBody').innerHTML = html;
-  document.getElementById('modalOverlay').classList.remove('hidden');
-}
+# ---------------------------------------------------------------------------
+# Load sources.json
+# ---------------------------------------------------------------------------
 
-// MODAL CLOSE
-document.getElementById('modalClose').addEventListener('click', function() { document.getElementById('modalOverlay').classList.add('hidden'); });
-document.getElementById('modalOverlay').addEventListener('click', function(e) { if(e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.add('hidden'); });
-document.addEventListener('keydown', function(e) { if(e.key==='Escape') document.getElementById('modalOverlay').classList.add('hidden'); });
+def load_sources():
+    """Load and validate sources from sources.json."""
+    try:
+        with open(SOURCES_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        print(f"sources.json loaded (updated: {data.get('meta',{}).get('last_updated','?')})", flush=True)
+        return data
+    except Exception as e:
+        print(f"WARNING: Could not load sources.json: {e} - using fallback sources", flush=True)
+        return None
 
-// FLAGSHIP META
-var FL_META = [
-  {id:'journeys_to_treasury',pub:'BNP Paribas / PwC / SAP / EACT',title:'Journeys to Treasury 2025/26',desc:'The CEE treasury benchmark. VoP, ISO 20022, virtual accounts and 7 corporate case studies.',url:'https://phoefer.github.io/cmiplus-cockpit/reports/Journeys%20to%20Treasury%202025-26.pdf',tags:['CEE','ISO20022','VoP']},
-  {id:'ey_four_trends',pub:'EY',title:'Four Trends Redefining Cash Management',desc:'1,800+ treasurer survey. Four structural trends: automation, data-driven services, industry solutions, digital assets.',url:'https://phoefer.github.io/cmiplus-cockpit/reports/ey-gl-four-trends-redefining-cash-management-08-2025.pdf',tags:['AI','Automation','DigitalBanking']},
-  {id:'mckinsey_payments',pub:'McKinsey',title:'Global Payments Report 2025',desc:'50 countries, 95% of global GDP. Payments revenues, instant payments adoption, AI in payments, CEE dynamics.',url:'https://phoefer.github.io/cmiplus-cockpit/reports/the-2025-mckinsey-global-payments-report.pdf',tags:['InstantPayments','CEE','API']},
-  {id:'pwc_treasury_survey',pub:'PwC',title:'Global Treasury Survey 2025',desc:'350+ treasurers on TMS adoption, API banking, AI in treasury, FX risk and cash visibility.',url:'https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-global-treasury-survey.html',tags:['TMS','API','AI']}
-];
+def get_active_sources(sources_data, section_key):
+    """Return active sources for a section, sorted by priority."""
+    if not sources_data:
+        return []
+    sources = sources_data.get(section_key, [])
+    active  = [s for s in sources if s.get("active", True)]
+    active.sort(key=lambda x: x.get("priority", 2))
+    return active
 
-function renderFlagship() {
-  var grid = document.getElementById('fl-grid');
-  if(!grid) return;
-  grid.innerHTML = FL_META.map(function(r) {
-    var hasA = S.flagshipAnalyses && S.flagshipAnalyses.filter(function(a){return a.report_id===r.id&&!a.error;}).length>0;
-    return '<div class="fl-card">' +
-      '<div class="fl-top"><div class="fl-pub">' + esc(r.pub) + '</div><div class="fl-title">' + esc(r.title) + '</div></div>' +
-      '<div class="fl-body"><div class="fl-desc">' + esc(r.desc) + '</div>' +
-      '<div class="fl-tags">' + r.tags.map(function(t){return '<span class="tag-chip">'+esc(t)+'</span>';}).join('') + '</div>' +
-      '<div class="fl-footer"><a class="fl-link" href="' + escA(r.url) + '" target="_blank">Open report -&gt;</a>' +
-      '<button class="fl-deep-btn" data-rid="' + escA(r.id) + '">' + (hasA?'Deep dive':'Pending scan') + '</button>' +
-      '</div></div></div>';
-  }).join('');
-  grid.querySelectorAll('.fl-deep-btn').forEach(function(b) {
-    b.addEventListener('click', function() { openFlagshipDD(b.dataset.rid); });
-  });
-}
-
-// FILTER TOOLBAR
-function buildFilterToolbar(section, items) {
-  var el = document.getElementById('ft-' + section);
-  if(!el) return;
-  var f = S.filters[section];
-  var srcs = [];
-  items.forEach(function(i) { var s=i.source||i.competitor; if(s&&srcs.indexOf(s)===-1)srcs.push(s); });
-  srcs.sort();
-  var html = '<span class="ft-label">Source</span>';
-  html += '<button class="ft-chip src' + (!f.sources.length?' active':'') + '" data-src="__all__">All</button>';
-  srcs.forEach(function(s) {
-    html += '<button class="ft-chip src' + (f.sources.indexOf(s)!==-1?' active':'') + '" data-src="' + escA(s) + '">' + esc(s) + '</button>';
-  });
-  if(section==='competitors') {
-    var banks = [];
-    items.forEach(function(i){ if(i.competitor&&banks.indexOf(i.competitor)===-1)banks.push(i.competitor); });
-    if(banks.length) {
-      html += '<span class="ft-sep"></span><span class="ft-label">Bank</span>';
-      html += '<button class="ft-chip' + (!f.bank?' active':'') + '" data-bank="__all__">All</button>';
-      banks.sort().forEach(function(b) { html += '<button class="ft-chip' + (f.bank===b?' active':'') + '" data-bank="' + escA(b) + '">' + esc(b) + '</button>'; });
+def get_scan_config(sources_data):
+    """Return scan_config from sources.json with defaults."""
+    defaults = {
+        "items_priority_1": 3,
+        "items_priority_2": 2,
+        "items_priority_3": 1,
+        "language": "English",
+        "context": "CMIplus is RBI's corporate cash management platform for large corporates in CEE.",
     }
-  }
-  html += '<div class="sort-wrap">Sort: <select class="sort-sel" id="sort-'+section+'"><option value="relevance"' + (f.sort==='relevance'?' selected':'') + '>Most relevant</option><option value="newest"' + (f.sort==='newest'?' selected':'') + '>Newest first</option></select></div>';
-  el.innerHTML = html;
-  el.querySelectorAll('[data-src]').forEach(function(b) {
-    b.addEventListener('click', function() {
-      var v = b.dataset.src;
-      if(v==='__all__') { f.sources=[]; } else { var i=f.sources.indexOf(v); if(i===-1)f.sources.push(v); else f.sources.splice(i,1); }
-      if(section==='competitors') renderCompetitors(); else renderSection(section);
-      buildFilterToolbar(section, S.briefing[section==='competitors'?'competitors':section]||[]);
-    });
-  });
-  el.querySelectorAll('[data-bank]').forEach(function(b) {
-    b.addEventListener('click', function() {
-      f.bank = b.dataset.bank==='__all__' ? null : b.dataset.bank;
-      renderCompetitors();
-      buildFilterToolbar('competitors', S.briefing.competitors||[]);
-    });
-  });
-  var sortEl = document.getElementById('sort-' + section);
-  if(sortEl) sortEl.addEventListener('change', function() { f.sort=sortEl.value; if(section==='competitors')renderCompetitors(); else renderSection(section); });
+    if sources_data and "scan_config" in sources_data:
+        defaults.update(sources_data["scan_config"])
+    return defaults
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9,de;q=0.8",
+    "Accept-Encoding": "identity",
+    "Connection": "keep-alive",
 }
 
-function applyFilters(items, section) {
-  var f = S.filters[section];
-  var res = items.slice();
-  if(f.sources && f.sources.length) res = res.filter(function(i){ return f.sources.indexOf(i.source)!==-1||f.sources.indexOf(i.competitor)!==-1; });
-  if(f.bank) res = res.filter(function(i){ return i.competitor===f.bank; });
-  if(f.sort==='newest') res.sort(function(a,b){ return new Date(b.article_date||b.date||0)-new Date(a.article_date||a.date||0); });
-  else res.sort(function(a,b){ return (b.relevance_score||0)-(a.relevance_score||0); });
-  return res;
-}
+def gemini_call(parts, max_tokens=8000, model=None):
+    """Call Gemini. On 503 overload, retry with exponential backoff then fallback model."""
+    models_to_try = [model or FLASH_MODEL, FALLBACK_MODEL]
+    tried_models = set()
+    for m in models_to_try:
+        if m in tried_models:
+            continue
+        tried_models.add(m)
+        url = GEMINI_URL.format(model=m, key=GEMINI_API_KEY)
+        payload = {
+            "contents": [{"parts": parts}],
+            "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.3},
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req  = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+        for attempt in range(2):
+            if attempt == 1:
+                print(f"      503 on {m} - waiting 15s before retry...", flush=True)
+                time.sleep(15)
+            try:
+                with urllib.request.urlopen(req, timeout=180) as resp:
+                    result = json.loads(resp.read().decode("utf-8"))
+                    if m != (model or FLASH_MODEL):
+                        print(f"      Used fallback model: {m}", flush=True)
+                    return result["candidates"][0]["content"]["parts"][0]["text"]
+            except urllib.error.HTTPError as e:
+                body = e.read().decode("utf-8", errors="replace")
+                if e.code == 503:
+                    continue
+                raise RuntimeError(f"Gemini HTTP {e.code}: {body[:300]}")
+            except Exception as e:
+                raise RuntimeError(f"Gemini call failed: {e}")
+        print(f"      {m} exhausted - trying fallback model...", flush=True)
+    raise RuntimeError("All Gemini models exhausted")
 
-function renderSection(section) {
-  if(!S.briefing) return;
-  var raw = S.briefing[section] || [];
-  var items = applyFilters(raw, section);
-  var c = document.getElementById('cards-' + section);
-  var ct = document.getElementById('sc-' + section);
-  if(ct) ct.textContent = items.length;
-  if(!c) return;
-  c.innerHTML = items.length ? items.map(function(i){ return cardHTML(i,false); }).join('') : '<div class="empty"><p>No items match</p></div>';
-}
+def fetch_url_text(url, max_bytes=150_000, timeout=45):
+    # Handle multiple URLs separated by " / "
+    urls = [u.strip() for u in url.split(" / ") if u.strip().startswith("http")]
+    primary_url = urls[0] if urls else url
 
-function renderCompetitors() {
-  if(!S.briefing) return;
-  var raw = S.briefing.competitors || [];
-  var items = applyFilters(raw, 'competitors');
-  var ct = document.getElementById('sc-competitors');
-  if(ct) ct.textContent = items.length;
-  var c = document.getElementById('comps-grouped');
-  if(!items.length) { c.innerHTML='<div class="empty"><p>No items match</p></div>'; return; }
-  var groups = {};
-  items.forEach(function(i){ var k=i.competitor||'Other'; if(!groups[k])groups[k]=[]; groups[k].push(i); });
-  c.innerHTML = Object.keys(groups).map(function(name) {
-    return '<div class="comp-group"><div class="comp-grp-hdr"><div class="comp-grp-name">'+esc(name)+'</div><div class="comp-grp-ct">'+groups[name].length+' items</div></div>' +
-      '<div class="cards">' + groups[name].map(function(i){ return cardHTML(i,false); }).join('') + '</div></div>';
-  }).join('');
-}
+    req = urllib.request.Request(primary_url, headers=HEADERS)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read(max_bytes).decode("utf-8", errors="replace")
+        text = re.sub(r"<script[^>]*>.*?</script>", " ", raw, flags=re.DOTALL|re.IGNORECASE)
+        text = re.sub(r"<style[^>]*>.*?</style>",   " ", text, flags=re.DOTALL|re.IGNORECASE)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s{3,}", "\n\n", text)
+        return text[:50_000]
+    except Exception as e:
+        return f"[FETCH_ERROR: {e}]"
 
-function renderOverview() {
-  var b = S.briefing;
-  var all = (b.market||[]).concat(b.thought||[]).concat(b.competitors||[]);
-  document.getElementById('meta-urgent').textContent = all.filter(function(i){ return i.relevance==='urgent'; }).length;
-  document.getElementById('meta-watch').textContent  = all.filter(function(i){ return i.relevance==='watch'; }).length;
-  document.getElementById('meta-fyi').textContent    = all.filter(function(i){ return i.relevance==='fyi'; }).length;
-  document.getElementById('meta-total').textContent  = all.length;
-  document.getElementById('exec-text').textContent   = b.executive_summary || '';
-  var sections = [{key:'market',label:'Market news',tab:'market'},{key:'thought',label:'Thought leadership',tab:'thought'},{key:'competitors',label:'Competitors',tab:'competitors'}];
-  document.getElementById('dash-grid').innerHTML = sections.map(function(s) {
-    var sitems = (b[s.key]||[]).slice(0,4);
-    return '<div>' +
-      '<div class="dash-col-hdr" style="cursor:pointer" onclick="switchTab(\''+s.tab+'\')">' +
-      '<span>' + s.label + '</span>' +
-      '<span class="dash-see-all">See all (' + (b[s.key]||[]).length + ')</span>' +
-      '</div>' +
-      sitems.map(function(item) {
-        var itemJ = escA(JSON.stringify(item));
-        return '<div class="dash-item" onclick="try{openItemDD(JSON.parse(this.dataset.item))}catch(e){}" data-item="' + itemJ + '">' +
-          '<div class="dash-it">' + esc(item.title) + '</div>' +
-          '<div class="dash-im"><span class="urgdot" style="background:'+urgColor(item.relevance)+'"></span><span>' + esc(item.source||item.competitor||'') + '</span>' +
-          (item.rank ? '<span>| #'+item.rank+'</span>' : '') +
-          '</div></div>';
-      }).join('') + '</div>';
-  }).join('');
-  document.getElementById('ov-empty').style.display = 'none';
-  document.getElementById('ov-content').style.display = 'block';
-}
+def load_pdf_base64(filename):
+    path = os.path.join(REPORTS_DIR, filename)
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
 
-function renderSources() {
-  var stats = S.briefing ? S.briefing.source_stats || {} : {};
-  var usedM = stats.market_sources_used || [];
-  var usedT = stats.thought_sources_used || [];
-  var usedC = stats.competitor_sources_used || [];
-  var allM = stats.market_sources_all || ['Der Treasurer','The Global Treasurer','Strategic Treasurer','EBA / ECB','Finextra','The Paypers','Treasury Today','Global Finance'];
-  var allT = stats.thought_sources_all || ['Oliver Wyman','EY','PwC','EACT','Deloitte'];
-  var allC = stats.competitor_sources_all || ['Deutsche Bank','UniCredit','Erste Group','BNP Paribas','HSBC','ING','Intesa Sanpaolo'];
-  function si(name, used) {
-    var ok = used.length ? used.indexOf(name)!==-1 : null;
-    var dot = ok===null?'unk':ok?'ok':'fail';
-    var ct = '';
-    if(S.briefing && ok) {
-      var all2 = (S.briefing.market||[]).concat(S.briefing.thought||[]).concat(S.briefing.competitors||[]);
-      var n = all2.filter(function(i){return i.source===name||i.competitor===name;}).length;
-      ct = '<span class="src-ct">'+n+'x</span>';
-    } else if(ok===false) {
-      ct = '<span class="src-ct" style="color:var(--urgent)">failed</span>';
+def parse_json_loose(raw):
+    clean = re.sub(r"^```[a-z]*\n?", "", raw.strip(), flags=re.MULTILINE)
+    clean = re.sub(r"\n?```$", "", clean.strip(), flags=re.MULTILINE).strip()
+    try:
+        return json.loads(clean)
+    except:
+        pass
+    start = clean.find("{")
+    if start == -1:
+        raise ValueError("No JSON found")
+    depth, end = 0, start
+    for i, ch in enumerate(clean[start:], start):
+        if ch == "{": depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0: end = i; break
+    return json.loads(clean[start:end+1])
+
+def normalize_relevance(r):
+    r = str(r).lower()
+    if r in ("high", "urgent"): return "urgent"
+    if r in ("medium", "watch"): return "watch"
+    return "fyi"
+
+def boost_score(score, priority):
+    boost = {1: 2, 2: 1, 3: 0}
+    return min(10, int(score) + boost.get(priority, 0))
+
+# ---------------------------------------------------------------------------
+# Prompts
+# ---------------------------------------------------------------------------
+
+MARKET_PROMPT = """
+You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
+Extract the top {n_items} most relevant NEWS items from this source.
+
+Source: {source_name} ({source_url})
+Source focus: {focus}
+Content:
+{content}
+
+Today: {scan_date}
+Context: {context}
+
+Focus on: payment regulations, instant payments, ISO 20022, VoP, EBICS, Open Banking,
+PSD3, treasury technology, CEE/European banking, fraud prevention, SEPA.
+
+Look back up to {lookback_days} days for relevant content. Include older items if they are
+highly relevant to CMIplus topics - regulatory deadlines, major product launches, standards changes.
+
+IMPORTANT: Translate any non-English content to English in your response.
+
+For EACH item produce:
+- title: Compelling English headline max 12 words
+- summary_short: 2 sentences - what happened
+- summary_detail: 5-7 sentences - full context, regulatory details, timeline, industry impact
+- key_points: Array of 4 specific facts, numbers or quotes
+- rbi_cash_management: 2-3 sentences - what this means for RBI Cash Management and CMIplus
+- url: Direct article URL if found in content, else "{source_url}"
+- source: "{source_name}"
+- source_url: "{source_url}"
+- relevance_score: 1-10 (10 = most critical for CMIplus/RBI)
+- relevance: "urgent" if >=8, "watch" if >=5, "fyi" otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: "{scan_date}"
+- article_date: Best estimate of when this article/item was published (YYYY-MM-DD format).
+  Use date clues from content (e.g. "March 2026", "last week", "Q1 2026"). If unknown use "{scan_date}".
+
+Respond ONLY with valid JSON:
+{{"source":"{source_name}","items":[/* exactly {n_items} items */]}}
+"""
+
+THOUGHT_PROMPT = """
+You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
+Extract the top {n_items} most relevant THOUGHT LEADERSHIP insights from this source.
+
+Source: {source_name} ({source_url})
+Source focus: {focus}
+Content:
+{content}
+
+Today: {scan_date}
+Context: {context}
+
+Focus: treasury strategy, AI in banking, cash management trends, payment transformation,
+digital banking, corporate banking evolution, Open Banking, real-time treasury.
+
+Look back up to {lookback_months} months for relevant content. Include recent reports and
+research publications even if published several months ago.
+
+For EACH item produce:
+- title: Strategic English headline max 12 words
+- summary_short: 2 sentences - core finding
+- summary_detail: 5-7 sentences - full strategic context, methodology, key data, implications
+- key_points: Array of 4 specific insights or statistics
+- rbi_cash_management: 2-3 sentences - strategic implication for RBI Cash Management and CMIplus roadmap
+- url: Direct article URL if found, else "{source_url}"
+- source: "{source_name}"
+- source_url: "{source_url}"
+- relevance_score: 1-10
+- relevance: "urgent" if >=8, "watch" if >=5, "fyi" otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: "{scan_date}"
+- article_date: Best estimate of publication date (YYYY-MM-DD). Use content clues. If unknown use "{scan_date}".
+
+Respond ONLY with valid JSON:
+{{"source":"{source_name}","items":[/* exactly {n_items} items */]}}
+"""
+
+COMPETITOR_PROMPT = """
+You are an intelligence analyst for RBI Cash Management (CMIplus platform, CEE focus).
+Analyse {competitor}'s latest moves in corporate/transaction banking.
+
+Source: {source_name} ({source_url})
+Source focus: {focus}
+Content:
+{content}
+
+Today: {scan_date}
+Context: {context}
+
+Focus: cash management products, CEE expansion, payment capabilities, API/digital banking,
+treasury solutions, EBICS offerings, instant payments, partnership deals.
+
+If specific news is not found, produce items based on known strategic directions
+of {competitor} in European corporate banking - mark these as inferred.
+
+For EACH item produce:
+- title: Headline max 12 words
+- summary_short: 2 sentences
+- summary_detail: 4-6 sentences - context, product details, strategic rationale, CEE relevance
+- key_points: Array of 3 specific facts or observations
+- rbi_cash_management: 2 sentences - competitive implication for CMIplus
+- url: Direct URL if found, else "{source_url}"
+- source: "{source_name}"
+- source_url: "{source_url}"
+- competitor: "{competitor}"
+- relevance_score: 1-10
+- relevance: "urgent" if >=8, "watch" if >=5, "fyi" otherwise
+- tags: Array of 2-4 tags from: {tags}
+- date: "{scan_date}"
+- inferred: true if based on inference, false if actual news
+- article_date: Best estimate of publication date (YYYY-MM-DD). Use content clues. If unknown use "{scan_date}".
+
+Respond ONLY with valid JSON:
+{{"source":"{source_name}","competitor":"{competitor}","items":[/* exactly {n_items} items */]}}
+"""
+
+# ---------------------------------------------------------------------------
+# Per-source extraction
+# ---------------------------------------------------------------------------
+
+def extract_source(src, prompt_template, scan_date, config, extra=None):
+    name   = src["name"]
+    url    = src["url"]
+    prio   = src.get("priority", 2)
+    focus  = src.get("focus", "treasury, payments, cash management")
+    tags   = ", ".join(config.get("tags", ["ISO20022","CEE","EBICS","AI","InstantPayments"]))
+    context = config.get("context", "CMIplus is RBI's cash management platform.")
+
+    # Items count based on priority
+    n_map = {
+        1: config.get("items_priority_1", 3),
+        2: config.get("items_priority_2", 2),
+        3: config.get("items_priority_3", 1),
     }
-    return '<div class="src-item"><span class="src-name">'+esc(name)+'</span><div style="display:flex;align-items:center;gap:5px">'+ct+'<span class="src-dot '+dot+'"></span></div></div>';
-  }
-  var scanDate = S.briefing ? S.briefing.scan_date : '-';
-  document.getElementById('src-content').innerHTML =
-    '<p style="font-size:12px;color:var(--muted);font-family:IBM Plex Mono,monospace;margin-bottom:1rem">Last scan: ' + esc(scanDate) + ' | Green = success | Red = failed | Grey = no data</p>' +
-    '<div class="src-grid">' +
-    '<div class="src-group"><div class="src-grp-t">Market news</div>' + allM.map(function(n){return si(n,usedM);}).join('') + '</div>' +
-    '<div class="src-group"><div class="src-grp-t">Thought leadership</div>' + allT.map(function(n){return si(n,usedT);}).join('') + '</div>' +
-    '<div class="src-group"><div class="src-grp-t">Competitors</div>' + allC.map(function(n){return si(n,usedC);}).join('') + '</div>' +
-    '</div>';
-}
+    n_items = n_map.get(prio, 2)
 
-// SEARCH
-function doSearch(q) {
-  if(!q || !q.trim() || !S.briefing) return;
-  var lq = q.toLowerCase();
-  var all = (S.briefing.market||[]).concat(S.briefing.thought||[]).concat(S.briefing.competitors||[]);
-  var res = all.filter(function(i) {
-    return [i.title,i.summary_short,i.summary_detail,i.rbi_cash_management,i.source,i.competitor].concat(i.tags||[]).concat(i.key_points||[]).join(' ').toLowerCase().indexOf(lq) !== -1;
-  });
-  document.getElementById('cnt-search').style.display = '';
-  document.getElementById('cnt-search').textContent = res.length;
-  document.getElementById('sr-title').textContent = res.length + ' result' + (res.length!==1?'s':'') + ' for "' + q + '"';
-  if(!res.length) {
-    document.getElementById('sr-content').style.display = 'none';
-    document.getElementById('sr-empty').style.display = 'block';
-  } else {
-    document.getElementById('sr-empty').style.display = 'none';
-    document.getElementById('sr-content').style.display = 'block';
-    document.getElementById('cards-search').innerHTML = res.map(function(i){ return cardHTML(i,true); }).join('');
-  }
-  switchTab('search');
-}
-document.getElementById('searchBtn').addEventListener('click', function() { doSearch(document.getElementById('searchInput').value); });
-document.getElementById('searchInput').addEventListener('keydown', function(e) { if(e.key==='Enter') doSearch(document.getElementById('searchInput').value); });
-document.getElementById('searchClear').addEventListener('click', function() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('cnt-search').style.display = 'none';
-  document.getElementById('sr-content').style.display = 'none';
-  document.getElementById('sr-empty').style.display = 'block';
-  switchTab('overview');
-});
+    print(f"  [P{prio}] {name} (->{n_items} items): fetching...", flush=True)
+    text = fetch_url_text(url)
 
-// LOAD
-async function loadAll() {
-  try {
-    var burl = 'briefing.json?v=' + Date.now();
-    var furl = 'flagship-analyses.json?v=' + Date.now();
-    console.log('[CMIplus] Fetching:', burl);
-    var brRes = await fetch(burl);
-    var faRes = await fetch(furl);
-    console.log('[CMIplus] briefing.json status:', brRes.status, brRes.statusText);
-    if(faRes.ok) {
-      try { S.flagshipAnalyses = await faRes.json(); } catch(e) { console.warn('flagship parse error', e); }
-    }
-    if(brRes.ok) {
-      try { S.briefing = await brRes.json(); } catch(e) {
-        document.getElementById('ov-empty').querySelector('p').textContent = 'briefing.json is invalid JSON';
-        document.getElementById('ov-empty').querySelector('span').textContent = e.message;
-        return;
-      }
-      var m = S.briefing.market||[], t = S.briefing.thought||[], c = S.briefing.competitors||[];
-      document.getElementById('cnt-market').textContent = m.length;
-      document.getElementById('cnt-thought').textContent = t.length;
-      document.getElementById('cnt-competitors').textContent = c.length;
-      document.getElementById('weekBadge').textContent = S.briefing.week_label || '';
-      renderOverview();
-      renderSection('market');      buildFilterToolbar('market', m);
-      renderSection('thought');     buildFilterToolbar('thought', t);
-      renderCompetitors();          buildFilterToolbar('competitors', c);
-    } else {
-      var emEl = document.getElementById('ov-empty');
-      if(emEl) {
-        emEl.querySelector('p').textContent = 'briefing.json HTTP ' + brRes.status + ' - File not found';
-        emEl.querySelector('span').textContent = 'URL tried: ' + burl.split('?')[0] + ' | Check GitHub repo has briefing.json in root folder';
-      }
-    }
-  } catch(e) {
-    console.error('[CMIplus] Load error:', e);
-    var emEl = document.getElementById('ov-empty');
-    if(emEl) {
-      emEl.querySelector('p').textContent = 'Error: ' + e.message;
-      emEl.querySelector('span').textContent = e.stack || 'Check browser console (F12)';
-    }
-  }
-  renderFlagship();
-  renderSources();
-}
+    # Retry fetch once on timeout/error
+    if text.startswith("[FETCH_ERROR"):
+        print(f"      FAILED (attempt 1): {text[:60]} -- retrying...", flush=True)
+        time.sleep(3)
+        text = fetch_url_text(url)
+        if text.startswith("[FETCH_ERROR"):
+            print(f"      FAILED (attempt 2): {text[:60]}", flush=True)
+            return []
+        print(f"      Retry succeeded: {len(text):,} chars", flush=True)
 
-loadAll();
-</script>
-</body>
-</html>
+    # Minimum content check - avoid hallucinated items from near-empty pages
+    if len(text.strip()) < 500:
+        print(f"      SKIPPED: only {len(text)} chars (too little content)", flush=True)
+        return []
+
+    print(f"      {len(text):,} chars -> Gemini...", flush=True)
+
+    lookback_days   = config.get("market_lookback_days", 56)
+    lookback_months = config.get("thought_lookback_months", 8)
+
+    kwargs = {
+        "source_name":    name,
+        "source_url":     url.split(" / ")[0],
+        "content":        text[:18_000],
+        "scan_date":      scan_date,
+        "focus":          focus,
+        "context":        context,
+        "tags":           tags,
+        "n_items":        n_items,
+        "lookback_days":  lookback_days,
+        "lookback_months":lookback_months,
+    }
+    if extra:
+        kwargs.update(extra)
+
+    prompt = prompt_template.format(**kwargs)
+
+    def _process_items(items_raw):
+        for item in items_raw:
+            raw_score               = item.get("relevance_score", 5)
+            item["relevance_score"] = boost_score(raw_score, prio)
+            if   item["relevance_score"] >= 8: item["relevance"] = "urgent"
+            elif item["relevance_score"] >= 5: item["relevance"] = "watch"
+            else:                              item["relevance"] = "fyi"
+            item["source"]          = name
+            item["source_url"]      = url.split(" / ")[0]
+            item["priority"]        = prio
+            item["article_date"]    = item.get("article_date", scan_date)
+            if extra and "competitor" in extra:
+                item["competitor"] = extra["competitor"]
+        return items_raw
+
+    # gemini_call handles 503 retries + fallback internally
+    # Outer retry handles JSON parse errors (can happen after 503 recovery)
+    for parse_attempt in range(2):
+        try:
+            raw    = gemini_call([{"text": prompt}], max_tokens=6000)
+            result = parse_json_loose(raw)
+            items  = result.get("items", [])
+            items  = _process_items(items)
+            print(f"      OK: {len(items)} items, scores: {[i['relevance_score'] for i in items]}", flush=True)
+            return items
+        except (ValueError, KeyError) as e:
+            if parse_attempt == 0:
+                print(f"      JSON parse error: {e} -- retrying once...", flush=True)
+                time.sleep(5)
+            else:
+                print(f"      JSON parse error on retry: {e} -- giving up.", flush=True)
+                return []
+        except Exception as e:
+            print(f"      Gemini ERROR: {e} -- giving up.", flush=True)
+            return []
+
+# ---------------------------------------------------------------------------
+# Weekly briefing
+# ---------------------------------------------------------------------------
+
+def run_weekly_briefing(scan_date, sources_data):
+    config = get_scan_config(sources_data)
+
+    # Merge tags from sources.json into config
+    if sources_data and "tags" in sources_data:
+        config["tags"] = sources_data["tags"]
+
+    print("\n--- MARKET NEWS ---", flush=True)
+    market_sources = get_active_sources(sources_data, "market_news")
+    print(f"  {len(market_sources)} active sources", flush=True)
+    all_market = []
+    for src in market_sources:
+        items = extract_source(src, MARKET_PROMPT, scan_date, config)
+        all_market.extend(items)
+        time.sleep(1)
+
+    all_market.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    for i, item in enumerate(all_market):
+        item["rank"] = i + 1
+
+    print(f"\n  Total market: {len(all_market)} items from: {list(set(i['source'] for i in all_market))}", flush=True)
+
+    print("\n--- THOUGHT LEADERSHIP ---", flush=True)
+    thought_sources = get_active_sources(sources_data, "thought_leadership")
+    print(f"  {len(thought_sources)} active sources", flush=True)
+    all_thought = []
+    for src in thought_sources:
+        items = extract_source(src, THOUGHT_PROMPT, scan_date, config)
+        all_thought.extend(items)
+        time.sleep(1)
+
+    all_thought.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    for i, item in enumerate(all_thought):
+        item["rank"] = i + 1
+
+    print(f"\n  Total thought: {len(all_thought)} items", flush=True)
+
+    print("\n--- COMPETITORS ---", flush=True)
+    comp_sources = get_active_sources(sources_data, "competitors")
+    print(f"  {len(comp_sources)} active sources", flush=True)
+    all_competitors = []
+    for src in comp_sources:
+        competitor = src.get("name", src.get("competitor", "Unknown"))
+        items = extract_source(src, COMPETITOR_PROMPT, scan_date, config,
+                               extra={"competitor": competitor})
+        all_competitors.extend(items)
+        time.sleep(1)
+
+    all_competitors.sort(key=lambda x: x.get("relevance_score", 0), reverse=True)
+    for i, item in enumerate(all_competitors):
+        item["rank"] = i + 1
+
+    print(f"\n  Total competitors: {len(all_competitors)} items", flush=True)
+
+    # Executive summary
+    print("\n--- EXECUTIVE SUMMARY ---", flush=True)
+    top = (all_market[:3] + all_thought[:2] + all_competitors[:2])
+    top_list = [{"title": i["title"], "summary_short": i.get("summary_short", "")} for i in top]
+    top_json = json.dumps(top_list, indent=2)
+    exec_prompt = (
+        "You are a senior analyst for Raiffeisen Bank International. "
+        "Write a comprehensive 5-6 sentence executive summary of the most important "
+        "market developments, competitive moves and strategic trends for RBI Cash Management "
+        "and CMIplus this week. Be specific - name regulations, companies, deadlines and figures. "
+        "Focus on what requires attention or action. Based on:\n\n"
+        + top_json
+        + f"\n\nToday: {scan_date}\nReturn ONLY the summary text, no preamble, no JSON."
+    )
+    try:
+        exec_summary = gemini_call([{"text": exec_prompt}], max_tokens=600).strip()
+    except Exception as e:
+        exec_summary = f"Scan complete: {len(all_market)} market, {len(all_thought)} thought, {len(all_competitors)} competitor items."
+
+    return {
+        "scan_date":         scan_date,
+        "week_label":        f"Week of {scan_date}",
+        "executive_summary": exec_summary,
+        "market":            all_market,
+        "thought":           all_thought,
+        "competitors":       all_competitors,
+        "source_stats": {
+            "market_sources_used":      list(set(i["source"] for i in all_market)),
+            "thought_sources_used":     list(set(i["source"] for i in all_thought)),
+            "competitor_sources_used":  list(set(i["source"] for i in all_competitors)),
+            "market_sources_all":       [s["name"] for s in get_active_sources(sources_data, "market_news")],
+            "thought_sources_all":      [s["name"] for s in get_active_sources(sources_data, "thought_leadership")],
+            "competitor_sources_all":   [s["name"] for s in get_active_sources(sources_data, "competitors")],
+        }
+    }
+
+# ---------------------------------------------------------------------------
+# Flagship analyses
+# ---------------------------------------------------------------------------
+
+FLAGSHIP_PROMPT = """
+You are a senior analyst for RBI's CMIplus cash management platform.
+Produce a comprehensive strategic analysis of this report.
+
+Context: {context}
+Report: "{title}" ({year})
+
+Produce:
+1. executive_summary: 4-5 sentences (string)
+2. key_stats: Array of 6-8 statistics as PLAIN STRINGS only, e.g. ["74% of treasurers use AI", "EUR 2.3bn market size"]
+3. themes: Array of 5-6 themes, each: name (string), description (string, 3-4 sentences), key_stat (string)
+4. key_actions: Array of 3-4 actions, each: action, urgency (HIGH/MEDIUM/LOW), rationale, timeline
+5. competitive_implications: 2-3 sentences
+6. case_studies: Corporate case studies from the report (if any), each:
+   company, headline, key_achievement, lesson
+
+Respond ONLY with valid JSON:
+{{
+  "report_id":"{report_id}","report_title":"{title}","report_year":"{year}","report_url":"{report_url}",
+  "executive_summary":"...","key_stats":[],"themes":[],"key_actions":[],
+  "competitive_implications":"...","case_studies":[],"scan_date":"{scan_date}"
+}}
+"""
+
+def analyse_flagship_pdf(report, scan_date, context):
+    print(f"  PDF: {report['file']} ...", flush=True)
+    try:
+        pdf_b64 = load_pdf_base64(report["file"])
+    except FileNotFoundError:
+        return _error_entry(report, scan_date, "PDF not found")
+
+    prompt = FLAGSHIP_PROMPT.format(
+        context=context, title=report["title"], year=report["year"],
+        report_id=report["id"], report_url=report.get("report_url",""), scan_date=scan_date,
+    )
+    try:
+        raw = gemini_call([
+            {"inline_data": {"mime_type": "application/pdf", "data": pdf_b64}},
+            {"text": prompt}
+        ], max_tokens=16000)
+        result = parse_json_loose(raw)
+        result["report_url"] = report.get("report_url", "")
+        print(f"      OK: {len(result.get('themes',[]))} themes, {len(result.get('case_studies',[]))} cases", flush=True)
+        return result
+    except Exception as e:
+        print(f"      ERROR: {e}", flush=True)
+        return _error_entry(report, scan_date, str(e))
+
+def analyse_flagship_web(report, scan_date, context):
+    print(f"  Web: {report['url']} ...", flush=True)
+    page_text = fetch_url_text(report["url"])
+    prompt = FLAGSHIP_PROMPT.format(
+        context=context, title=report["title"], year=report["year"],
+        report_id=report["id"], report_url=report.get("report_url",""), scan_date=scan_date,
+    ) + f"\n\nContent:\n{page_text}"
+    try:
+        raw = gemini_call([{"text": prompt}], max_tokens=16000)
+        result = parse_json_loose(raw)
+        result["report_url"] = report.get("report_url", "")
+        return result
+    except Exception as e:
+        print(f"      ERROR: {e}", flush=True)
+        return _error_entry(report, scan_date, str(e))
+
+def _error_entry(report, scan_date, error):
+    return {
+        "report_id": report["id"], "report_title": report["title"],
+        "report_year": report["year"], "report_url": report.get("report_url",""),
+        "executive_summary": f"Error: {error}", "key_stats": [], "themes": [],
+        "key_actions": [], "competitive_implications": "", "case_studies": [],
+        "scan_date": scan_date, "error": error,
+    }
+
+def run_flagship_analyses(scan_date, context):
+    results = []
+    for report in FLAGSHIP_REPORTS:
+        r = analyse_flagship_pdf(report, scan_date, context) if report["source"]=="pdf" \
+            else analyse_flagship_web(report, scan_date, context)
+        results.append(r)
+        time.sleep(2)
+    return results
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main():
+    if not GEMINI_API_KEY:
+        raise RuntimeError("GEMINI_KEY environment variable not set")
+
+    scan_date    = datetime.date.today().isoformat()
+    sources_data = load_sources()
+    config       = get_scan_config(sources_data)
+    context      = config.get("context", "CMIplus is RBI's corporate cash management platform.")
+
+    print(f"\n{'='*60}\nCMIplus Intelligence Cockpit - Scan {scan_date}\n{'='*60}", flush=True)
+
+    print("\n=== WEEKLY BRIEFING ===", flush=True)
+    briefing = run_weekly_briefing(scan_date, sources_data)
+    with open("briefing.json", "w", encoding="utf-8") as f:
+        json.dump(briefing, f, ensure_ascii=False, indent=2)
+    stats = briefing.get("source_stats", {})
+    print(f"\nbriefing.json written:")
+    print(f"  Market:     {len(briefing['market'])} items from {stats.get('market_sources_used',[])}")
+    print(f"  Thought:    {len(briefing['thought'])} items from {stats.get('thought_sources_used',[])}")
+    print(f"  Competitors:{len(briefing['competitors'])} items from {stats.get('competitor_sources_used',[])}")
+
+    print("\n=== FLAGSHIP ANALYSES ===", flush=True)
+    analyses = run_flagship_analyses(scan_date, context)
+    with open("flagship-analyses.json", "w", encoding="utf-8") as f:
+        json.dump(analyses, f, ensure_ascii=False, indent=2)
+    print(f"flagship-analyses.json written ({len(analyses)} reports)", flush=True)
+    print(f"\nScan complete. {scan_date}", flush=True)
+
+if __name__ == "__main__":
+    main()
