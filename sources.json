@@ -2,7 +2,7 @@
   "meta": {
     "description": "CMIplus Weekly Intelligence Cockpit — Source Configuration v3",
     "instructions": "Edit sources here. priority: 1=high (more items), 2=medium, 3=low. Set active: false to pause. flagship_reports are analysed separately via PDF/web — not part of the weekly scan.",
-    "last_updated": "2026-04-09",
+    "last_updated": "2026-04-12",
     "notes": "URLs verified April 2026. McKinsey/EY/PwC use specific content pages. BCG uses publications filter. Lookback extended to 8 weeks."
   },
   "market_news": [
@@ -15,7 +15,7 @@
     },
     {
       "name": "The Global Treasurer",
-      "url": "https://www.theglobaltreasurer.com/",
+      "url": "https://www.theglobaltreasurer.com/news/",
       "focus": "treasury, corporate finance, payments, liquidity, cash management trends",
       "priority": 1,
       "active": true
@@ -37,7 +37,7 @@
     },
     {
       "name": "EBA / ECB",
-      "url": "https://www.ecb.europa.eu/press/pr/date/html/index.en.html",
+      "url": "https://www.ecb.europa.eu/press/html/index.en.html",
       "focus": "SEPA regulation, instant payments, VoP, PSD3, DORA, AML, regulatory updates",
       "priority": 1,
       "active": true
@@ -219,7 +219,7 @@
     },
     {
       "name": "BNP Paribas",
-      "url": "https://group.bnpparibas/en/all-news",
+      "url": "https://cashmanagement.bnpparibas.com/",
       "focus": "cash management, corporate banking, Connexis platform, CEE, Journeys to Treasury",
       "priority": 3,
       "active": true
@@ -233,15 +233,30 @@
     },
     {
       "name": "ING",
-      "url": "https://www.ing.com/Newsroom.htm",
+      "url": "https://www.ing.com/Newsroom/All-news.htm",
       "focus": "wholesale banking, payments, API banking, embedded finance, InsideBusiness",
       "priority": 3,
-      "active": true
+      "active": false,
+      "note_disabled": "Persistent 404 on GitHub Actions"
     },
     {
       "name": "Intesa Sanpaolo",
       "url": "https://group.intesasanpaolo.com/en/newsroom",
       "focus": "cash management, corporate banking, CEE expansion, IMI CIB",
+      "priority": 3,
+      "active": true
+    },
+    {
+      "name": "Citi Treasury",
+      "url": "https://www.citigroup.com/global/news/",
+      "focus": "treasury and trade solutions, API banking, cash management, CEE, institutional clients",
+      "priority": 2,
+      "active": true
+    },
+    {
+      "name": "Societe Generale",
+      "url": "https://www.societegenerale.com/en/news-and-media/press-releases",
+      "focus": "corporate banking, cash management, CEE, transaction banking, digital solutions",
       "priority": 3,
       "active": true
     }
