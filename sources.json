@@ -298,5 +298,55 @@
       "fyi": "Background context and market awareness"
     },
     "competitor_lookback_days": 56
-  }
+  },
+  "regulatory_radar": [
+    {
+      "name": "EBA Regulatory Updates",
+      "url": "https://www.eba.europa.eu/activities/single-rulebook/regulatory-activities/payment-services-and-electronic-money",
+      "focus": "instant payments regulation, VoP, PSD3/PSR, SEPA, ITS, sanctions screening, DORA",
+      "priority": 1,
+      "active": true,
+      "regulation": "IPR / PSD3 / SEPA"
+    },
+    {
+      "name": "ECB Payment Regulation",
+      "url": "https://www.ecb.europa.eu/paym/intro/html/index.en.html",
+      "focus": "instant payments, SEPA, TARGET2, payment systems oversight, regulatory updates",
+      "priority": 1,
+      "active": true,
+      "regulation": "ECB / SEPA"
+    },
+    {
+      "name": "SWIFT ISO 20022 Hub",
+      "url": "https://www.swift.com/standards/iso-20022",
+      "focus": "CBPR+ migration, structured addresses, SR2026 release, MX messages, coexistence deadlines",
+      "priority": 1,
+      "active": true,
+      "regulation": "ISO 20022 / CBPR+"
+    },
+    {
+      "name": "EPC SEPA Schemes",
+      "url": "https://www.europeanpaymentscouncil.eu/news-insights/news",
+      "focus": "SEPA instant credit transfer, VoP scheme, SEPA direct debit, scheme rulebook updates",
+      "priority": 1,
+      "active": true,
+      "regulation": "SEPA / EPC"
+    },
+    {
+      "name": "Euro Banking Association",
+      "url": "https://www.abe-eba.eu/about-eba/news/",
+      "focus": "instant payments, VoP, PSD3, open banking, FIDA, liquidity management regulation",
+      "priority": 2,
+      "active": true,
+      "regulation": "PSD3 / Open Banking"
+    },
+    {
+      "name": "European Commission Financial Services",
+      "url": "https://finance.ec.europa.eu/news/all-news_en",
+      "focus": "PSD3, PSR, DORA, MiCA, digital euro, AML package, open finance FIDA",
+      "priority": 2,
+      "active": true,
+      "regulation": "PSD3 / PSR / MiCA"
+    }
+  ]
 }
