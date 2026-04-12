@@ -265,7 +265,7 @@ For EACH item produce:
 - summary_detail: 4-6 sentences - context, product details, strategic rationale, CEE relevance
 - key_points: Array of 3 specific facts or observations
 - rbi_cash_management: 2 sentences - competitive implication for CMIplus
-- url: Direct URL if found, else "{source_url}"
+- url: If actual news found: direct article URL. If inferred: use "{source_url}"
 - source: "{source_name}"
 - source_url: "{source_url}"
 - competitor: "{competitor}"
@@ -273,7 +273,7 @@ For EACH item produce:
 - relevance: "urgent" if >=8, "watch" if >=5, "fyi" otherwise
 - tags: Array of 2-4 tags from: {tags}
 - date: "{scan_date}"
-- inferred: true if based on inference, false if actual news
+- inferred: true if no specific news found (based on strategic inference), false if actual news article found
 - article_date: Best estimate of publication date (YYYY-MM-DD). Use content clues. If unknown use "{scan_date}".
 
 Respond ONLY with valid JSON:
