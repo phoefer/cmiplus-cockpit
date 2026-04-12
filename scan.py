@@ -484,16 +484,21 @@ Report: "{title}" ({year})
 Produce:
 1. executive_summary: 4-5 sentences (string)
 2. key_stats: Array of 6-8 statistics as PLAIN STRINGS only, e.g. ["74% of treasurers use AI", "EUR 2.3bn market size"]
-3. themes: Array of 5-6 themes, each: name (string), description (string, 3-4 sentences), key_stat (string)
-4. key_actions: Array of 3-4 actions, each: action, urgency (HIGH/MEDIUM/LOW), rationale, timeline
-5. competitive_implications: 2-3 sentences
-6. case_studies: Corporate case studies from the report (if any), each:
+3. key_quotes: Array of 3-5 of the most powerful direct quotes from the report. Each quote must be:
+   - verbatim from the report text (exact words, under 30 words)
+   - attributed with speaker name and role/company if available
+   - selected for strategic impact relevant to CMIplus
+   Format each as: {{"text": "...", "attribution": "Name, Role, Company"}}
+4. themes: Array of 5-6 themes, each: name (string), description (string, 3-4 sentences), key_stat (string)
+5. key_actions: Array of 3-4 actions, each: action, urgency (HIGH/MEDIUM/LOW), rationale, timeline
+6. competitive_implications: 2-3 sentences
+7. case_studies: Corporate case studies from the report (if any), each:
    company, headline, key_achievement, lesson
 
 Respond ONLY with valid JSON:
 {{
   "report_id":"{report_id}","report_title":"{title}","report_year":"{year}","report_url":"{report_url}",
-  "executive_summary":"...","key_stats":[],"themes":[],"key_actions":[],
+  "executive_summary":"...","key_stats":[],"key_quotes":[],"themes":[],"key_actions":[],
   "competitive_implications":"...","case_studies":[],"scan_date":"{scan_date}"
 }}
 """
@@ -547,9 +552,29 @@ def _error_entry(report, scan_date, error):
         "scan_date": scan_date, "error": error,
     }
 
-def run_flagship_analyses(scan_date, context):
+def run_flagship_analyses(scan_date, context, force=False):
+    """Analyse flagship reports. Skips if already analysed (cached) unless force=True."""
+    # Load existing analyses to check cache
+    existing = {}
+    try:
+        with open("flagship-analyses.json", "r", encoding="utf-8") as f:
+            cached = json.load(f)
+            for entry in cached:
+                if not entry.get("error"):
+                    existing[entry["report_id"]] = entry
+        print(f"  Found {len(existing)} cached flagship analyses", flush=True)
+    except Exception:
+        print("  No cached flagship analyses found", flush=True)
+
     results = []
     for report in FLAGSHIP_REPORTS:
+        rid = report["id"]
+        # Use cache if exists and not forced
+        if not force and rid in existing:
+            print(f"  CACHED: {report['title']} (skipping re-analysis)", flush=True)
+            results.append(existing[rid])
+            continue
+        # Run fresh analysis
         r = analyse_flagship_pdf(report, scan_date, context) if report["source"]=="pdf" \
             else analyse_flagship_web(report, scan_date, context)
         results.append(r)
@@ -582,10 +607,15 @@ def main():
     print(f"  Competitors:{len(briefing['competitors'])} items from {stats.get('competitor_sources_used',[])}")
 
     print("\n=== FLAGSHIP ANALYSES ===", flush=True)
-    analyses = run_flagship_analyses(scan_date, context)
+    # force=True only when FORCE_FLAGSHIP env var is set
+    force_flagship = os.environ.get("FORCE_FLAGSHIP", "").lower() in ("1","true","yes")
+    if force_flagship:
+        print("  FORCE_FLAGSHIP=true: re-analysing all reports", flush=True)
+    analyses = run_flagship_analyses(scan_date, context, force=force_flagship)
     with open("flagship-analyses.json", "w", encoding="utf-8") as f:
         json.dump(analyses, f, ensure_ascii=False, indent=2)
-    print(f"flagship-analyses.json written ({len(analyses)} reports)", flush=True)
+    new_count = sum(1 for a in analyses if a.get("scan_date") == scan_date)
+    print(f"flagship-analyses.json written ({len(analyses)} reports, {new_count} newly analysed)", flush=True)
     print(f"\nScan complete. {scan_date}", flush=True)
 
 if __name__ == "__main__":
