@@ -56,6 +56,13 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .kpi-num.fyi{color:var(--fyi);}
 .kpi-num.total{color:var(--navy);}
 .kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500;}
+.reg-timeline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.reg-deadline-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:8px 12px;min-width:140px;flex:1;}
+.reg-dl-date{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:var(--urgent);margin-bottom:2px;}
+.reg-dl-label{font-size:11px;color:var(--text);font-weight:500;line-height:1.3;}
+.reg-dl-area{font-size:10px;color:var(--muted);font-family:"IBM Plex Mono",monospace;margin-top:2px;}
+.reg-dl-chip.upcoming{border-color:var(--urgent-border);background:var(--urgent-bg);}
+.reg-dl-chip.watch{border-color:var(--watch-border);background:var(--watch-bg);}
 .exec-card{background:var(--navy);border-radius:var(--rl);padding:1.375rem 1.5rem;margin-bottom:1.25rem;}
 .exec-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:'IBM Plex Mono',monospace;}
 .exec-text{font-size:14px;color:rgba(255,255,255,.88);line-height:1.75;}
@@ -230,6 +237,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
       <div class="nav-item" data-tab="market"><span><span class="nav-icon">&#9675;</span>Market news</span><span class="nav-ct" id="cnt-market">-</span></div>
       <div class="nav-item" data-tab="thought"><span><span class="nav-icon">&#9651;</span>Thought leadership</span><span class="nav-ct" id="cnt-thought">-</span></div>
       <div class="nav-item" data-tab="competitors"><span><span class="nav-icon">&#9671;</span>Competitors</span><span class="nav-ct" id="cnt-competitors">-</span></div>
+      <div class="nav-item" data-tab="regulatory"><span><span class="nav-icon">&#9654;</span>Regulatory radar</span><span class="nav-ct" id="cnt-regulatory">-</span></div>
     </div>
     <div class="nav-divider"></div>
     <div style="margin-bottom:1rem;">
@@ -267,6 +275,12 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
       <div class="filter-bar" id="ft-thought"></div>
       <div class="cards" id="cards-thought"></div>
     </div>
+    <div class="section" id="tab-regulatory">
+      <div class="sec-hdr"><div class="sec-h">Regulatory Radar</div><span class="sec-ct" id="sc-regulatory">-</span></div>
+      <div id="reg-timeline" style="margin-bottom:1rem"></div>
+      <div class="filter-bar" id="ft-regulatory"></div>
+      <div class="cards" id="cards-regulatory"></div>
+    </div>
     <div class="section" id="tab-flagship">
       <div class="sec-hdr"><div class="sec-h">Flagship reports</div></div>
       <div class="fl-grid" id="fl-grid"></div>
@@ -295,6 +309,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
     <div class="mob-item" data-tab="market"><div class="mob-icon">&#9675;</div>Market</div>
     <div class="mob-item" data-tab="thought"><div class="mob-icon">&#9651;</div>Thought</div>
     <div class="mob-item" data-tab="competitors"><div class="mob-icon">&#9671;</div>Compete</div>
+    <div class="mob-item" data-tab="regulatory"><div class="mob-icon">&#9654;</div>Reg</div>
     <div class="mob-item" data-tab="flagship"><div class="mob-icon">&#9733;</div>Reports</div>
   </div>
 </nav>
@@ -705,6 +720,118 @@ document.getElementById('searchClear').addEventListener('click', function() {
   switchTab('overview');
 });
 
+// REGULATORY RADAR
+function renderDeadlineTimeline(items) {
+  var el = document.getElementById('reg-timeline');
+  if(!el) return;
+  // Extract items with specific deadlines, sort by date
+  var deadlines = items.filter(function(i) {
+    return i.deadline && i.deadline !== 'Ongoing' && i.deadline !== '';
+  });
+  deadlines.sort(function(a,b) { return a.deadline < b.deadline ? -1 : 1; });
+  if(!deadlines.length) { el.style.display='none'; return; }
+  var today = new Date();
+  el.innerHTML = '<div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Key deadlines</div>' +
+    '<div class="reg-timeline">' +
+    deadlines.slice(0,6).map(function(item) {
+      var d = new Date(item.deadline);
+      var diff = Math.floor((d - today) / 86400000);
+      var urgent = diff < 60;
+      var chipClass = urgent ? 'reg-deadline-chip reg-dl-chip upcoming' : 'reg-deadline-chip reg-dl-chip watch';
+      var daysStr = diff < 0 ? 'PAST DUE' : diff === 0 ? 'TODAY' : diff + ' days';
+      return '<div class="' + chipClass + '">' +
+        '<div class="reg-dl-date">' + esc(item.deadline) + ' (' + daysStr + ')</div>' +
+        '<div class="reg-dl-label">' + esc(item.title.substring(0,50)) + '</div>' +
+        '<div class="reg-dl-area">' + esc(item.regulation_area||item.source||'') + '</div>' +
+        '</div>';
+    }).join('') + '</div>';
+}
+
+function buildRegFilterToolbar(items) {
+  var el = document.getElementById('ft-regulatory');
+  if(!el) return;
+  // Build area chips
+  var areas = [];
+  items.forEach(function(i) { var a=i.regulation_area||'Other'; if(areas.indexOf(a)===-1)areas.push(a); });
+  areas.sort();
+  var html = '<span class="ft-label">Area</span>';
+  html += '<button class="ft-chip src active" data-regarea="__all__">All</button>';
+  areas.forEach(function(a) {
+    html += '<button class="ft-chip src" data-regarea="' + escA(a) + '">' + esc(a) + '</button>';
+  });
+  html += '<div class="sort-wrap">Sort: <select class="sort-sel" id="sort-regulatory"><option value="relevance">Most relevant</option><option value="deadline">Nearest deadline</option></select></div>';
+  el.innerHTML = html;
+  var activeArea = null;
+  el.querySelectorAll('[data-regarea]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      el.querySelectorAll('[data-regarea]').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      activeArea = b.dataset.regarea === '__all__' ? null : b.dataset.regarea;
+      renderRegulatory(activeArea, document.getElementById('sort-regulatory').value);
+    });
+  });
+  var sortEl = document.getElementById('sort-regulatory');
+  if(sortEl) sortEl.addEventListener('change', function() {
+    renderRegulatory(activeArea, sortEl.value);
+  });
+}
+
+function renderRegulatory(filterArea, sortMode) {
+  if(!S.briefing) return;
+  var raw = S.briefing.regulatory || [];
+  var ct = document.getElementById('sc-regulatory');
+  if(ct) ct.textContent = raw.length;
+  document.getElementById('cnt-regulatory').textContent = raw.length;
+  renderDeadlineTimeline(raw);
+  var items = raw.slice();
+  if(filterArea) items = items.filter(function(i){ return (i.regulation_area||'Other')===filterArea; });
+  if(sortMode === 'deadline') {
+    items.sort(function(a,b) {
+      var da = a.deadline||'9999';
+      var db = b.deadline||'9999';
+      return da < db ? -1 : da > db ? 1 : 0;
+    });
+  } else {
+    items.sort(function(a,b){ return (b.relevance_score||0)-(a.relevance_score||0); });
+  }
+  var c = document.getElementById('cards-regulatory');
+  if(!c) return;
+  if(!items.length) { c.innerHTML='<div class="empty"><p>No regulatory items match</p></div>'; return; }
+  c.innerHTML = items.map(function(item) {
+    var r = item.relevance||'fyi';
+    var stripeColor = r==='urgent'?'var(--urgent)':r==='watch'?'var(--watch)':'var(--fyi)';
+    var url = item.url||item.source_url||'';
+    var hasRealUrl = url && url !== (item.source_url||'') && !item.inferred;
+    var linkHTML = url ? '<a class="act-link" href="' + escA(url) + '" target="_blank">' + (hasRealUrl?'Read ->':'Source ->') + '</a>' : '';
+    var itemJ = escA(JSON.stringify(item));
+    var deadline = item.deadline && item.deadline!=='Ongoing' ? item.deadline : '';
+    var area = item.regulation_area || '';
+    return '<div class="card">' +
+      '<div class="card-inner">' +
+      '<div class="card-stripe ' + r + '"></div>' +
+      '<div class="card-body">' +
+      '<div class="card-top">' +
+      '<span class="card-rank' + (item.rank<=3?' top':'') + '">' + (item.rank?String(item.rank).padStart(2,'0'):'') + '</span>' +
+      '<div class="card-tw">' +
+      '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + '</div>' +
+      '<div class="card-mr">' +
+      (area ? '<span class="src-chip" style="background:var(--navy-light);border-color:var(--navy-border);color:var(--navy)">' + esc(area) + '</span>' : '') +
+      (deadline ? '<span class="cdot">|</span><span class="date-sm" style="color:var(--urgent);font-weight:600">&#9654; ' + esc(deadline) + '</span>' : '') +
+      '<span class="cdot">|</span><span class="date-sm">' + esc(item.source||'') + '</span>' +
+      '</div></div>' +
+      '<div>' + (r==='urgent'?'<span class="badge bu">URGENT</span>':r==='watch'?'<span class="badge bw">WATCH</span>':'<span class="badge bf">FYI</span>') + '</div>' +
+      '</div>' +
+      '<div class="card-preview" data-item="' + itemJ + '">' + esc(item.summary_short||'') + '</div>' +
+      '<div class="card-expand">' +
+      '<div class="card-full" style="margin-top:10px">' + esc(item.summary_detail||item.summary_short||'') + '</div>' +
+      (item.key_points&&item.key_points.length ? '<div class="kp-wrap"><div class="kp-lbl">Compliance obligations</div>' + item.key_points.map(function(p){return '<div class="kp">'+esc(p)+'</div>';}).join('') + '</div>' : '') +
+      '<div class="rbi-block"><div class="rbi-lbl">Action for RBI Cash Management</div><div class="rbi-txt">' + esc(item.rbi_cash_management||'') + '</div></div>' +
+      '</div>' +
+      '<div class="card-footer"><div></div><div class="card-actions">' + linkHTML + '</div></div>' +
+      '</div></div></div>';
+  }).join('');
+}
+
 // LOAD
 async function loadAll() {
   try {
@@ -728,10 +855,13 @@ async function loadAll() {
       document.getElementById('cnt-thought').textContent = t.length;
       document.getElementById('cnt-competitors').textContent = c.length;
       document.getElementById('weekBadge').textContent = S.briefing.week_label || '';
+      var reg = S.briefing.regulatory || [];
+      document.getElementById('cnt-regulatory').textContent = reg.length;
       renderOverview();
       renderSection('market');      buildFilterToolbar('market', m);
       renderSection('thought');     buildFilterToolbar('thought', t);
       renderCompetitors();          buildFilterToolbar('competitors', c);
+      renderRegulatory(null, 'relevance'); buildRegFilterToolbar(reg);
     } else {
       var emEl = document.getElementById('ov-empty');
       if(emEl) {
