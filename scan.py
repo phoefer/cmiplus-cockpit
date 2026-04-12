@@ -482,9 +482,9 @@ Context: {context}
 Report: "{title}" ({year})
 
 Produce:
-1. executive_summary: 4-5 sentences
-2. key_stats: Array of 6-8 most important statistics
-3. themes: Array of 5-6 themes, each: name, description (3-4 sentences), key_stat
+1. executive_summary: 4-5 sentences (string)
+2. key_stats: Array of 6-8 statistics as PLAIN STRINGS only, e.g. ["74% of treasurers use AI", "EUR 2.3bn market size"]
+3. themes: Array of 5-6 themes, each: name (string), description (string, 3-4 sentences), key_stat (string)
 4. key_actions: Array of 3-4 actions, each: action, urgency (HIGH/MEDIUM/LOW), rationale, timeline
 5. competitive_implications: 2-3 sentences
 6. case_studies: Corporate case studies from the report (if any), each:
