@@ -192,5 +192,3 @@ Every Gemini call includes this CMIplus context from `scan_config.context` in `s
 > CMIplus is RBI's (Raiffeisen Bank International) corporate cash management platform for large international corporates in CEE. Key topics: EBICS, H2H, ISO 20022, SEPA, instant payments, VoP, eBAM, Open Banking APIs, corporate treasury, multi-currency payments. Channels: EBICS v2.5+v3, H2H, SWIFT, Web, Mobile, Open API. Network banks across Austria, CZ, HR, RS, XK, AL, RO, SK, HU. Product Owner: Philipp Höfer.
 
 ---
-
-*Built by Philipp Höfer, Group Product Owner Cash Management, RBI Vienna*
