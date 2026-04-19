@@ -65,6 +65,8 @@ def get_scan_config(sources_data):
         "items_priority_1": 3,
         "items_priority_2": 2,
         "items_priority_3": 1,
+        "market_lookback_days": 14,
+        "thought_lookback_months": 3,
         "language": "English",
         "context": "CMIplus is RBI's corporate cash management platform for large corporates in CEE.",
     }
