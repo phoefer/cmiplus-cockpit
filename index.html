@@ -690,7 +690,7 @@ function renderOverview() {
     tagCloud.innerHTML = '<div class="tag-filter-bar"><span class="tag-filter-label">Browse by topic</span>' +
       sortedTags.map(function(t){
         var cls = S_activeTag===t ? ' active' : '';
-        return '<button class="tag-filter-chip' + cls + '" onclick="applyTagFilter('' + escA(t) + '')">' + esc(t) + ' <span style="opacity:.6">(' + tagCounts[t] + ')</span></button>';
+        return '<button class="tag-filter-chip' + cls + '" onclick="applyTagFilter(\'' + escA(t) + '\')">' + esc(t) + ' <span style="opacity:.6">(' + tagCounts[t] + ')</span></button>';
       }).join('') +
       (S_activeTag ? '<button class="tag-filter-clear" onclick="clearTagFilter()">Clear x</button>' : '') +
     '</div>';
@@ -939,7 +939,7 @@ function renderSectionItems(section, items) {
   if(!c) return;
   c.innerHTML = sorted.length
     ? sorted.map(function(i){ return cardHTML(i, false); }).join("")
-    : "<div class="empty"><p>No items match</p></div>";
+    : '<div class="empty"><p>No items match</p></div>';
 }
 
 function renderCompetitorItems(items) {
