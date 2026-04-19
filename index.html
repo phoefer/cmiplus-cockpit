@@ -56,6 +56,15 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .kpi-num.fyi{color:var(--fyi);}
 .kpi-num.total{color:var(--navy);}
 .kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:500;}
+/* GLOBAL TAG FILTER */
+.tag-filter-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 12px;background:var(--navy-light);border:1px solid var(--navy-border);border-radius:var(--rl);margin-bottom:1rem;}
+.tag-filter-label{font-size:10px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+.tag-filter-chip{background:var(--surface);border:1px solid var(--navy-border);color:var(--navy);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:"IBM Plex Mono",monospace;white-space:nowrap;transition:all .12s;}
+.tag-filter-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.tag-filter-chip.active{background:var(--rbi);border-color:var(--rbi);color:#fff;}
+.tag-filter-clear{font-size:11px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:"Inter",sans-serif;margin-left:4px;text-decoration:underline;}
+.tag-filter-banner{display:none;background:var(--rbi-light);border:1px solid var(--rbi-border);border-radius:var(--r);padding:6px 12px;margin-bottom:1rem;font-size:12px;color:var(--rbi);display:flex;align-items:center;justify-content:space-between;}
+.tag-filter-banner.visible{display:flex;}
 .reg-timeline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
 .reg-deadline-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:8px 12px;min-width:140px;flex:1;}
 .reg-dl-date{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:var(--urgent);margin-bottom:2px;}
@@ -126,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .kp::before{content:"->";color:var(--fyi);font-weight:600;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11px;}
 .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
 .card-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;}
-.tag-chip{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:1px 6px;border-radius:3px;}
+.tag-chip{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:1px 6px;border-radius:3px;cursor:pointer;}
 .card-actions{display:flex;align-items:center;gap:8px;}
 .act-link{font-size:11px;font-weight:500;color:var(--rbi);text-decoration:none;}
 .act-link:hover{text-decoration:underline;}
@@ -252,6 +261,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
     </div>
   </nav>
   <main class="content">
+    <div id="tag-filter-banner" class="tag-filter-banner">
+      <span id="tag-filter-banner-text">Filtering by tag: <strong id="tag-filter-active-tag"></strong></span>
+      <button onclick="clearTagFilter()" class="tag-filter-clear">Clear filter x</button>
+    </div>
     <div class="section active" id="tab-overview">
       <div id="ov-empty" class="empty"><p>Loading briefing...</p><span>Fetching briefing.json</span></div>
       <div id="ov-content" style="display:none">
@@ -262,7 +275,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
           <div class="kpi"><div class="kpi-num total" id="meta-total">0</div><div class="kpi-label">Total</div></div>
         </div>
         <div class="exec-card"><div class="exec-lbl">Executive summary</div><div class="exec-text" id="exec-text"></div></div>
-        <div class="dash-grid" id="dash-grid"></div>
+        <div id="overview-tag-cloud" style="margin-bottom:1rem"></div>
+      <div class="dash-grid" id="dash-grid"></div>
       </div>
     </div>
     <div class="section" id="tab-market">
@@ -393,7 +407,9 @@ function cardHTML(item, showComp) {
   }
   var tagsHTML = '';
   if(item.tags && item.tags.length) {
-    tagsHTML = '<div class="card-tags">' + item.tags.map(function(t) { return '<span class="tag-chip">' + esc(t) + '</span>'; }).join('') + '</div>';
+    tagsHTML = '<div class="card-tags">' + item.tags.map(function(t) {
+        return '<button class="tag-chip" onclick="event.stopPropagation();applyTagFilter(\'' + escA(t) + '\')" title="Filter by ' + esc(t) + '">' + esc(t) + '</button>';
+      }).join('') + '</div>';
   }
   return '<div class="card">' +
     '<div class="card-inner">' +
@@ -654,6 +670,21 @@ function renderOverview() {
           '</div></div>';
       }).join('') + '</div>';
   }).join('');
+  // Tag cloud
+  var tagCloud = document.getElementById('overview-tag-cloud');
+  if(tagCloud && S.briefing) {
+    var allTagItems = (S.briefing.market||[]).concat(S.briefing.thought||[]).concat(S.briefing.competitors||[]).concat(S.briefing.regulatory||[]);
+    var tagCounts = {};
+    allTagItems.forEach(function(i){ (i.tags||[]).forEach(function(t){ tagCounts[t]=(tagCounts[t]||0)+1; }); });
+    var sortedTags = Object.keys(tagCounts).sort(function(a,b){ return tagCounts[b]-tagCounts[a]; }).slice(0,16);
+    tagCloud.innerHTML = '<div class="tag-filter-bar"><span class="tag-filter-label">Browse by topic</span>' +
+      sortedTags.map(function(t){
+        var cls = S_activeTag===t ? ' active' : '';
+        return '<button class="tag-filter-chip' + cls + '" onclick="applyTagFilter('' + escA(t) + '')">' + esc(t) + ' <span style="opacity:.6">(' + tagCounts[t] + ')</span></button>';
+      }).join('') +
+      (S_activeTag ? '<button class="tag-filter-clear" onclick="clearTagFilter()">Clear x</button>' : '') +
+    '</div>';
+  }
   document.getElementById('ov-empty').style.display = 'none';
   document.getElementById('ov-content').style.display = 'block';
 }
@@ -830,6 +861,112 @@ function renderRegulatory(filterArea, sortMode) {
       '<div class="card-footer"><div></div><div class="card-actions">' + linkHTML + '</div></div>' +
       '</div></div></div>';
   }).join('');
+}
+
+// GLOBAL TAG FILTER
+var S_activeTag = null;
+
+function applyTagFilter(tag) {
+  S_activeTag = (S_activeTag === tag) ? null : tag;
+  updateTagFilterBanner();
+  renderAllWithTagFilter();
+}
+
+function clearTagFilter() {
+  S_activeTag = null;
+  updateTagFilterBanner();
+  renderAllWithTagFilter();
+}
+
+function updateTagFilterBanner() {
+  var banner = document.getElementById("tag-filter-banner");
+  var tagEl = document.getElementById("tag-filter-active-tag");
+  if(!banner || !tagEl) return;
+  if(S_activeTag) {
+    tagEl.textContent = S_activeTag;
+    banner.classList.add("visible");
+  } else {
+    banner.classList.remove("visible");
+  }
+}
+
+function filterItemsByTag(items) {
+  if(!S_activeTag) return items;
+  return items.filter(function(i) {
+    return i.tags && i.tags.indexOf(S_activeTag) !== -1;
+  });
+}
+
+function renderAllWithTagFilter() {
+  if(!S.briefing) return;
+  var m = filterItemsByTag(S.briefing.market || []);
+  var t = filterItemsByTag(S.briefing.thought || []);
+  var c = filterItemsByTag(S.briefing.competitors || []);
+  var r = filterItemsByTag(S.briefing.regulatory || []);
+  // Update counts in sidebar
+  document.getElementById("cnt-market").textContent = m.length;
+  document.getElementById("cnt-thought").textContent = t.length;
+  document.getElementById("cnt-competitors").textContent = c.length;
+  document.getElementById("cnt-regulatory").textContent = r.length;
+  // Re-render all sections with filtered data
+  renderSectionItems("market", m);
+  renderSectionItems("thought", t);
+  renderCompetitorItems(c);
+  renderRegulatory(null, "relevance", r);
+  renderOverviewItems(m, t, c);
+  // Auto-switch to overview to show results
+  if(S_activeTag) switchTab("overview");
+}
+
+function renderSectionItems(section, items) {
+  var sorted = applyFilters(items, section);
+  var c = document.getElementById("cards-" + section);
+  var ct = document.getElementById("sc-" + section);
+  if(ct) ct.textContent = sorted.length;
+  if(!c) return;
+  c.innerHTML = sorted.length
+    ? sorted.map(function(i){ return cardHTML(i, false); }).join("")
+    : "<div class="empty"><p>No items match</p></div>";
+}
+
+function renderCompetitorItems(items) {
+  var sorted = applyFilters(items, "competitors");
+  var ct = document.getElementById("sc-competitors");
+  if(ct) ct.textContent = sorted.length;
+  var c = document.getElementById("comps-grouped");
+  if(!sorted.length) { if(c) c.innerHTML="<div class=\"empty\"><p>No items match</p></div>"; return; }
+  var groups = {};
+  sorted.forEach(function(i){ var k=i.competitor||"Other"; if(!groups[k])groups[k]=[]; groups[k].push(i); });
+  if(c) c.innerHTML = Object.keys(groups).map(function(name) {
+    return "<div class=\"comp-group\"><div class=\"comp-grp-hdr\"><div class=\"comp-grp-name\">" + esc(name) + "</div><div class=\"comp-grp-ct\">" + groups[name].length + " items</div></div>" +
+      "<div class=\"cards\">" + groups[name].map(function(i){ return cardHTML(i,false); }).join("") + "</div></div>";
+  }).join("");
+}
+
+function renderOverviewItems(m, t, c) {
+  if(!S.briefing) return;
+  var all = m.concat(t).concat(c);
+  document.getElementById("meta-urgent").textContent = all.filter(function(i){ return i.relevance==="urgent"; }).length;
+  document.getElementById("meta-watch").textContent  = all.filter(function(i){ return i.relevance==="watch"; }).length;
+  document.getElementById("meta-fyi").textContent    = all.filter(function(i){ return i.relevance==="fyi"; }).length;
+  document.getElementById("meta-total").textContent  = all.length;
+  var sections = [{key:"market",items:m,label:"Market news",tab:"market"},{key:"thought",items:t,label:"Thought leadership",tab:"thought"},{key:"competitors",items:c,label:"Competitors",tab:"competitors"}];
+  document.getElementById("dash-grid").innerHTML = sections.map(function(s) {
+    var sitems = s.items.slice(0,4);
+    return "<div>" +
+      "<div class=\"dash-col-hdr\" style=\"cursor:pointer\" onclick=\"switchTab('" + s.tab + "')\">" +
+      "<span>" + s.label + "</span>" +
+      "<span class=\"dash-see-all\">See all (" + s.items.length + ")</span>" +
+      "</div>" +
+      sitems.map(function(item) {
+        var itemJ = escA(JSON.stringify(item));
+        return "<div class=\"dash-item\" onclick=\"try{openItemDD(JSON.parse(this.dataset.item))}catch(e){}\" data-item=\"" + itemJ + "\">" +
+          "<div class=\"dash-it\">" + esc(item.title) + "</div>" +
+          "<div class=\"dash-im\"><span class=\"urgdot\" style=\"background:" + urgColor(item.relevance) + "\"></span><span>" + esc(item.source||item.competitor||"") + "</span>" +
+          (item.rank ? "<span>| #" + item.rank + "</span>" : "") +
+          "</div></div>";
+      }).join("") + "</div>";
+  }).join("");
 }
 
 // LOAD
