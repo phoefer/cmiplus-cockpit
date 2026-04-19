@@ -85,7 +85,7 @@
       "url": "https://www.mckinsey.com/industries/financial-services/our-insights/banking",
       "focus": "transaction banking, payments strategy, treasury transformation, digital banking, AI in finance, stablecoins",
       "priority": 1,
-      "active": false,
+      "active": true,
       "note_disabled": "Blocks GitHub Actions IPs - consistent timeout"
     },
     {
@@ -93,7 +93,7 @@
       "url": "https://www.mckinsey.com/industries/financial-services/our-insights/payments",
       "focus": "global payments report, instant payments, transaction banking, payment rails, digital assets",
       "priority": 1,
-      "active": false,
+      "active": true,
       "note_disabled": "Blocks GitHub Actions IPs - consistent timeout"
     },
     {
@@ -101,7 +101,7 @@
       "url": "https://www.bcg.com/publications?fi2=00000172-0efd-d58d-a97a-5eff5173007f",
       "focus": "transaction banking strategy, cash management, agentic AI in banking, corporate banking",
       "priority": 1,
-      "active": false,
+      "active": true,
       "note": "Filtered publications page for financial institutions",
       "note_disabled": "Returns 403 on GitHub Actions - bot detection"
     },
