@@ -63,7 +63,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .tag-filter-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
 .tag-filter-chip.active{background:var(--rbi);border-color:var(--rbi);color:#fff;}
 .tag-filter-clear{font-size:11px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:"Inter",sans-serif;margin-left:4px;text-decoration:underline;}
-.tag-filter-banner{display:none;background:var(--rbi-light);border:1px solid var(--rbi-border);border-radius:var(--r);padding:6px 12px;margin-bottom:1rem;font-size:12px;color:var(--rbi);display:flex;align-items:center;justify-content:space-between;}
+.tag-filter-banner{background:var(--rbi-light);border:1px solid var(--rbi-border);border-radius:var(--r);padding:6px 12px;margin-bottom:1rem;font-size:12px;color:var(--rbi);align-items:center;justify-content:space-between;}
 .tag-filter-banner.visible{display:flex;}
 .reg-timeline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
 .reg-deadline-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:8px 12px;min-width:140px;flex:1;}
@@ -75,7 +75,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .exec-card{background:var(--navy);border-radius:var(--rl);padding:1.375rem 1.5rem;margin-bottom:1.25rem;}
 .exec-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:'IBM Plex Mono',monospace;}
 .exec-text{font-size:14px;color:rgba(255,255,255,.88);line-height:1.75;}
-.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
 .dash-col-hdr{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .dash-see-all{font-size:11px;color:var(--rbi);font-weight:500;text-transform:none;letter-spacing:0;cursor:pointer;}
 .dash-item{padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
@@ -234,7 +234,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
   </div>
   <div class="hdr-right">
     <span class="week-badge" id="weekBadge">Loading...</span>
-    <input id="searchInput" type="text" placeholder="Search..." style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:6px 12px;font-size:13px;color:#fff;font-family:'Inter',sans-serif;width:180px;" />
+    <a id="pdfDownloadBtn" href="#" target="_blank" style="display:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:500;white-space:nowrap;">&#8595; PDF</a>
+    <input id="searchInput" type="text" placeholder="Search..." style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:6px 12px;font-size:13px;color:#fff;font-family:'Inter',sans-serif;width:160px;" />
     <button id="searchBtn" style="background:var(--rbi);border:none;border-radius:6px;padding:6px 14px;font-size:12px;color:#fff;cursor:pointer;font-weight:500;">Search</button>
   </div>
 </header>
@@ -261,7 +262,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
     </div>
   </nav>
   <main class="content">
-    <div id="tag-filter-banner" class="tag-filter-banner">
+    <div id="tag-filter-banner" class="tag-filter-banner" style="display:none">
       <span id="tag-filter-banner-text">Filtering by tag: <strong id="tag-filter-active-tag"></strong></span>
       <button onclick="clearTagFilter()" class="tag-filter-clear">Clear filter x</button>
     </div>
@@ -418,7 +419,7 @@ function cardHTML(item, showComp) {
     '<div class="card-top">' +
     '<span class="' + rc + '">' + rs + '</span>' +
     '<div class="card-tw">' +
-    '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + '</div>' +
+    '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + ' <span class="card-chevron" style="float:right;font-size:10px;color:var(--muted);transition:transform .2s">&#9660;</span></div>' +
     '<div class="card-mr">' +
     '<span class="src-chip">' + esc(item.source||'') + '</span>' +
     (dateStr ? '<span class="cdot">|</span><span class="date-sm">' + esc(dateStr) + '</span>' : '') +
@@ -446,8 +447,10 @@ document.addEventListener('click', function(e) {
   var deepBtn = e.target.closest('.deep-btn');
   if(titleEl || prevEl) {
     var card = (titleEl || prevEl).closest('.card');
-    card.querySelector('.card-expand').classList.toggle('open');
+    var isOpen = card.querySelector('.card-expand').classList.toggle('open');
     card.querySelector('.card-preview').classList.toggle('exp');
+    var chev = card.querySelector('.card-chevron');
+    if(chev) chev.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
   }
   if(deepBtn && deepBtn.dataset.item) {
     try { openItemDD(JSON.parse(deepBtn.dataset.item)); } catch(e) {}
@@ -537,7 +540,14 @@ function openFlagshipDD(id) {
 // MODAL CLOSE
 document.getElementById('modalClose').addEventListener('click', function() { document.getElementById('modalOverlay').classList.add('hidden'); });
 document.getElementById('modalOverlay').addEventListener('click', function(e) { if(e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.add('hidden'); });
-document.addEventListener('keydown', function(e) { if(e.key==='Escape') document.getElementById('modalOverlay').classList.add('hidden'); });
+document.addEventListener('keydown', function(e) {
+  if(e.key==='Escape') document.getElementById('modalOverlay').classList.add('hidden');
+  if((e.metaKey||e.ctrlKey) && e.key==='k') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+    switchTab('search');
+  }
+});
 
 // FLAGSHIP META
 var FL_META = [
@@ -653,7 +663,7 @@ function renderOverview() {
   document.getElementById('meta-fyi').textContent    = all.filter(function(i){ return i.relevance==='fyi'; }).length;
   document.getElementById('meta-total').textContent  = all.length;
   document.getElementById('exec-text').textContent   = b.executive_summary || '';
-  var sections = [{key:'market',label:'Market news',tab:'market'},{key:'thought',label:'Thought leadership',tab:'thought'},{key:'competitors',label:'Competitors',tab:'competitors'}];
+  var sections = [{key:'market',label:'Market news',tab:'market'},{key:'thought',label:'Thought leadership',tab:'thought'},{key:'competitors',label:'Competitors',tab:'competitors'},{key:'regulatory',label:'Regulatory radar',tab:'regulatory'}];
   document.getElementById('dash-grid').innerHTML = sections.map(function(s) {
     var sitems = (b[s.key]||[]).slice(0,4);
     return '<div>' +
@@ -697,12 +707,15 @@ function renderSources() {
   var allM = stats.market_sources_all || ['Der Treasurer','The Global Treasurer','Strategic Treasurer','EBA / ECB','Finextra','The Paypers','Treasury Today','Global Finance'];
   var allT = stats.thought_sources_all || ['Oliver Wyman','EY','PwC','EACT','Deloitte'];
   var allC = stats.competitor_sources_all || ['Deutsche Bank','UniCredit','Erste Group','BNP Paribas','HSBC','ING','Intesa Sanpaolo'];
-  function si(name, used) {
+  function si(name, used, disabled) {
+    if(disabled) {
+      return '<div class="src-item" style="opacity:.45"><span class="src-name">'+esc(name)+'</span><div style="display:flex;align-items:center;gap:5px"><span class="src-ct" style="color:var(--muted)">disabled</span><span class="src-dot unk"></span></div></div>';
+    }
     var ok = used.length ? used.indexOf(name)!==-1 : null;
     var dot = ok===null?'unk':ok?'ok':'fail';
     var ct = '';
     if(S.briefing && ok) {
-      var all2 = (S.briefing.market||[]).concat(S.briefing.thought||[]).concat(S.briefing.competitors||[]);
+      var all2 = (S.briefing.market||[]).concat(S.briefing.thought||[]).concat(S.briefing.competitors||[]).concat(S.briefing.regulatory||[]);
       var n = all2.filter(function(i){return i.source===name||i.competitor===name;}).length;
       ct = '<span class="src-ct">'+n+'x</span>';
     } else if(ok===false) {
@@ -844,7 +857,7 @@ function renderRegulatory(filterArea, sortMode) {
       '<div class="card-top">' +
       '<span class="card-rank' + (item.rank<=3?' top':'') + '">' + (item.rank?String(item.rank).padStart(2,'0'):'') + '</span>' +
       '<div class="card-tw">' +
-      '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + '</div>' +
+      '<div class="card-title" data-item="' + itemJ + '">' + esc(item.title) + ' <span class="card-chevron" style="float:right;font-size:10px;color:var(--muted);transition:transform .2s">&#9660;</span></div>' +
       '<div class="card-mr">' +
       (area ? '<span class="src-chip" style="background:var(--navy-light);border-color:var(--navy-border);color:var(--navy)">' + esc(area) + '</span>' : '') +
       (deadline ? '<span class="cdot">|</span><span class="date-sm" style="color:var(--urgent);font-weight:600">&#9654; ' + esc(deadline) + '</span>' : '') +
@@ -884,9 +897,9 @@ function updateTagFilterBanner() {
   if(!banner || !tagEl) return;
   if(S_activeTag) {
     tagEl.textContent = S_activeTag;
-    banner.classList.add("visible");
+    banner.style.display = "flex";
   } else {
-    banner.classList.remove("visible");
+    banner.style.display = "none";
   }
 }
 
@@ -992,6 +1005,12 @@ async function loadAll() {
       document.getElementById('cnt-thought').textContent = t.length;
       document.getElementById('cnt-competitors').textContent = c.length;
       document.getElementById('weekBadge').textContent = S.briefing.week_label || '';
+      // Set PDF download link
+      var pdfBtn = document.getElementById('pdfDownloadBtn');
+      if(pdfBtn && S.briefing.scan_date) {
+        pdfBtn.href = 'reports/weekly/CMIplus_Intelligence_' + S.briefing.scan_date + '.pdf';
+        pdfBtn.style.display = 'inline-block';
+      }
       var reg = S.briefing.regulatory || [];
       document.getElementById('cnt-regulatory').textContent = reg.length;
       renderOverview();
